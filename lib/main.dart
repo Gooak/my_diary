@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_diary/firebase_options.dart';
 import 'package:my_diary/root.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -37,7 +38,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: EasyLoading.init(),
-      title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'Nanum',
         colorSchemeSeed: const Color.fromRGBO(188, 0, 74, 1.0),
@@ -51,6 +51,15 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: const Root(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('ko', ''),
+      ],
     );
   }
 }

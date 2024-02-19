@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:my_diary/components/snackBar.dart';
+import 'package:my_diary/repository/login_repository.dart';
+import 'package:my_diary/view/login_page.dart/find_passwd.dart';
+import 'package:my_diary/view/login_page.dart/signup_page.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 class SigninPage extends StatefulWidget {
@@ -15,22 +13,9 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  final _singUp = FirebaseAuth.instance;
-
   TextEditingController textEmail = TextEditingController();
   TextEditingController textPasswd = TextEditingController();
   String errorMessage = '';
-
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +77,7 @@ class _SigninPageState extends State<SigninPage> {
                 width: size.width - 50,
                 child: ElevatedButton(
                   onPressed: () async {
-                    _submit(context);
+                    LoginRepository.submit(context, textEmail.text.trim(), textPasswd.text.trim());
                   },
                   child: const Text(
                     "로그인",
@@ -107,11 +92,11 @@ class _SigninPageState extends State<SigninPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const FindPasswd(),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FindPasswd(),
+                          ));
                     },
                     child: const Text(
                       '비밀번호찾기',
@@ -119,11 +104,11 @@ class _SigninPageState extends State<SigninPage> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => const FindPasswd(),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignupPage(),
+                          ));
                     },
                     child: const Text(
                       '회원가입',
@@ -131,44 +116,19 @@ class _SigninPageState extends State<SigninPage> {
                   ),
                 ],
               ),
-              SignInButton(
-                Buttons.google,
-                onPressed: () async {
-                  await signInWithGoogle();
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: SignInButton(
+                  Buttons.google,
+                  onPressed: () async {
+                    await LoginRepository.signInWithGoogle();
+                  },
+                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> _submit(BuildContext context) async {
-    FocusScope.of(context).unfocus();
-    if (textEmail.text.trim() == "" || textPasswd.text.trim() == "") {
-      showCustomSnackBar(context, '이메일 주소, 비밀번호를 입력해주세요');
-      return;
-    }
-    try {
-      await _singUp.signInWithEmailAndPassword(email: textEmail.text.trim(), password: textPasswd.text.trim());
-      final userToken = await FirebaseMessaging.instance.getToken();
-      await FirebaseFirestore.instance.collection('UserInfo').doc(textEmail.text.trim()).update({'device': userToken});
-    } on FirebaseAuthException catch (e) {
-      //로그인 예외처리
-      if (e.code == 'user-not-found') {
-        print(e.code);
-        if (context.mounted) {
-          showCustomSnackBar(context, '등록되지 않은 이메일입니다! 회원가입을 진행해주세요');
-        }
-      } else if (e.code == 'wrong-password') {
-        print(e.code);
-        if (context.mounted) {
-          showCustomSnackBar(context, '비밀번호가 틀렸습니다!');
-        }
-      } else {
-        print(e.code);
-      }
-    }
   }
 }

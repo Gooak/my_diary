@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class MyPage extends StatefulWidget {
@@ -10,10 +11,17 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100,
-      height: 100,
-      color: Colors.green,
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: TextButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            child: Text('로그아웃'),
+          ),
+        ),
+      ),
     );
   }
 }

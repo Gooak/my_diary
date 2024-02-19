@@ -45,6 +45,8 @@ dependencies:
   firebase_messaging: ^14.7.15
   google_sign_in: ^6.2.1
   sign_in_button: ^3.2.0
+  table_calendar: ^3.0.9
+  flutter_localization: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +64,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+    - images/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
