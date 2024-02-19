@@ -55,7 +55,7 @@ class _MyCalendarState extends State<MyCalendar> {
   @override
   void initState() {
     super.initState();
-    firstDate = Provider.of<UserProvider>(context, listen: false).user!.joinDate!.toDate();
+    firstDate = Provider.of<UserProvider>(context, listen: false).joinDate;
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
   }
 
