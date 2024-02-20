@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_diary/components/design.dart';
 import 'package:my_diary/repository/login_repository.dart';
 
 class FindPasswd extends StatefulWidget {
@@ -28,17 +29,7 @@ class _FindPasswdState extends State<FindPasswd> {
                 height: 80,
                 child: TextFormField(
                     controller: textEmail,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email),
-                      filled: true,
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      hintText: '이메일 (가입된 이메일)',
-                      focusedErrorBorder: InputBorder.none,
-                    ),
+                    decoration: DesignInputDecoration(hintText: '이메일 (가입된 이메일)', icon: const Icon(Icons.email)).inputDecoration,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value!.isEmpty) {

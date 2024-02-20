@@ -6,6 +6,8 @@ class UserProvider extends ChangeNotifier {
   UserInformation? _user = UserInformation();
   UserInformation? get user => _user;
 
+  String email = '';
+  String userName = '';
   DateTime joinDate = DateTime.now();
 
   UserProvider(String email) {
@@ -17,6 +19,8 @@ class UserProvider extends ChangeNotifier {
   Future<void> loginUser(String email) async {
     _user = await UserRepository.loginUser(email);
     if (_user != null) {
+      email = user!.email!;
+      userName = user!.userName!;
       joinDate = _user!.joinDate!.toDate();
     }
     notifyListeners();

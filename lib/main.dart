@@ -5,6 +5,9 @@ import 'package:my_diary/firebase_options.dart';
 import 'package:my_diary/root.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
+import 'package:my_diary/view/mainPage/my_diary.dart';
+import 'package:my_diary/view/mainPage/my_page.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -46,11 +49,17 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         fontFamily: 'Nanum',
         useMaterial3: true,
-        colorSchemeSeed: const Color.fromRGBO(10, 10, 10, 1.0),
+        colorSchemeSeed: const Color.fromRGBO(8, 32, 50, 1.0),
       ),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: const Root(),
+      initialRoute: '/',
+      routes: {
+        '/MyDiary': (context) => const MyDiary(),
+        '/MyCalendar': (context) => const MyCalendar(),
+        '/MyPage': (context) => const MyPage(),
+      },
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

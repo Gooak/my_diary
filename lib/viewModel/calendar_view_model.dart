@@ -32,4 +32,9 @@ class CalendarViewModel extends ChangeNotifier {
   Future<void> setEvent(String email, String date, CalendarModel event) async {
     await calendarRepository.setEvent(email, date, event);
   }
+
+  Future<void> getEventAllList(String email, bool sort) async {
+    _eventList = await calendarRepository.getEventsAll(email, sort);
+    notifyListeners();
+  }
 }

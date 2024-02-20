@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_diary/view/mainPage/my_calendar.dart';
+import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_diary/view/mainPage/my_diary.dart';
 import 'package:my_diary/view/mainPage/my_page.dart';
 import 'package:my_diary/viewModel/user_view_model.dart';
@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: NavigationBar(
         //material desing 버전
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home, size: 30), label: '일기'),
+          NavigationDestination(icon: Icon(Icons.image_outlined, size: 30), label: '일기'),
           NavigationDestination(icon: Icon(Icons.calendar_today, size: 30), label: '오늘'),
           NavigationDestination(icon: Icon(Icons.person, size: 30), label: '나'),
         ],

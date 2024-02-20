@@ -18,13 +18,6 @@ class Root extends StatelessWidget {
           final user = userSnapshot.data!;
           return MultiProvider(
             providers: [
-              //  ChangeNotifierProvider<UserProvider>(
-              //   create: (context) {
-              //     final provider = UserProvider(user.email!);
-              //     provider.loginUser(user.email!);
-              //     return provider;
-              //   },
-              // ),
               ChangeNotifierProvider.value(value: UserProvider(user.email!)),
               ChangeNotifierProvider<CalendarViewModel>(create: (context) => CalendarViewModel()),
             ],

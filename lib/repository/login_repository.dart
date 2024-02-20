@@ -53,7 +53,7 @@ class LoginRepository {
     );
 
     final userToken = await FirebaseMessaging.instance.getToken();
-    var data = await FirebaseFirestore.instance.collection('Userinfo').where('email', isEqualTo: googleUser?.email).get();
+    var data = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: googleUser?.email).get();
 
     if (data.size == 0) {
       //아이디 정보가 없으면 추가

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_diary/components/design.dart';
 import 'package:my_diary/repository/login_repository.dart';
 
 class SignupPage extends StatefulWidget {
@@ -37,16 +38,7 @@ class _SignupPageState extends State<SignupPage> {
                   height: 80,
                   child: TextFormField(
                       controller: textEmail,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.email),
-                          filled: true,
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          hintText: '이메일 (인증이 가능한 이메일)',
-                          focusedErrorBorder: InputBorder.none),
+                      decoration: DesignInputDecoration(hintText: '이메일', icon: const Icon(Icons.email)).inputDecoration,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -68,16 +60,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: TextFormField(
                     obscureText: true,
                     controller: textPasswd,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.key),
-                      filled: true,
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      hintText: '비밀번호 (숫자, 문자, 특수문자, 최소8자)',
-                    ),
+                    decoration: DesignInputDecoration(hintText: '비밀번호 (숫자, 문자, 특수문자, 최소8자)', icon: const Icon(Icons.key)).inputDecoration,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '비밀번호를 입력해주세요';
@@ -98,15 +81,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: TextFormField(
                     obscureText: true,
                     controller: textPasswd2,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.key),
-                        filled: true,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        hintText: '비밀번호 확인'),
+                    decoration: DesignInputDecoration(hintText: '비밀번호 확인', icon: const Icon(Icons.key)).inputDecoration,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '비밀번호를 입력해주세요';
@@ -126,15 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                   height: 80,
                   child: TextFormField(
                     controller: textName,
-                    decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        filled: true,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        hintText: '이름 or 닉네임'),
+                    decoration: DesignInputDecoration(hintText: '이름 or 닉네임', icon: const Icon(Icons.person)).inputDecoration,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '이름 or 닉네임을 입력해주세요!';
