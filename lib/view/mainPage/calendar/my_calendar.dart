@@ -78,13 +78,7 @@ class _MyCalendarState extends State<MyCalendar> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MultiProvider(
-                  providers: [
-                    ChangeNotifierProvider.value(value: UserProvider(userProvider.user!.email!)),
-                    ChangeNotifierProvider.value(value: CalendarViewModel()),
-                  ],
-                  child: const CalendarAdd(),
-                ),
+                builder: (context) => const CalendarAdd(),
               ),
             );
           },
@@ -119,15 +113,15 @@ class _MyCalendarState extends State<MyCalendar> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                       shape: BoxShape.circle,
                     ),
-                    selectedTextStyle: const TextStyle(
-                      color: Color(0xFF7D5260),
+                    selectedTextStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSecondary,
                     ),
                     todayDecoration: const BoxDecoration(
                       color: null,
                       shape: BoxShape.circle,
                     ),
-                    todayTextStyle: const TextStyle(
-                      color: Color(0xFF7D5260),
+                    todayTextStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
                     ),
                     outsideDaysVisible: false,
                   ),
@@ -225,10 +219,10 @@ class _MyCalendarState extends State<MyCalendar> {
                           children: [
                             Row(
                               children: [
-                                const Text(
+                                Text(
                                   '오늘의 날씨',
                                   style: TextStyle(
-                                    color: Color(0xFF7D5260),
+                                    color: Theme.of(context).colorScheme.tertiary,
                                   ),
                                 ),
                                 _selectedEvents[index].weather != ''
@@ -261,15 +255,7 @@ class _MyCalendarState extends State<MyCalendar> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MultiProvider(
-                            providers: [
-                              ChangeNotifierProvider.value(value: UserProvider(userProvider.user!.email!)),
-                              ChangeNotifierProvider.value(value: CalendarViewModel()),
-                            ],
-                            child: CalendarAll(
-                              email: userProvider.user!.email!,
-                            ),
-                          ),
+                          builder: (context) => const CalendarAll(),
                         ),
                       );
                     },

@@ -148,7 +148,8 @@ class _CalendarAddState extends State<CalendarAdd> {
                       textAlignVertical: TextAlignVertical.top,
                       controller: textController,
                       maxLength: 50,
-                      decoration: DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null).inputDecoration,
+                      decoration:
+                          DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return '오늘 기분을 적어주세요';

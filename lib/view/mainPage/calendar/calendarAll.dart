@@ -5,8 +5,7 @@ import 'package:my_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class CalendarAll extends StatefulWidget {
-  String email;
-  CalendarAll({super.key, required this.email});
+  const CalendarAll({super.key});
 
   @override
   State<CalendarAll> createState() => _CalendarAllState();
@@ -18,9 +17,8 @@ class _CalendarAllState extends State<CalendarAll> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    print('${userProvider.email} 있니');
     return Consumer<CalendarViewModel>(builder: (context, provider, child) {
-      provider.getEventAllList(widget.email, sort);
+      provider.getEventAllList(userProvider.user!.email!, sort);
       eventList = provider.eventList;
       return Scaffold(
         appBar: AppBar(

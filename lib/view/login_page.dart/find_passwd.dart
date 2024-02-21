@@ -29,7 +29,8 @@ class _FindPasswdState extends State<FindPasswd> {
                 height: 80,
                 child: TextFormField(
                     controller: textEmail,
-                    decoration: DesignInputDecoration(hintText: '이메일 (가입된 이메일)', icon: const Icon(Icons.email)).inputDecoration,
+                    decoration:
+                        DesignInputDecoration(hintText: '이메일 (가입된 이메일)', icon: const Icon(Icons.email), circular: 5, hintCount: '').inputDecoration,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value!.isEmpty) {

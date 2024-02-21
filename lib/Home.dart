@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
-import 'package:my_diary/view/mainPage/my_diary.dart';
-import 'package:my_diary/view/mainPage/my_page.dart';
+import 'package:my_diary/view/mainPage/diary/my_diary.dart';
+import 'package:my_diary/view/mainPage/mypage/my_page.dart';
 import 'package:my_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -38,13 +38,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Text('$startDate일 차'),
-          ],
-        ),
-      ),
       body: currentPage,
       bottomNavigationBar: NavigationBar(
         //material desing 버전
