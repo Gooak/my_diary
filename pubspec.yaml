@@ -49,6 +49,7 @@ dependencies:
   flutter_localization: ^0.2.0
   image_picker: ^1.0.7
   extended_image: ^8.2.0
+  firebase_crashlytics: ^3.4.15
 
 dev_dependencies:
   flutter_test:
