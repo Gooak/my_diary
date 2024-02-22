@@ -62,15 +62,17 @@ class _DiaryAddState extends State<DiaryAdd> {
         floatingActionButton: FloatingActionButton.extended(
           heroTag: 'myDiaryAdd',
           onPressed: () async {
-            if (postText.text.trim() == "") {
-              showCustomSnackBar(context, '추억을 적어주세요');
-            } else if (_image == null) {
-              showCustomSnackBar(context, '이미지를 선택해주세요');
-            } else {
-              FocusScope.of(context).unfocus();
-              await diaryPorvider.setDiary(DateFormat('yyyy-MM-dd HH:mm').format(date), postText.text, userProvider.user!.email!, _image!);
-              if (context.mounted) {
-                Navigator.pop(context);
+            if (EasyLoading.isShow == false) {
+              if (postText.text.trim() == "") {
+                showCustomSnackBar(context, '추억을 적어주세요');
+              } else if (_image == null) {
+                showCustomSnackBar(context, '이미지를 선택해주세요');
+              } else {
+                FocusScope.of(context).unfocus();
+                await diaryPorvider.setDiary(DateFormat('yyyy-MM-dd HH:mm').format(date), postText.text, userProvider.user!.email!, _image!);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               }
             }
           },

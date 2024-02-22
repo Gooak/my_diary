@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!--https://developer.android.com/develop/ui/views/notifications/notification-permission?hl=ko-->
+ 
     <application
-        android:label="my_diary"
+        android:label="작은일기"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

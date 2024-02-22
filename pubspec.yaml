@@ -50,6 +50,8 @@ dependencies:
   image_picker: ^1.0.7
   extended_image: ^8.2.0
   firebase_crashlytics: ^3.4.15
+  dio: ^5.4.1
+  image_gallery_saver: ^2.0.3
 
 dev_dependencies:
   flutter_test:

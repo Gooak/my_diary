@@ -5,6 +5,7 @@ import 'package:my_diary/components/design.dart';
 import 'package:my_diary/components/dialog.dart';
 import 'package:my_diary/model/diary_model.dart';
 import 'package:my_diary/view/mainPage/diary/diaryAdd.dart';
+import 'package:my_diary/view/mainPage/diary/diaryPhotoView.dart';
 import 'package:my_diary/viewModel/diary_view_model.dart';
 import 'package:my_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
@@ -153,7 +154,11 @@ class _MyDiaryState extends State<MyDiary> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  print(diaryList[index].id);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FullScreenImagePage(imageUrl: diaryList[index].imageUrl),
+                                      ));
                                 },
                                 child: Container(
                                     decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
@@ -180,7 +185,13 @@ class _MyDiaryState extends State<MyDiary> {
                                                 case LoadState.completed:
                                                   return null;
                                                 case LoadState.failed:
-                                                  return const Center(child: Icon(Icons.close));
+                                                  return const SizedBox(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child: Center(
+                                                      child: Icon(Icons.close),
+                                                    ),
+                                                  );
                                                 default:
                                                   return null;
                                               }

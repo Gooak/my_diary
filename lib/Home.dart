@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_diary/view/mainPage/diary/my_diary.dart';
 import 'package:my_diary/view/mainPage/mypage/my_page.dart';
-import 'package:my_diary/viewModel/user_view_model.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,7 +13,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedItem = 0;
   late Widget currentPage;
-  late int startDate;
   List<Widget> pages = [
     const MyDiary(),
     const MyCalendar(),
@@ -23,7 +20,6 @@ class _HomeState extends State<Home> {
   ];
   @override
   void initState() {
-    startDate = DateTime.now().difference(Provider.of<UserProvider>(context, listen: false).joinDate.subtract(const Duration(days: 1))).inDays;
     currentPage = pages[0];
     super.initState();
   }
