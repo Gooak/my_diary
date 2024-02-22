@@ -42,8 +42,8 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: NavigationBar(
         //material desing 버전
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.image_outlined, size: 30), label: '일기'),
-          NavigationDestination(icon: Icon(Icons.calendar_today, size: 30), label: '오늘'),
+          NavigationDestination(icon: Icon(Icons.image_outlined, size: 30), label: '추억'),
+          NavigationDestination(icon: Icon(Icons.calendar_today, size: 30), label: '일기'),
           NavigationDestination(icon: Icon(Icons.person, size: 30), label: '나'),
         ],
         height: 70,

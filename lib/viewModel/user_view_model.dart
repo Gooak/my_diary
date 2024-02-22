@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:my_diary/model/user_model.dart';
 import 'package:my_diary/repository/user_repository.dart';
@@ -15,10 +17,24 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> loginUser(String email) async {
-    _user = await UserRepository.loginUser(email);
-    if (_user != null) {
-      joinDate = _user!.joinDate!.toDate();
+    if (email == "null") {
+      return;
+    } else {
+      _user = await UserRepository.loginUser(email);
+      if (_user != null) {
+        joinDate = _user!.joinDate!.toDate();
+      }
+      notifyListeners();
     }
+  }
+
+  Future<void> logOut() async {
+    _user = null;
     notifyListeners();
+  }
+
+  Future<void> deleteUser(String email) async {
+    await UserRepository.deleteUser(email);
+    await logOut();
   }
 }

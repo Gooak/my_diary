@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_diary/components/snackBar.dart';
+import 'package:my_diary/viewModel/user_view_model.dart';
+import 'package:provider/provider.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -11,17 +14,124 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    DateTime? currentBackPressTime;
+    Size scrrenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: TextButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: Text('로그아웃'),
+      appBar: AppBar(title: const Text('내 정보')),
+      body: ListView(children: [
+        Container(
+          width: scrrenSize.width,
+          color: Theme.of(context).colorScheme.secondaryContainer,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              userProvider.user!.userName!,
+                              style: const TextStyle(fontSize: 25),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          userProvider.user!.email!,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                  decoration: const BoxDecoration(border: Border(top: BorderSide(color: Colors.black12))),
+                  width: scrrenSize.width,
+                  child: TextButton(onPressed: () {}, child: const Text('프로필 변경 >'))),
+            ],
           ),
         ),
-      ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          child: Container(
+            height: 60,
+            width: scrrenSize.width,
+            padding: const EdgeInsets.all(15),
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '로그아웃',
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                    ),
+                  ],
+                ),
+                Text(
+                  '>',
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
+            ),
+          ),
+          onTap: () async {
+            DateTime now = DateTime.now();
+            if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+              currentBackPressTime = now;
+              showCustomSnackBar(context, '한번 더 누르면 로그아웃 됩니다.');
+              return;
+            }
+            userProvider.logOut();
+            FirebaseAuth.instance.signOut();
+          },
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          child: Container(
+            height: 60,
+            width: scrrenSize.width,
+            padding: const EdgeInsets.all(15),
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '회원탈퇴',
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                    ),
+                  ],
+                ),
+                Text(
+                  '>',
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
+            ),
+          ),
+          onTap: () async {},
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+      ]),
     );
   }
 }
