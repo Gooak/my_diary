@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/model/calendar_model.dart';
 import 'package:my_diary/view/mainPage/calendar/calendarAdd.dart';
 import 'package:my_diary/view/mainPage/calendar/calendarAll.dart';
@@ -24,6 +24,7 @@ class _MyCalendarState extends State<MyCalendar> {
   List<CalendarModel> _selectedEvents = [];
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
+  late DateTime checkDate;
 
   Map<DateTime, List<CalendarModel>> events = {};
 
@@ -55,8 +56,11 @@ class _MyCalendarState extends State<MyCalendar> {
   @override
   void initState() {
     super.initState();
-    firstDate = Provider.of<UserProvider>(context, listen: false).joinDate;
+    checkDate = DateTime.utc(nowDate.year, nowDate.month, nowDate.day);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    firstDate = userProvider.joinDate;
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
+    Provider.of<CalendarViewModel>(context, listen: false).getEventList(userProvider.user!.email.toString(), nowDate);
   }
 
   @override
@@ -68,19 +72,22 @@ class _MyCalendarState extends State<MyCalendar> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Consumer<CalendarViewModel>(builder: (context, provider, child) {
-      provider.getEventList(userProvider.user!.email.toString(), nowDate);
       _selectedEvents = _getEventsForDay(_selectedDay!);
       events = provider.events;
       return Scaffold(
         floatingActionButton: FloatingActionButton(
           heroTag: 'CalendarAdd',
           onPressed: () async {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CalendarAdd(),
-              ),
-            );
+            if (events[checkDate]!.isEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CalendarAdd(),
+                ),
+              );
+            } else {
+              showCustomSnackBar(context, '오늘 이미 작성하셨습니다!');
+            }
           },
           child: const Icon(Icons.add),
         ),
@@ -248,19 +255,19 @@ class _MyCalendarState extends State<MyCalendar> {
                   );
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 8, 15, 15),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CalendarAll(),
-                        ),
-                      );
-                    },
-                    child: const Text('모아보기')),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(15, 8, 15, 15),
+              //   child: ElevatedButton(
+              //       onPressed: () {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => const CalendarAll(),
+              //           ),
+              //         );
+              //       },
+              //       child: const Text('모아보기')),
+              // ),
             ],
           ),
         )),

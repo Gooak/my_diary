@@ -7,14 +7,23 @@ import 'package:my_diary/components/loading.dart';
 import 'package:my_diary/model/diary_model.dart';
 import 'package:my_diary/repository/diary_repository.dart';
 import 'package:path/path.dart' as path;
+import 'package:intl/intl.dart';
 
 class DiaryViewModel extends ChangeNotifier {
   DiaryRepository diaryRepository = DiaryRepository();
   List<DiaryModel> _diaryList = [];
   List<DiaryModel> get diaryList => _diaryList;
+  String? checkDate;
 
-  Future<void> getDiary(String email, bool sort) async {
-    _diaryList = await diaryRepository.getDiary(email, sort);
+  Future<void> getDiary(String email) async {
+    _diaryList = await diaryRepository.getDiary(email);
+    checkDate = DateFormat('yyyy-MM-dd').format(_diaryList.last.timestamp!.toDate());
+    print(checkDate);
+    notifyListeners();
+  }
+
+  Future<void> reverseDiary() async {
+    _diaryList = _diaryList.reversed.toList();
     notifyListeners();
   }
 

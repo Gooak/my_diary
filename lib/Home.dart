@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:my_diary/common/googleAd.dart';
 import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_diary/view/mainPage/diary/my_diary.dart';
 import 'package:my_diary/view/mainPage/mypage/my_page.dart';
@@ -18,6 +21,7 @@ class _HomeState extends State<Home> {
     const MyCalendar(),
     const MyPage(),
   ];
+  late BannerAd banner;
   @override
   void initState() {
     currentPage = pages[0];
@@ -34,7 +38,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: currentPage,
+      body: Column(
+        children: [
+          Expanded(child: currentPage),
+          const GoogleAd(),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         //material desing 버전
         destinations: const [

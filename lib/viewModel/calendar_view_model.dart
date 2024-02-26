@@ -25,6 +25,7 @@ class CalendarViewModel extends ChangeNotifier {
         timestamp: eventGet.docs[i]['timestamp']!,
       ));
       events[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = text;
+      print(DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2])));
     }
     notifyListeners();
   }

@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:my_diary/common/googleAd.dart';
+import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/components/design.dart';
 import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/model/calendar_model.dart';
@@ -19,7 +22,7 @@ class _CalendarAddState extends State<CalendarAdd> {
   String weather = '';
   TextEditingController textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  late BannerAd banner;
   var weatherList = <Map<String, String>>[
     {'weather': 'images/sunny.png', 'weatherName': '맑음', 'weatherId': 'sunny'},
     {'weather': 'images/cloud.png', 'weatherName': '구름', 'weatherId': 'cloud'},
@@ -27,6 +30,7 @@ class _CalendarAddState extends State<CalendarAdd> {
     {'weather': 'images/rainning.png', 'weatherName': '비', 'weatherId': 'rainning'},
     {'weather': 'images/snowy.png', 'weatherName': '눈', 'weatherId': 'snowy'},
   ];
+  DateTime nowDate = DateTime.now();
 
   @override
   void dispose() {
@@ -62,8 +66,11 @@ class _CalendarAddState extends State<CalendarAdd> {
             final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
             await calendarProvider.setEvent(
                 userProvider.user!.email!, date, CalendarModel(date: date, weather: weather, mood: textController.text, timestamp: Timestamp.now()));
+            await calendarProvider.getEventList(userProvider.user!.email!, nowDate);
             if (context.mounted) {
+              GoogleFrontAd.initialize();
               Navigator.pop(context);
+              GoogleFrontAd.loadInterstitialAd();
             }
           } else {
             showCustomSnackBar(context, '오늘 기분을 적어주세요');
@@ -142,23 +149,32 @@ class _CalendarAddState extends State<CalendarAdd> {
                   height: 200,
                   width: size.width,
                   child: TextFormField(
-                      maxLines: null,
-                      expands: true,
-                      textAlign: TextAlign.start,
-                      textAlignVertical: TextAlignVertical.top,
-                      controller: textController,
-                      maxLength: 50,
-                      decoration:
-                          DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '오늘 기분을 적어주세요';
-                        } else {
-                          return null;
-                        }
-                      }),
+                    maxLines: null,
+                    expands: true,
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.top,
+                    controller: textController,
+                    maxLength: 50,
+                    decoration:
+                        DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return '오늘 기분을 적어주세요';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                 ),
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('※ 작성 하신 뒤 수정은 불가합니다.'),
+              const SizedBox(
+                height: 10,
+              ),
+              const GoogleAd(),
             ],
           ),
         ),

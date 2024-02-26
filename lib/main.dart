@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_diary/Home.dart';
 import 'package:my_diary/firebase_options.dart';
 // ignore: depend_on_referenced_packages
@@ -42,6 +43,7 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      MobileAds.instance.initialize();
       runApp(const MyApp());
     },
     (error, stack) => FirebaseCrashlytics.instance.recordError(

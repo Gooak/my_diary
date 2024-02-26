@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:my_diary/common/googleAd.dart';
+import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/components/design.dart';
 import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/viewModel/diary_view_model.dart';
@@ -11,7 +14,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class DiaryAdd extends StatefulWidget {
-  const DiaryAdd({super.key});
+  DiaryAdd({super.key, required this.sort});
+
+  bool sort;
 
   @override
   State<DiaryAdd> createState() => _DiaryAddState();
@@ -38,7 +43,7 @@ class _DiaryAddState extends State<DiaryAdd> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final diaryPorvider = Provider.of<DiaryViewModel>(context, listen: false);
+    final diaryProvider = Provider.of<DiaryViewModel>(context, listen: false);
     return PopScope(
       canPop: !EasyLoading.isShow,
       onPopInvoked: (bool didPop) {
@@ -69,9 +74,15 @@ class _DiaryAddState extends State<DiaryAdd> {
                 showCustomSnackBar(context, '이미지를 선택해주세요');
               } else {
                 FocusScope.of(context).unfocus();
-                await diaryPorvider.setDiary(DateFormat('yyyy-MM-dd HH:mm').format(date), postText.text, userProvider.user!.email!, _image!);
+                await diaryProvider.setDiary(DateFormat('yyyy-MM-dd HH:mm').format(date), postText.text, userProvider.user!.email!, _image!);
+                await diaryProvider.getDiary(userProvider.user!.email!);
+                if (widget.sort = false) {
+                  await diaryProvider.reverseDiary();
+                }
                 if (context.mounted) {
+                  GoogleFrontAd.initialize();
                   Navigator.pop(context);
+                  GoogleFrontAd.loadInterstitialAd();
                 }
               }
             }
@@ -87,83 +98,93 @@ class _DiaryAddState extends State<DiaryAdd> {
           ),
         ),
         body: SafeArea(
-          child: ListView(children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.onPrimary,
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 0.1,
-                    spreadRadius: 0.1,
-                  ),
-                ],
-              ),
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          DateFormat('yyyy-MM-dd HH:mm').format(date),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
+          child: ListView(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 0.1,
+                      spreadRadius: 0.1,
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      getImage(ImageSource.gallery);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
-                      height: 400,
-                      width: double.infinity,
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(10),
-                      child: _image == null
-                          ? const Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '이미지 선택',
-                                  style: TextStyle(color: Colors.white),
+                  ],
+                ),
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            DateFormat('yyyy-MM-dd HH:mm').format(date),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        getImage(ImageSource.gallery);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
+                        height: 400,
+                        width: double.infinity,
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
+                        child: _image == null
+                            ? const Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '이미지 선택',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Icon(Icons.check, color: Colors.white),
+                                ],
+                              )
+                            : ClipRRect(
+                                child: Image.file(
+                                  File(_image!.path),
+                                  fit: BoxFit.contain,
                                 ),
-                                Icon(Icons.check, color: Colors.white),
-                              ],
-                            )
-                          : ClipRRect(
-                              child: Image.file(
-                                File(_image!.path),
-                                fit: BoxFit.contain,
                               ),
-                            ),
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 80,
-                    margin: const EdgeInsets.all(10),
-                    child: TextField(
-                      maxLines: null,
-                      expands: true,
-                      maxLength: 50,
-                      decoration: DesignInputDecoration(hintText: '추억을 적어주세요 (최대 50글자)', icon: null, circular: 10, hintCount: '').inputDecoration,
-                      textAlign: TextAlign.center,
-                      controller: postText,
+                    Container(
+                      height: 80,
+                      margin: const EdgeInsets.all(10),
+                      child: TextField(
+                        maxLines: null,
+                        expands: true,
+                        maxLength: 50,
+                        decoration: DesignInputDecoration(hintText: '추억을 적어주세요 (최대 50글자)', icon: null, circular: 10, hintCount: '').inputDecoration,
+                        textAlign: TextAlign.center,
+                        controller: postText,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ]),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text('※ 작성 하신 뒤 수정은 불가합니다.'),
+              const SizedBox(
+                height: 10,
+              ),
+              const GoogleAd(),
+            ],
+          ),
         ),
       ),
     );

@@ -14,11 +14,17 @@ class CalendarAll extends StatefulWidget {
 class _CalendarAllState extends State<CalendarAll> {
   bool sort = false;
   List<CalendarModel> eventList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    Provider.of<CalendarViewModel>(context, listen: false).getEventAllList(userProvider.user!.email!, sort);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
     return Consumer<CalendarViewModel>(builder: (context, provider, child) {
-      provider.getEventAllList(userProvider.user!.email!, sort);
       eventList = provider.eventList;
       return Scaffold(
         appBar: AppBar(
