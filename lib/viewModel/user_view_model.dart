@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:my_diary/model/user_model.dart';
-import 'package:my_diary/repository/user_repository.dart';
+import 'package:my_diary/firebaseRepository/user_repository.dart';
 
 class UserProvider extends ChangeNotifier {
   UserInformation? _user = UserInformation();

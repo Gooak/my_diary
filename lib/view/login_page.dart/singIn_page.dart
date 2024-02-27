@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_diary/components/design.dart';
-import 'package:my_diary/repository/login_repository.dart';
+import 'package:my_diary/firebaseRepository/login_repository.dart';
 import 'package:my_diary/view/login_page.dart/find_passwd.dart';
 import 'package:my_diary/view/login_page.dart/signup_page.dart';
 import 'package:sign_in_button/sign_in_button.dart';

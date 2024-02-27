@@ -50,10 +50,6 @@ class _MyPageState extends State<MyPage> {
                   ],
                 ),
               ),
-              Container(
-                  decoration: const BoxDecoration(border: Border(top: BorderSide(color: Colors.black12))),
-                  width: scrrenSize.width,
-                  child: TextButton(onPressed: () {}, child: const Text('프로필 변경 >'))),
             ],
           ),
         ),

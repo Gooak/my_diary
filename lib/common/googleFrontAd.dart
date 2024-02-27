@@ -5,7 +5,7 @@ class GoogleFrontAd {
   static const androidId = kReleaseMode ? "ca-app-pub-2418397088815529/6737629668" : "ca-app-pub-3940256099942544/1033173712";
   static late InterstitialAd _interstitialAd;
 
-  static void initialize() async {
+  static Future<void> initialize() async {
     await InterstitialAd.load(
       adUnitId: androidId,
       request: const AdRequest(),

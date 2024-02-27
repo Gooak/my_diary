@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_diary/components/design.dart';
-import 'package:my_diary/repository/login_repository.dart';
+import 'package:my_diary/firebaseRepository/login_repository.dart';
 
 class FindPasswd extends StatefulWidget {
   const FindPasswd({super.key});

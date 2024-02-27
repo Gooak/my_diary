@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:hive/hive.dart';
 import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/model/calendar_model.dart';
+import 'package:my_diary/model/todo_model.dart';
 import 'package:my_diary/view/mainPage/calendar/calendarAdd.dart';
 import 'package:my_diary/view/mainPage/calendar/calendarAll.dart';
+import 'package:my_diary/view/mainPage/calendar/todoListAdd.dart';
 import 'package:my_diary/viewModel/calendar_view_model.dart';
 import 'package:my_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +31,8 @@ class _MyCalendarState extends State<MyCalendar> {
   late DateTime checkDate;
 
   Map<DateTime, List<CalendarModel>> events = {};
+
+  List<TodoModel> todoList = [];
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
     if (!isSameDay(_selectedDay, selectedDay)) {
@@ -58,9 +64,11 @@ class _MyCalendarState extends State<MyCalendar> {
     super.initState();
     checkDate = DateTime.utc(nowDate.year, nowDate.month, nowDate.day);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
     firstDate = userProvider.joinDate;
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
-    Provider.of<CalendarViewModel>(context, listen: false).getEventList(userProvider.user!.email.toString(), nowDate);
+    calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate);
+    calendarProvider.myTodoGet(nowDate);
   }
 
   @override
@@ -74,22 +82,52 @@ class _MyCalendarState extends State<MyCalendar> {
     return Consumer<CalendarViewModel>(builder: (context, provider, child) {
       _selectedEvents = _getEventsForDay(_selectedDay!);
       events = provider.events;
+      todoList = provider.todoList;
       return Scaffold(
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: SpeedDial(
           heroTag: 'CalendarAdd',
-          onPressed: () async {
-            if (events[checkDate]!.isEmpty) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CalendarAdd(),
-                ),
-              );
-            } else {
-              showCustomSnackBar(context, '오늘 이미 작성하셨습니다!');
-            }
-          },
-          child: const Icon(Icons.add),
+          animatedIcon: AnimatedIcons.menu_close,
+          useRotationAnimation: true,
+          animationCurve: Curves.elasticInOut,
+          children: [
+            SpeedDialChild(
+              child: const Text('Today'),
+              onTap: () {
+                if (events[checkDate] == null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CalendarAdd(),
+                    ),
+                  );
+                } else {
+                  showCustomSnackBar(context, '오늘 이미 작성하셨습니다!');
+                }
+              },
+            ),
+            SpeedDialChild(
+              child: const Text('Todo'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TodoListAdd(),
+                  ),
+                );
+                // final box = await Hive.openBox<TodoModel>('myTodo');
+                // int id = 0;
+                // if (box.isNotEmpty) {
+                //   final item = box.getAt(box.length - 1);
+
+                //   if (item != null) {
+                //     id = item.id + 1;
+                //   }
+                // }
+                // box.put(id, TodoModel(id: id, date: DateFormat('yyyy-MM-dd').format(nowDate), todoText: 'text', checkTodo: false, dateTime: nowDate));
+                // print(box.get(1)!.date);
+              },
+            ),
+          ],
         ),
         body: SafeArea(
             child: SingleChildScrollView(
@@ -105,7 +143,7 @@ class _MyCalendarState extends State<MyCalendar> {
                   headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
                   locale: 'ko_KR', // 추가
                   firstDay: firstDate,
-                  lastDay: nowDate,
+                  lastDay: nowDate.add(const Duration(days: 30)),
                   focusedDay: _selectedDay!,
                   eventLoader: getEventsForDay,
                   selectedDayPredicate: (day) {
@@ -132,16 +170,19 @@ class _MyCalendarState extends State<MyCalendar> {
                     ),
                     outsideDaysVisible: false,
                   ),
-                  onDaySelected: _onDaySelected,
+                  onDaySelected: (selectedDay, focusedDay) {
+                    _onDaySelected(selectedDay, focusedDay);
+                    provider.myTodoGet(selectedDay);
+                  },
                   onPageChanged: (focusedDay) async {
                     _selectedDay = focusedDay;
                     await provider.getEventList(userProvider.user!.email!, focusedDay);
                     _selectedEvents = _getEventsForDay(_selectedDay!);
+                    provider.myTodoGet(_selectedDay!);
                   },
                   calendarBuilders: CalendarBuilders(
                     markerBuilder: (context, day, events) {
                       final eventList = getEventsForDay(day);
-
                       if (eventList.contains('sunny')) {
                         return Positioned(
                           top: -14,
@@ -255,19 +296,44 @@ class _MyCalendarState extends State<MyCalendar> {
                   );
                 },
               ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(15, 8, 15, 15),
-              //   child: ElevatedButton(
-              //       onPressed: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => const CalendarAll(),
-              //           ),
-              //         );
-              //       },
-              //       child: const Text('모아보기')),
-              // ),
+              ListView.builder(
+                itemCount: todoList.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 12.0,
+                      vertical: 4.0,
+                    ),
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(todoList[index].todoText.toString()),
+                        Checkbox(
+                          value: todoList[index].checkTodo,
+                          onChanged: (value) {
+                            setState(() {
+                              provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 80,
+              ),
             ],
           ),
         )),

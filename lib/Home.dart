@@ -15,7 +15,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int selectedItem = 0;
-  late Widget currentPage;
   List<Widget> pages = [
     const MyDiary(),
     const MyCalendar(),
@@ -24,14 +23,13 @@ class _HomeState extends State<Home> {
   late BannerAd banner;
   @override
   void initState() {
-    currentPage = pages[0];
     super.initState();
   }
 
   void _onDestinationSelected(int index) {
     setState(() {
       selectedItem = index;
-      currentPage = pages[index];
+      pages[index];
     });
   }
 
@@ -40,7 +38,9 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Column(
         children: [
-          Expanded(child: currentPage),
+          Expanded(
+            child: IndexedStack(index: selectedItem, children: pages),
+          ),
           const GoogleAd(),
         ],
       ),

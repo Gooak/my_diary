@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_diary/localRepository/hiveRepository.dart';
 import 'package:my_diary/model/calendar_model.dart';
-import 'package:my_diary/repository/calendar_repository.dart';
+import 'package:my_diary/firebaseRepository/calendar_repository.dart';
+import 'package:my_diary/model/todo_model.dart';
 
 class CalendarViewModel extends ChangeNotifier {
   final calendarRepository = CalendarRepository();
+  MyTodoForHive hiveRepository = MyTodoForHive();
+
+  //캘린더 메인 화면 맵리스트
   final Map<DateTime, List<CalendarModel>> _events = {};
   Map<DateTime, List<CalendarModel>> get events => _events;
 
+  //모아보기 리스트
   List<CalendarModel> _eventList = [];
   List<CalendarModel> get eventList => _eventList;
+
+  //투두리스트 리스트
+  List<TodoModel> _todoList = [];
+  List<TodoModel> get todoList => _todoList;
 
   Future<void> getEventList(String email, DateTime date) async {
     String nowDateString = DateFormat('yyyy-MM').format(date);
@@ -36,6 +46,19 @@ class CalendarViewModel extends ChangeNotifier {
 
   Future<void> getEventAllList(String email, bool sort) async {
     _eventList = await calendarRepository.getEventsAll(email, sort);
+    notifyListeners();
+  }
+
+  //투두리스트
+  Future<void> myTodoGet(DateTime selectedDay) async {
+    String selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
+    _todoList = await hiveRepository.myTodoGet(selectedDayString);
+    notifyListeners();
+  }
+
+  Future<void> myTodoUpdate(int id, bool check, DateTime selectedDay) async {
+    String selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
+    _todoList = await hiveRepository.myTodoUpdate(id, check, selectedDayString);
     notifyListeners();
   }
 }

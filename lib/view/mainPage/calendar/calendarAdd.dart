@@ -52,7 +52,7 @@ class _CalendarAddState extends State<CalendarAdd> {
           },
         ),
         title: const Text(
-          '',
+          '오늘 기분',
           style: TextStyle(fontSize: 16),
         ),
       ),
@@ -67,8 +67,8 @@ class _CalendarAddState extends State<CalendarAdd> {
             await calendarProvider.setEvent(
                 userProvider.user!.email!, date, CalendarModel(date: date, weather: weather, mood: textController.text, timestamp: Timestamp.now()));
             await calendarProvider.getEventList(userProvider.user!.email!, nowDate);
+            await GoogleFrontAd.initialize();
             if (context.mounted) {
-              GoogleFrontAd.initialize();
               Navigator.pop(context);
               GoogleFrontAd.loadInterstitialAd();
             }

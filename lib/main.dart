@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_diary/Home.dart';
+import 'package:my_diary/common/openHive.dart';
+import 'package:my_diary/common/upgraderMessage.dart';
 import 'package:my_diary/firebase_options.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,6 +20,7 @@ import 'package:my_diary/viewModel/calendar_view_model.dart';
 import 'package:my_diary/viewModel/diary_view_model.dart';
 import 'package:my_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:upgrader/upgrader.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -43,6 +46,8 @@ void main() async {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
+      await Upgrader.clearSavedSettings();
+      await OpenHive.openHive();
       MobileAds.instance.initialize();
       runApp(const MyApp());
     },
@@ -59,71 +64,76 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, AsyncSnapshot<User?> userSnapshot) {
-        if (userSnapshot.connectionState == ConnectionState.waiting) {
-          // 인증 상태 변경을 기다립니다.
-          return const CircularProgressIndicator();
-        } else {
-          final email = userSnapshot.data?.email;
-          return MultiProvider(
-            providers: [
-              // ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider(email.toString())),
-              ChangeNotifierProvider.value(
-                value: UserProvider(email.toString()),
-              ),
-              ChangeNotifierProvider<CalendarViewModel>(create: (context) => CalendarViewModel()),
-              ChangeNotifierProvider<DiaryViewModel>(create: (context) => DiaryViewModel()),
-            ],
-            child: MaterialApp(
-              builder: EasyLoading.init(),
-              theme: ThemeData(
-                fontFamily: 'Nanum',
-                colorSchemeSeed: const Color.fromRGBO(188, 0, 74, 1.0),
-                useMaterial3: true,
-              ),
-              darkTheme: ThemeData(
-                fontFamily: 'Nanum',
-                useMaterial3: true,
-                colorSchemeSeed: const Color.fromRGBO(8, 32, 50, 1.0),
-              ),
-              themeMode: ThemeMode.system,
-              debugShowCheckedModeBanner: false,
-              home: userSnapshot.hasData
-                  ? Consumer<UserProvider>(
-                      builder: (context, provider, child) {
-                        if (provider.user == null || provider.user!.email == null) {
-                          return const Scaffold(
-                            body: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        } else {
-                          return const Home();
-                        }
-                      },
-                    )
-                  : const SigninPage(),
-              initialRoute: '/',
-              routes: {
-                '/MyDiary': (context) => const MyDiary(),
-                '/MyCalendar': (context) => const MyCalendar(),
-                '/MyPage': (context) => const MyPage(),
-              },
-              localizationsDelegates: const [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
+    return UpgradeAlert(
+      upgrader: Upgrader(
+        messages: AppUpgradeMessages(),
+      ),
+      child: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, AsyncSnapshot<User?> userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            // 인증 상태 변경을 기다립니다.
+            return const CircularProgressIndicator();
+          } else {
+            final email = userSnapshot.data?.email;
+            return MultiProvider(
+              providers: [
+                // ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider(email.toString())),
+                ChangeNotifierProvider.value(
+                  value: UserProvider(email.toString()),
+                ),
+                ChangeNotifierProvider<CalendarViewModel>(create: (context) => CalendarViewModel()),
+                ChangeNotifierProvider<DiaryViewModel>(create: (context) => DiaryViewModel()),
               ],
-              supportedLocales: const [
-                Locale('en', ''),
-                Locale('ko', ''),
-              ],
-            ),
-          );
-        }
-      },
+              child: MaterialApp(
+                builder: EasyLoading.init(),
+                theme: ThemeData(
+                  fontFamily: 'Nanum',
+                  colorSchemeSeed: const Color.fromRGBO(188, 0, 74, 1.0),
+                  useMaterial3: true,
+                ),
+                darkTheme: ThemeData(
+                  fontFamily: 'Nanum',
+                  useMaterial3: true,
+                  colorSchemeSeed: const Color.fromRGBO(8, 32, 50, 1.0),
+                ),
+                themeMode: ThemeMode.system,
+                debugShowCheckedModeBanner: false,
+                home: userSnapshot.hasData
+                    ? Consumer<UserProvider>(
+                        builder: (context, provider, child) {
+                          if (provider.user == null || provider.user!.email == null) {
+                            return const Scaffold(
+                              body: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          } else {
+                            return const Home();
+                          }
+                        },
+                      )
+                    : const SigninPage(),
+                initialRoute: '/',
+                routes: {
+                  '/MyDiary': (context) => const MyDiary(),
+                  '/MyCalendar': (context) => const MyCalendar(),
+                  '/MyPage': (context) => const MyPage(),
+                },
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en', ''),
+                  Locale('ko', ''),
+                ],
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
