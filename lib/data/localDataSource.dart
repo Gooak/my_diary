@@ -7,6 +7,23 @@ class HiveLocalDataSource {
     return myTodo;
   }
 
+  Future<void> myTodoSet(List<TodoModel> addTodoList) async {
+    final box = await Hive.openBox<TodoModel>('myTodo');
+    int id = 0;
+    if (box.isNotEmpty) {
+      final item = box.getAt(box.length - 1);
+
+      if (item != null) {
+        id = item.id + 1;
+      }
+    }
+    for (var todo in addTodoList) {
+      todo = todo.copyWith(id: id);
+      box.put(id, todo);
+      id += 1;
+    }
+  }
+
   Future<List<TodoModel>> myTodoUpdate(int id, bool check, String selectedDayString) async {
     final box = await Hive.openBox<TodoModel>('myTodo');
     TodoModel? todo = box.get(id);
@@ -15,9 +32,11 @@ class HiveLocalDataSource {
     return myTodoGet(selectedDayString);
   }
 
-  Future<void> myTodoSet() async {
-    var myTodo = await Hive.box('myTodo');
-  }
+  Future<void> myTodoDelete(List<TodoModel> deleteTodoList) async {
+    final box = await Hive.openBox<TodoModel>('myTodo');
 
-  Future<void> myTodoDelete() async {}
+    for (var todo in deleteTodoList) {
+      box.delete(todo.id);
+    }
+  }
 }

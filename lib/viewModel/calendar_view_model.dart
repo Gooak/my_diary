@@ -56,9 +56,22 @@ class CalendarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //투두적는거
+  Future<void> myTodoSet(List<TodoModel> addTodoList) async {
+    await hiveRepository.myTodoSet(addTodoList);
+    notifyListeners();
+  }
+
+  //투두 완료 체크
   Future<void> myTodoUpdate(int id, bool check, DateTime selectedDay) async {
     String selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
     _todoList = await hiveRepository.myTodoUpdate(id, check, selectedDayString);
+    notifyListeners();
+  }
+
+  //투두적는거
+  Future<void> myTodoDelete(List<TodoModel> deleteTodoList) async {
+    await hiveRepository.myTodoDelete(deleteTodoList);
     notifyListeners();
   }
 }

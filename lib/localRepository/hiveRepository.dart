@@ -9,15 +9,15 @@ class MyTodoForHive {
     return await _dataSource.myTodoGet(selectedDayString);
   }
 
+  Future<void> myTodoSet(List<TodoModel> addTodoList) async {
+    await _dataSource.myTodoSet(addTodoList);
+  }
+
   Future<List<TodoModel>> myTodoUpdate(int id, bool check, String selectedDayString) async {
     return await _dataSource.myTodoUpdate(id, check, selectedDayString);
   }
 
-  Future<void> myTodoSet() async {
-    await _dataSource.myTodoSet();
-  }
-
-  Future<void> myTodoDetele() async {
-    await _dataSource.myTodoDelete();
+  Future<void> myTodoDelete(List<TodoModel> deleteTodoList) async {
+    await _dataSource.myTodoDelete(deleteTodoList);
   }
 }

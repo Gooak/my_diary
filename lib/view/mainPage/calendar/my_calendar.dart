@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:hive/hive.dart';
 import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/model/calendar_model.dart';
 import 'package:my_diary/model/todo_model.dart';
 import 'package:my_diary/view/mainPage/calendar/calendarAdd.dart';
-import 'package:my_diary/view/mainPage/calendar/calendarAll.dart';
 import 'package:my_diary/view/mainPage/calendar/todoListAdd.dart';
 import 'package:my_diary/viewModel/calendar_view_model.dart';
 import 'package:my_diary/viewModel/user_view_model.dart';
@@ -114,17 +112,6 @@ class _MyCalendarState extends State<MyCalendar> {
                     builder: (context) => const TodoListAdd(),
                   ),
                 );
-                // final box = await Hive.openBox<TodoModel>('myTodo');
-                // int id = 0;
-                // if (box.isNotEmpty) {
-                //   final item = box.getAt(box.length - 1);
-
-                //   if (item != null) {
-                //     id = item.id + 1;
-                //   }
-                // }
-                // box.put(id, TodoModel(id: id, date: DateFormat('yyyy-MM-dd').format(nowDate), todoText: 'text', checkTodo: false, dateTime: nowDate));
-                // print(box.get(1)!.date);
               },
             ),
           ],
@@ -321,9 +308,8 @@ class _MyCalendarState extends State<MyCalendar> {
                         Checkbox(
                           value: todoList[index].checkTodo,
                           onChanged: (value) {
-                            setState(() {
-                              provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
-                            });
+                            provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
+                            setState(() {});
                           },
                         )
                       ],

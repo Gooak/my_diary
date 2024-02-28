@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_diary/Home.dart';
+import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/common/openHive.dart';
 import 'package:my_diary/common/upgraderMessage.dart';
 import 'package:my_diary/firebase_options.dart';
@@ -49,6 +50,8 @@ void main() async {
       await Upgrader.clearSavedSettings();
       await OpenHive.openHive();
       MobileAds.instance.initialize();
+      await GoogleFrontAd.initialize();
+
       runApp(const MyApp());
     },
     (error, stack) => FirebaseCrashlytics.instance.recordError(
