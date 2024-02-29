@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/model/calendar_model.dart';
@@ -293,7 +294,7 @@ class _MyCalendarState extends State<MyCalendar> {
                       horizontal: 12.0,
                       vertical: 4.0,
                     ),
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 1,
@@ -302,16 +303,26 @@ class _MyCalendarState extends State<MyCalendar> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(todoList[index].todoText.toString()),
                         Checkbox(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                           value: todoList[index].checkTodo,
                           onChanged: (value) {
                             provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
                             setState(() {});
                           },
-                        )
+                        ),
+                        Expanded(
+                          child: AnimatedDefaultTextStyle(
+                            duration: const Duration(milliseconds: 500),
+                            style: TextStyle(
+                                decoration: todoList[index].checkTodo == true ? TextDecoration.lineThrough : null,
+                                color: todoList[index].checkTodo == true ? Colors.grey : Colors.black),
+                            child: Text(
+                              todoList[index].todoText.toString(),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   );

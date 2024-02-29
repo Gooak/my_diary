@@ -35,6 +35,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    MobileAds.instance.initialize();
+    //전면 광고 추가
     return Scaffold(
       body: Column(
         children: [

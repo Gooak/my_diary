@@ -125,42 +125,46 @@ class _TodoListAddState extends State<TodoListAdd> {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Stack(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Theme.of(context).colorScheme.primaryContainer,
-                            ),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          width: size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(todoList[index].todoText.toString()),
-                              Checkbox(
-                                value: todoList[index].checkTodo,
-                                onChanged: (value) {},
-                              )
-                            ],
-                          ),
+                    return Container(
+                      padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).colorScheme.primaryContainer,
                         ),
-                        Positioned(
-                          top: -12,
-                          right: -12,
-                          child: IconButton(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      width: size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                  value: todoList[index].checkTodo,
+                                  onChanged: (value) {},
+                                ),
+                                Text(
+                                  todoList[index].todoText.toString(),
+                                  style: TextStyle(
+                                      decoration: todoList[index].checkTodo == true ? TextDecoration.lineThrough : null,
+                                      color: todoList[index].checkTodo == true ? Colors.grey : Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
                             onPressed: () {
                               deleteTodoList.add(todoList[index]);
                               todoList.remove(todoList[index]);
                               setState(() {});
                             },
-                            icon: const Icon(Icons.close),
+                            icon: const Icon(Icons.delete_forever),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -179,10 +183,10 @@ class _TodoListAddState extends State<TodoListAdd> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     if (index < addTodoList.length) {
-                      return Stack(
+                      return Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.fromLTRB(15, 5, 5, 5),
+                            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1,
@@ -194,23 +198,28 @@ class _TodoListAddState extends State<TodoListAdd> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(addTodoList[index].todoText.toString()),
-                                Checkbox(
-                                  value: addTodoList[index].checkTodo,
-                                  onChanged: (value) {},
-                                )
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                      value: addTodoList[index].checkTodo,
+                                      onChanged: (value) {},
+                                    ),
+                                    // const SizedBox(
+                                    //   width: 10,
+                                    // ),
+                                    Text(addTodoList[index].todoText.toString()),
+                                  ],
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    deleteTodoList.add(todoList[index]);
+                                    todoList.remove(todoList[index]);
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(Icons.delete_forever),
+                                ),
                               ],
-                            ),
-                          ),
-                          Positioned(
-                            top: -12,
-                            right: -12,
-                            child: IconButton(
-                              onPressed: () {
-                                addTodoList.remove(addTodoList[index]);
-                                setState(() {});
-                              },
-                              icon: const Icon(Icons.close),
                             ),
                           ),
                         ],
@@ -246,7 +255,7 @@ class _TodoListAddState extends State<TodoListAdd> {
     Future<DateTime?> selectedDate = showDatePicker(
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
-      firstDate: nowDate.subtract(const Duration(days: 10)),
+      firstDate: nowDate,
       lastDate: nowDate.add(const Duration(days: 30)),
       locale: const Locale('ko', 'KO'),
     );

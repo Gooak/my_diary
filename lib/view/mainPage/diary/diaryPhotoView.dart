@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:my_diary/components/snackBar.dart';
 
 class FullScreenImagePage extends StatelessWidget {
   final String imageUrl;
@@ -14,21 +18,6 @@ class FullScreenImagePage extends StatelessWidget {
       children: [
         Scaffold(
           backgroundColor: Colors.black,
-          // appBar: AppBar(
-          //   leading: const BackButton(
-          //     color: Colors.white,
-          //   ),
-          //   backgroundColor: Colors.black,
-          //   elevation: 0.0,
-          //   actions: [
-          //     IconButton(
-          //         onPressed: () async {},
-          //         icon: const Icon(
-          //           Icons.download,
-          //           color: Colors.white,
-          //         ))
-          //   ],
-          // ),
           extendBodyBehindAppBar: true,
           body: SafeArea(
             child: Center(
@@ -88,7 +77,9 @@ class FullScreenImagePage extends StatelessWidget {
                 color: Colors.white,
               ),
               IconButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  await downloadImage(imageUrl, context);
+                },
                 icon: const Icon(
                   Icons.download,
                   color: Colors.white,
@@ -101,17 +92,17 @@ class FullScreenImagePage extends StatelessWidget {
     );
   }
 
-  // Future<void> downloadImage(String imageURL) async {
-  //   Dio dio = Dio();
-  //   final response = await dio.get(imageURL);
-
-  //   if (response.statusCode == 200) {
-  //     // 이미지 다운로드 성공
-  //     final File imageFile = File(imageURL);
-  //     await imageFile.writeAsBytes(response.data);
-  //   } else {
-  //     // 이미지 다운로드 실패
-  //     throw Exception('이미지를 다운로드할 수 없습니다.');
-  //   }
-  // }
+  Future<void> downloadImage(String imageURL, BuildContext context) async {
+    try {
+      var response = await Dio().get(imageURL, options: Options(responseType: ResponseType.bytes));
+      await ImageGallerySaver.saveImage(Uint8List.fromList(response.data), quality: 50, name: 'my_diary_${Timestamp.now()}');
+      if (context.mounted) {
+        showCustomSnackBar(context, '이미지를 저장하였습니다!');
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showCustomSnackBar(context, '이미지 저장을 실패했습니다');
+      }
+    }
+  }
 }

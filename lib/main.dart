@@ -5,13 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_diary/Home.dart';
 import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/common/openHive.dart';
 import 'package:my_diary/common/upgraderMessage.dart';
 import 'package:my_diary/firebase_options.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_diary/view/login_page.dart/singIn_page.dart';
 import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
@@ -49,7 +47,6 @@ void main() async {
       );
       await Upgrader.clearSavedSettings();
       await OpenHive.openHive();
-      MobileAds.instance.initialize();
       await GoogleFrontAd.initialize();
 
       runApp(const MyApp());

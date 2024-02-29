@@ -5,7 +5,7 @@ import 'package:my_diary/model/diary_model.dart';
 class DiaryRepository {
   Future<List<DiaryModel>> getDiary(String email) async {
     List<DiaryModel> events = [];
-    var data = await FirebaseFirestore.instance.collection('Memory').doc(email).collection(email).orderBy('timestamp', descending: false).get();
+    var data = await FirebaseFirestore.instance.collection('Memory').doc(email).collection(email).orderBy('timestamp', descending: true).get();
 
     for (var element in data.docs) {
       events.add(DiaryModel.fromDocumentSnapshot(element));
