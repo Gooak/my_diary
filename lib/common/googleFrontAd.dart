@@ -13,9 +13,7 @@ class GoogleFrontAd {
         onAdLoaded: (InterstitialAd ad) {
           _interstitialAd = ad;
         },
-        onAdFailedToLoad: (LoadAdError error) {
-          // 광고 로드 실패 처리
-        },
+        onAdFailedToLoad: (LoadAdError error) {},
       ),
     );
   }

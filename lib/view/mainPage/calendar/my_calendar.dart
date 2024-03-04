@@ -106,13 +106,18 @@ class _MyCalendarState extends State<MyCalendar> {
             ),
             SpeedDialChild(
               child: const Text('Todo'),
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final String? date = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const TodoListAdd(),
                   ),
                 );
+                if (date != null) {
+                  if (DateFormat('yyyy-MM-dd').format(_selectedDay!) == date) {
+                    provider.myTodoGet(_selectedDay!);
+                  }
+                }
               },
             ),
           ],

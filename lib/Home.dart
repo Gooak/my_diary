@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_diary/common/googleAd.dart';
+import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_diary/view/mainPage/diary/my_diary.dart';
 import 'package:my_diary/view/mainPage/mypage/my_page.dart';
@@ -35,8 +36,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    MobileAds.instance.initialize();
-    //전면 광고 추가
+    // MobileAds.instance.initialize();
+    // GoogleFrontAd.initialize();
     return Scaffold(
       body: Column(
         children: [

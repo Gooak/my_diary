@@ -44,38 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBIN7BWGymJ6F41pQCeHI8Jh_9VdRu25qw',
-    appId: '1:63956203212:web:8e0845abe261e4c80a3469',
-    messagingSenderId: '63956203212',
-    projectId: 'mydiary-22626',
-    authDomain: 'mydiary-22626.firebaseapp.com',
-    storageBucket: 'mydiary-22626.appspot.com',
-    measurementId: 'G-YX0JZFX82W',
+    apiKey: 'AIzaSyCwQ4h3CHu_dGHPkWaSHFvj03v6Q6pNG18',
+    appId: '1:125557249109:web:c815f80573508f10eb70dc',
+    messagingSenderId: '125557249109',
+    projectId: 'mydiary-ddcf6',
+    authDomain: 'mydiary-ddcf6.firebaseapp.com',
+    storageBucket: 'mydiary-ddcf6.appspot.com',
+    measurementId: 'G-7ZWP4SQRQB',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDPLagnt-rAjNBzhQrBCKrZFFV3ZWKpkiw',
-    appId: '1:63956203212:android:c1eb28c23f32b5ed0a3469',
-    messagingSenderId: '63956203212',
-    projectId: 'mydiary-22626',
-    storageBucket: 'mydiary-22626.appspot.com',
+    apiKey: 'AIzaSyBKkMnFX2Vc2XvGnixswsaMPlaUdn5nkME',
+    appId: '1:125557249109:android:15a047483ac0b967eb70dc',
+    messagingSenderId: '125557249109',
+    projectId: 'mydiary-ddcf6',
+    storageBucket: 'mydiary-ddcf6.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCRLT83QmKmgwRVSB7lRvXAK3IGd1G7LSg',
-    appId: '1:63956203212:ios:86c9a1bcf8f9793a0a3469',
-    messagingSenderId: '63956203212',
-    projectId: 'mydiary-22626',
-    storageBucket: 'mydiary-22626.appspot.com',
-    iosBundleId: 'com.example.myDiary',
+    apiKey: 'AIzaSyCe10rVh_Wy_3OK27FRzezHAeMrHw1L6-g',
+    appId: '1:125557249109:ios:5bc9691d8566bc2feb70dc',
+    messagingSenderId: '125557249109',
+    projectId: 'mydiary-ddcf6',
+    storageBucket: 'mydiary-ddcf6.appspot.com',
+    iosClientId: '125557249109-6sl9tjaqboi95j5r3p01ou1om3b1ufj6.apps.googleusercontent.com',
+    iosBundleId: 'com.myDiary',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCRLT83QmKmgwRVSB7lRvXAK3IGd1G7LSg',
-    appId: '1:63956203212:ios:ce105bf55ff5f8c00a3469',
-    messagingSenderId: '63956203212',
-    projectId: 'mydiary-22626',
-    storageBucket: 'mydiary-22626.appspot.com',
-    iosBundleId: 'com.example.myDiary.RunnerTests',
+    apiKey: 'AIzaSyCe10rVh_Wy_3OK27FRzezHAeMrHw1L6-g',
+    appId: '1:125557249109:ios:d503b184ac85f07deb70dc',
+    messagingSenderId: '125557249109',
+    projectId: 'mydiary-ddcf6',
+    storageBucket: 'mydiary-ddcf6.appspot.com',
+    iosClientId: '125557249109-bd52ui0r5kc9292umnlq4b95a0tkaem2.apps.googleusercontent.com',
+    iosBundleId: 'com.myDiary.RunnerTests',
   );
 }

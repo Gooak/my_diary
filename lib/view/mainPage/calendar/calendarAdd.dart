@@ -170,7 +170,10 @@ class _CalendarAddState extends State<CalendarAdd> {
               const SizedBox(
                 height: 10,
               ),
-              const Text('※ 작성 하신 뒤 수정은 불가합니다.'),
+              const Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Text('※ 작성 하신 뒤 수정은 불가합니다.'),
+              ),
               const SizedBox(
                 height: 10,
               ),

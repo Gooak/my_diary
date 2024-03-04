@@ -79,8 +79,8 @@ class _DiaryAddState extends State<DiaryAdd> {
                 if (widget.sort = false) {
                   await diaryProvider.reverseDiary();
                 }
+                await GoogleFrontAd.initialize();
                 if (context.mounted) {
-                  GoogleFrontAd.initialize();
                   Navigator.pop(context);
                   GoogleFrontAd.loadInterstitialAd();
                 }
@@ -178,7 +178,10 @@ class _DiaryAddState extends State<DiaryAdd> {
               const SizedBox(
                 height: 10,
               ),
-              const Text('※ 작성 하신 뒤 수정은 불가합니다.'),
+              const Padding(
+                padding: EdgeInsets.only(left: 15),
+                child: Text('※ 작성 하신 뒤 수정은 불가합니다.'),
+              ),
               const SizedBox(
                 height: 10,
               ),

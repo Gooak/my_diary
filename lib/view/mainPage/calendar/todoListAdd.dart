@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_diary/common/googleAd.dart';
 import 'package:my_diary/common/googleFrontAd.dart';
@@ -17,7 +16,7 @@ class TodoListAdd extends StatefulWidget {
 }
 
 class _TodoListAddState extends State<TodoListAdd> {
-  String date = '날짜를 선택해주세요.';
+  String? date = '날짜를 선택해주세요.';
   DateTime nowDate = DateTime.now();
   List<TodoModel> todoList = [];
   List<TodoModel> deleteTodoList = [];
@@ -31,7 +30,6 @@ class _TodoListAddState extends State<TodoListAdd> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // final userProvider = Provider.of<UserProvider>(context, listen: false);
     final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -60,8 +58,12 @@ class _TodoListAddState extends State<TodoListAdd> {
               await calendarProvider.myTodoDelete(deleteTodoList);
               calendarProvider.todoList.clear();
             }
+            await GoogleFrontAd.initialize();
             if (context.mounted) {
-              Navigator.pop(context);
+              if (date == '날짜를 선택해주세요.') {
+                date = null;
+              }
+              Navigator.of(context).pop(date);
               GoogleFrontAd.loadInterstitialAd();
             }
           }
@@ -102,7 +104,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                   padding: const EdgeInsets.all(10),
                   width: size.width,
                   child: Text(
-                    date,
+                    date!,
                     textAlign: TextAlign.left,
                   ),
                 ),
@@ -205,9 +207,6 @@ class _TodoListAddState extends State<TodoListAdd> {
                                       value: addTodoList[index].checkTodo,
                                       onChanged: (value) {},
                                     ),
-                                    // const SizedBox(
-                                    //   width: 10,
-                                    // ),
                                     Text(addTodoList[index].todoText.toString()),
                                   ],
                                 ),
@@ -299,7 +298,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    addTodoList.add(TodoModel(id: -1, date: date, todoText: textController.text, checkTodo: false, dateTime: nowDate));
+                    addTodoList.add(TodoModel(id: -1, date: date!, todoText: textController.text, checkTodo: false, dateTime: nowDate));
                     setState(() {});
                     FocusScope.of(context).unfocus();
                     Navigator.pop(context);

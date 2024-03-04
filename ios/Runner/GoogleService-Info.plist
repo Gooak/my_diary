@@ -2,18 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>125557249109-6sl9tjaqboi95j5r3p01ou1om3b1ufj6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.125557249109-6sl9tjaqboi95j5r3p01ou1om3b1ufj6</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCRLT83QmKmgwRVSB7lRvXAK3IGd1G7LSg</string>
+	<string>AIzaSyCe10rVh_Wy_3OK27FRzezHAeMrHw1L6-g</string>
 	<key>GCM_SENDER_ID</key>
-	<string>63956203212</string>
+	<string>125557249109</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.myDiary</string>
+	<string>com.myDiary</string>
 	<key>PROJECT_ID</key>
-	<string>mydiary-22626</string>
+	<string>mydiary-ddcf6</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mydiary-22626.appspot.com</string>
+	<string>mydiary-ddcf6.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:63956203212:ios:86c9a1bcf8f9793a0a3469</string>
+	<string>1:125557249109:ios:5bc9691d8566bc2feb70dc</string>
 </dict>
 </plist>

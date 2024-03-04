@@ -47,7 +47,6 @@ void main() async {
       );
       await Upgrader.clearSavedSettings();
       await OpenHive.openHive();
-      await GoogleFrontAd.initialize();
 
       runApp(const MyApp());
     },
