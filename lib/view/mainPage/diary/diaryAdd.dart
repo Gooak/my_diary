@@ -41,7 +41,6 @@ class _DiaryAddState extends State<DiaryAdd> {
         _image = File(image!.path); // 가져온 이미지를 _image에 저장
       });
     } catch (e) {
-      print('변경안함!');
       if (widget.diary == null) {
         imageSelect = false;
       }
@@ -91,6 +90,7 @@ class _DiaryAddState extends State<DiaryAdd> {
                 showCustomSnackBar(context, '이미지를 선택해주세요');
               } else {
                 FocusScope.of(context).unfocus();
+                await GoogleFrontAd.initialize();
                 if (widget.diary == null) {
                   await diaryProvider.setDiary(
                     DateFormat('yyyy-MM-dd HH:mm').format(date),
@@ -111,7 +111,6 @@ class _DiaryAddState extends State<DiaryAdd> {
                 if (widget.sort = false) {
                   await diaryProvider.reverseDiary();
                 }
-                await GoogleFrontAd.initialize();
                 if (context.mounted) {
                   Navigator.pop(context);
                   GoogleFrontAd.loadInterstitialAd();

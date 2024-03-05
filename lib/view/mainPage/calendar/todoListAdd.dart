@@ -34,7 +34,6 @@ class _TodoListAddState extends State<TodoListAdd> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: Colors.black,
           onPressed: () {
             Navigator.pop(context);
           },
@@ -50,6 +49,7 @@ class _TodoListAddState extends State<TodoListAdd> {
           if (addTodoList.isEmpty && deleteTodoList.isEmpty) {
             showCustomSnackBar(context, '투두리스트를 작성해주세요!');
           } else {
+            await GoogleFrontAd.initialize();
             if (addTodoList.isNotEmpty) {
               await calendarProvider.myTodoSet(addTodoList);
               calendarProvider.todoList.clear();
@@ -58,7 +58,6 @@ class _TodoListAddState extends State<TodoListAdd> {
               await calendarProvider.myTodoDelete(deleteTodoList);
               calendarProvider.todoList.clear();
             }
-            await GoogleFrontAd.initialize();
             if (context.mounted) {
               if (date == '날짜를 선택해주세요.') {
                 date = null;

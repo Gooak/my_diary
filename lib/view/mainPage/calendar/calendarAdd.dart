@@ -82,11 +82,11 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
             showCustomSnackBar(context, '날씨를 선택해주세요');
             return;
           } else if (_formKey.currentState!.validate()) {
+            await GoogleFrontAd.initialize();
             final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
             await calendarProvider.setEvent(
                 userProvider.user!.email!, date, CalendarModel(date: date, weather: weather, mood: textController.text, timestamp: Timestamp.now()));
             await calendarProvider.getEventList(userProvider.user!.email!, nowDate);
-            await GoogleFrontAd.initialize();
             if (context.mounted) {
               Navigator.pop(context);
               GoogleFrontAd.loadInterstitialAd();
