@@ -12,13 +12,14 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class CalendarAdd extends StatefulWidget {
-  const CalendarAdd({super.key});
+  const CalendarAdd({super.key, required this.event});
+  final CalendarModel? event;
 
   @override
   State<CalendarAdd> createState() => _CalendarAddState();
 }
 
-class _CalendarAddState extends State<CalendarAdd> {
+class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
   String weather = '';
   TextEditingController textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -33,9 +34,28 @@ class _CalendarAddState extends State<CalendarAdd> {
   DateTime nowDate = DateTime.now();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    if (widget.event != null) {
+      weather = widget.event!.weather;
+      textController.text = widget.event!.mood;
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
     textController.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() async {
+    super.didChangePlatformBrightness();
+    await Future.delayed(const Duration(milliseconds: 1000));
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -46,7 +66,6 @@ class _CalendarAddState extends State<CalendarAdd> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: Colors.black,
           onPressed: () {
             Navigator.pop(context);
           },
@@ -86,99 +105,94 @@ class _CalendarAddState extends State<CalendarAdd> {
           ],
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(15),
-        width: size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('날씨 선택'),
-              const SizedBox(
-                height: 5,
-              ),
-              SizedBox(
-                height: 100,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: weatherList.length,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      width: 5,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(15),
+          width: size.width,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('날씨 선택'),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 100,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: weatherList.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        width: 5,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(size.width / 5),
+                                color: weather == weatherList[index]["weatherId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
+                            child: InkWell(
                               borderRadius: BorderRadius.circular(size.width / 5),
-                              color: weather == weatherList[index]["weatherId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(size.width / 5),
-                            onTap: () {
-                              weather = weatherList[index]["weatherId"].toString();
-                              setState(() {});
-                            },
-                            child: Image.asset(
-                              weatherList[index]["weather"].toString(),
-                              width: size.width / 5,
+                              onTap: () {
+                                weather = weatherList[index]["weatherId"].toString();
+                                setState(() {});
+                              },
+                              child: Image.asset(
+                                weatherList[index]["weather"].toString(),
+                                width: size.width / 5,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(weatherList[index]["weatherName"].toString())
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              const Text('오늘의 기분'),
-              const SizedBox(
-                height: 5,
-              ),
-              Form(
-                key: _formKey,
-                child: SizedBox(
-                  height: 200,
-                  width: size.width,
-                  child: TextFormField(
-                    maxLines: null,
-                    expands: true,
-                    textAlign: TextAlign.start,
-                    textAlignVertical: TextAlignVertical.top,
-                    controller: textController,
-                    maxLength: 50,
-                    decoration:
-                        DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '오늘 기분을 적어주세요';
-                      } else {
-                        return null;
-                      }
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(weatherList[index]["weatherName"].toString())
+                        ],
+                      );
                     },
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 15),
-                child: Text('※ 작성 하신 뒤 수정은 불가합니다.'),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const GoogleAd(),
-            ],
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text('오늘의 기분'),
+                const SizedBox(
+                  height: 5,
+                ),
+                Form(
+                  key: _formKey,
+                  child: SizedBox(
+                    height: 200,
+                    width: size.width,
+                    child: TextFormField(
+                      maxLines: null,
+                      expands: true,
+                      textAlign: TextAlign.start,
+                      textAlignVertical: TextAlignVertical.top,
+                      controller: textController,
+                      maxLength: 50,
+                      decoration:
+                          DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '오늘 기분을 적어주세요';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const GoogleAd(),
+              ],
+            ),
           ),
         ),
       ),

@@ -128,7 +128,6 @@ class _TodoListAddState extends State<TodoListAdd> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Container(
-                      padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                       decoration: BoxDecoration(
                         border: Border.all(
                           width: 1,
@@ -152,7 +151,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                                   todoList[index].todoText.toString(),
                                   style: TextStyle(
                                       decoration: todoList[index].checkTodo == true ? TextDecoration.lineThrough : null,
-                                      color: todoList[index].checkTodo == true ? Colors.grey : Colors.black),
+                                      color: todoList[index].checkTodo == true ? Colors.grey : null),
                                 ),
                               ],
                             ),
@@ -188,7 +187,6 @@ class _TodoListAddState extends State<TodoListAdd> {
                       return Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                             decoration: BoxDecoration(
                               border: Border.all(
                                 width: 1,
@@ -242,6 +240,10 @@ class _TodoListAddState extends State<TodoListAdd> {
                     }
                   },
                 ),
+              const Text('※ 개인 핸드폰에 저장이 됩니다.'),
+              const SizedBox(
+                height: 10,
+              ),
               const GoogleAd(),
             ],
           ),

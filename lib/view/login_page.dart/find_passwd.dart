@@ -63,7 +63,6 @@ class _FindPasswdState extends State<FindPasswd> {
   AppBar _buildAppbar() {
     return AppBar(
       leading: BackButton(
-        color: Colors.black,
         onPressed: () {
           Navigator.pop(context);
         },

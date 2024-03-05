@@ -17,6 +17,10 @@ class DiaryRepository {
     await FirebaseFirestore.instance.collection('Memory').doc(email).collection(email).doc().set(diary.toJson());
   }
 
+  Future<void> updateDiary(String email, DiaryModel diary, String id) async {
+    await FirebaseFirestore.instance.collection('Memory').doc(email).collection(email).doc(id).set(diary.toJson());
+  }
+
   Future<void> diaryDelete(String email, String documentId, String imagePath) async {
     await FirebaseFirestore.instance.collection('Memory').doc(email).collection(email).doc(documentId).delete();
     await FirebaseStorage.instance.ref().child(email).child(imagePath).delete();

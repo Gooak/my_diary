@@ -36,8 +36,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // MobileAds.instance.initialize();
-    // GoogleFrontAd.initialize();
     return Scaffold(
       body: Column(
         children: [

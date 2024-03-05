@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_diary/Home.dart';
+import 'package:my_diary/color_schemes.g.dart';
 import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/common/openHive.dart';
 import 'package:my_diary/common/upgraderMessage.dart';
@@ -88,13 +89,13 @@ class MyApp extends StatelessWidget {
                 builder: EasyLoading.init(),
                 theme: ThemeData(
                   fontFamily: 'Nanum',
-                  colorSchemeSeed: const Color.fromRGBO(188, 0, 74, 1.0),
                   useMaterial3: true,
+                  colorSchemeSeed: const Color.fromRGBO(188, 0, 74, 1.0),
                 ),
                 darkTheme: ThemeData(
                   fontFamily: 'Nanum',
                   useMaterial3: true,
-                  colorSchemeSeed: const Color.fromRGBO(8, 32, 50, 1.0),
+                  colorScheme: darkColorScheme,
                 ),
                 themeMode: ThemeMode.system,
                 debugShowCheckedModeBanner: false,

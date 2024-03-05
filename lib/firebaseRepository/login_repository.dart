@@ -41,7 +41,7 @@ class LoginRepository {
   }
 
   //구글 로그인 함수
-  static Future<UserCredential> signInWithGoogle() async {
+  static Future<void> signInWithGoogle() async {
     showLoading();
 
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -53,8 +53,11 @@ class LoginRepository {
     );
 
     final userToken = await FirebaseMessaging.instance.getToken();
-    var data = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: googleUser?.email).get();
 
+    //여기
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    var data = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: googleUser?.email).get();
     if (data.size == 0) {
       //아이디 정보가 없으면 추가
       UserInformation user =
@@ -65,11 +68,11 @@ class LoginRepository {
       await FirebaseFirestore.instance.collection('UserInfo').doc(googleUser?.email).update({'device': userToken});
     }
     dismissLoading();
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   //비밀번호 찾기
   static Future<void> findPassword(BuildContext context, String email) async {
+    //여기
     final find = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: email).get();
     if (find.docs.isNotEmpty) {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);

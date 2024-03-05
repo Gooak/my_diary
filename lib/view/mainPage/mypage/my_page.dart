@@ -15,11 +15,19 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final day = DateTime.now().difference(userProvider.joinDate.subtract(const Duration(days: 1))).inDays;
     DateTime? currentBackPressTime;
     Size scrrenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: const Text('내 정보')),
+      appBar: AppBar(title: const Text('나')),
       body: ListView(children: [
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Text(
+            '함께하신지 ${day}일 입니다!',
+            style: const TextStyle(fontSize: 25),
+          ),
+        ),
         Container(
           width: scrrenSize.width,
           color: Theme.of(context).colorScheme.secondaryContainer,
@@ -37,7 +45,7 @@ class _MyPageState extends State<MyPage> {
                           children: [
                             Text(
                               userProvider.user!.userName!,
-                              style: const TextStyle(fontSize: 25),
+                              style: const TextStyle(fontSize: 18),
                             ),
                           ],
                         ),

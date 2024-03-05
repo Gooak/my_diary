@@ -92,16 +92,12 @@ class _MyCalendarState extends State<MyCalendar> {
             SpeedDialChild(
               child: const Text('Today'),
               onTap: () {
-                if (events[checkDate] == null) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CalendarAdd(),
-                    ),
-                  );
-                } else {
-                  showCustomSnackBar(context, '오늘 이미 작성하셨습니다!');
-                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalendarAdd(event: events[checkDate]?.first),
+                  ),
+                );
               },
             ),
             SpeedDialChild(
@@ -151,8 +147,8 @@ class _MyCalendarState extends State<MyCalendar> {
                       color: Theme.of(context).colorScheme.primaryContainer,
                       shape: BoxShape.circle,
                     ),
-                    selectedTextStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.onSecondary,
+                    selectedTextStyle: const TextStyle(
+                      color: Colors.white,
                     ),
                     todayDecoration: const BoxDecoration(
                       color: null,
@@ -322,7 +318,11 @@ class _MyCalendarState extends State<MyCalendar> {
                             duration: const Duration(milliseconds: 500),
                             style: TextStyle(
                                 decoration: todoList[index].checkTodo == true ? TextDecoration.lineThrough : null,
-                                color: todoList[index].checkTodo == true ? Colors.grey : Colors.black),
+                                color: todoList[index].checkTodo == true
+                                    ? Colors.grey
+                                    : Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.white
+                                        : Colors.black87),
                             child: Text(
                               todoList[index].todoText.toString(),
                             ),
