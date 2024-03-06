@@ -14,6 +14,10 @@ class DiaryViewModel extends ChangeNotifier {
 
   List<DiaryModel> _diaryList = [];
   List<DiaryModel> get diaryList => _diaryList;
+
+  int _diaryCount = 0;
+  int get diaryCount => _diaryCount;
+
   String? checkDate;
 
   Future<void> getDiary(String email) async {
@@ -22,6 +26,7 @@ class DiaryViewModel extends ChangeNotifier {
       return;
     }
     checkDate = DateFormat('yyyy-MM-dd').format(_diaryList.last.timestamp!.toDate());
+    _diaryCount = _diaryList.length;
     notifyListeners();
   }
 

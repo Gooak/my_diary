@@ -2,6 +2,16 @@ import 'package:hive/hive.dart';
 import 'package:my_diary/model/todo_model.dart';
 
 class HiveLocalDataSource {
+  Future<int> myTodoAllGet() async {
+    var myTodo = Hive.box<TodoModel>('myTodo').values.toList();
+    return myTodo.length;
+  }
+
+  Future<int> myTodoAllActiveGet() async {
+    var myTodo = Hive.box<TodoModel>('myTodo').values.where((todo) => todo.checkTodo == true).toList();
+    return myTodo.length;
+  }
+
   Future<List<TodoModel>> myTodoGet(String selectedDayString) async {
     var myTodo = Hive.box<TodoModel>('myTodo').values.where((todo) => todo.date == selectedDayString).toList();
     return myTodo;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:my_diary/components/snackBar.dart';
 import 'package:my_diary/model/calendar_model.dart';
 import 'package:my_diary/model/todo_model.dart';
 import 'package:my_diary/view/mainPage/calendar/calendarAdd.dart';
@@ -52,7 +51,7 @@ class _MyCalendarState extends State<MyCalendar> {
     final List<CalendarModel> eventsForDay = events[day] ?? [];
 
     if (eventsForDay.isNotEmpty) {
-      return [eventsForDay[0].weather]; // 첫 번째 이벤트의 weather를 반환
+      return [eventsForDay[0].weather];
     } else {
       return []; // 이벤트가 없는 경우 null 반환
     }
@@ -66,7 +65,7 @@ class _MyCalendarState extends State<MyCalendar> {
     final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
     firstDate = userProvider.joinDate;
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
-    calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate);
+    calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true);
     calendarProvider.myTodoGet(nowDate);
   }
 
@@ -165,7 +164,10 @@ class _MyCalendarState extends State<MyCalendar> {
                   },
                   onPageChanged: (focusedDay) async {
                     _selectedDay = focusedDay;
-                    await provider.getEventList(userProvider.user!.email!, focusedDay);
+                    await provider.getEventList(
+                      userProvider.user!.email!,
+                      focusedDay,
+                    );
                     _selectedEvents = _getEventsForDay(_selectedDay!);
                     provider.myTodoGet(_selectedDay!);
                   },
@@ -295,7 +297,6 @@ class _MyCalendarState extends State<MyCalendar> {
                       horizontal: 12.0,
                       vertical: 4.0,
                     ),
-                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 1,

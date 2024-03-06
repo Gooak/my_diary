@@ -5,11 +5,13 @@ class CalendarModel {
   String weather;
   String mood;
   Timestamp? timestamp;
+  int? calendarCount;
   CalendarModel({
     required this.date,
     required this.weather,
     required this.mood,
     required this.timestamp,
+    required this.calendarCount,
   });
   //시리얼라이즈 함수
   factory CalendarModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class CalendarModel {
       weather: json['weather'] == null ? '' : json['weather'] as String,
       mood: json['mood'] == null ? '' : json['mood'] as String,
       timestamp: json['timestamp'] == null ? null : json['timestamp'] as Timestamp,
+      calendarCount: json['calendarCount'] == null ? 0 : json['calendarCount'] as int,
     );
   }
 
@@ -27,6 +30,7 @@ class CalendarModel {
       weather: json['weather'] == null ? '' : json['weather'] as String,
       mood: json['mood'] == null ? '' : json['mood'] as String,
       timestamp: json['timestamp'] == null ? null : json['timestamp'] as Timestamp,
+      calendarCount: json['calendarCount'] == null ? 0 : json['calendarCount'] as int,
     );
   }
   Map<String, dynamic> toJson() => {
@@ -34,5 +38,6 @@ class CalendarModel {
         'weather': weather,
         'mood': mood,
         'timestamp': timestamp,
+        'calendarCount': calendarCount,
       };
 }

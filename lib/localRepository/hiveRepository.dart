@@ -5,6 +5,14 @@ import 'package:my_diary/model/todo_model.dart';
 class MyTodoForHive {
   final _dataSource = HiveLocalDataSource();
 
+  Future<int> myTodoAllGet() async {
+    return await _dataSource.myTodoAllGet();
+  }
+
+  Future<int> myTodoAllActiveGet() async {
+    return await _dataSource.myTodoAllActiveGet();
+  }
+
   Future<List<TodoModel>> myTodoGet(String selectedDayString) async {
     return await _dataSource.myTodoGet(selectedDayString);
   }

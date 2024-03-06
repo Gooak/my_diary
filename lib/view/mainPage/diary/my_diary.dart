@@ -145,59 +145,63 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                                           diaryList[index].date,
                                           style: const TextStyle(fontWeight: FontWeight.bold),
                                         ),
-                                        PopupMenuButton<int>(
-                                          child: const Icon(Icons.more_horiz),
-                                          itemBuilder: (BuildContext context) => [
-                                            const PopupMenuItem<int>(
-                                              value: 1,
-                                              child: Text('수정하기'),
-                                            ),
-                                            const PopupMenuItem<int>(
-                                              value: 2,
-                                              child: Text('삭제하기'),
+                                        Row(
+                                          children: [
+                                            PopupMenuButton<int>(
+                                              child: const Icon(Icons.more_horiz),
+                                              itemBuilder: (BuildContext context) => [
+                                                const PopupMenuItem<int>(
+                                                  value: 1,
+                                                  child: Text('수정하기'),
+                                                ),
+                                                const PopupMenuItem<int>(
+                                                  value: 2,
+                                                  child: Text('삭제하기'),
+                                                ),
+                                              ],
+                                              onSelected: (int value) {
+                                                if (value == 1) {
+                                                  dialogFunc(
+                                                    context: context,
+                                                    title: '추억카드 수정',
+                                                    text: '해당 추억카드를 수정하시겠습니까?',
+                                                    cancel: '아니오',
+                                                    enter: '예',
+                                                    cancelAction: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    enterAction: () {
+                                                      final diary = diaryList[index];
+                                                      Navigator.pop(context);
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => DiaryAdd(sort: sort, diary: diary),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  dialogFunc(
+                                                    context: context,
+                                                    title: '추억카드 삭제',
+                                                    text: '해당 추억카드를 삭제하시겠습니까?\n(복구 하실수 없습니다.)',
+                                                    cancel: '아니오',
+                                                    enter: '예',
+                                                    cancelAction: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    enterAction: () {
+                                                      final diary = diaryList[index];
+                                                      Navigator.pop(context);
+                                                      provider.diaryDelete(userProvider.user!.email!, diary.id!, diary.imagePath);
+                                                      provider.getDiary(userProvider.user!.email!);
+                                                    },
+                                                  );
+                                                }
+                                              },
                                             ),
                                           ],
-                                          onSelected: (int value) {
-                                            if (value == 1) {
-                                              dialogFunc(
-                                                context: context,
-                                                title: '추억카드 수정',
-                                                text: '해당 추억카드를 수정하시겠습니까?',
-                                                cancel: '아니오',
-                                                enter: '예',
-                                                cancelAction: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                enterAction: () {
-                                                  final diary = diaryList[index];
-                                                  Navigator.pop(context);
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => DiaryAdd(sort: sort, diary: diary),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            } else {
-                                              dialogFunc(
-                                                context: context,
-                                                title: '추억카드 삭제',
-                                                text: '해당 추억카드를 삭제하시겠습니까?\n(복구 하실수 없습니다.)',
-                                                cancel: '아니오',
-                                                enter: '예',
-                                                cancelAction: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                enterAction: () {
-                                                  final diary = diaryList[index];
-                                                  Navigator.pop(context);
-                                                  provider.diaryDelete(userProvider.user!.email!, diary.id!, diary.imagePath);
-                                                  provider.getDiary(userProvider.user!.email!);
-                                                },
-                                              );
-                                            }
-                                          },
                                         )
                                       ],
                                     ),

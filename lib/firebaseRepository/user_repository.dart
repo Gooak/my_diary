@@ -12,6 +12,15 @@ class UserRepository {
     return UserInformation.fromJson(data.docs.first.data());
   }
 
+  static Future<void> setFeedback(String email, String name, String feedback) async {
+    await _firebase.collection('Feedback').doc(DateTime.now().toString()).set({
+      'email': email,
+      'name': name,
+      'feedback': feedback,
+      'timestamp': Timestamp.now(),
+    });
+  }
+
   static Future<void> deleteUser(String email) async {
     await _firebase.collection('UserInfo').doc(email).delete();
     await _firebase.collection('Calendar').doc(email).delete();

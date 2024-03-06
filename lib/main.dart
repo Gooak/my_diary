@@ -9,6 +9,7 @@ import 'package:my_diary/Home.dart';
 import 'package:my_diary/color_schemes.g.dart';
 import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/common/openHive.dart';
+import 'package:my_diary/common/packageInfo.dart';
 import 'package:my_diary/common/upgraderMessage.dart';
 import 'package:my_diary/firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -48,7 +49,7 @@ void main() async {
       );
       await Upgrader.clearSavedSettings();
       await OpenHive.openHive();
-
+      await PackageInformation.packageInfo();
       runApp(const MyApp());
     },
     (error, stack) => FirebaseCrashlytics.instance.recordError(

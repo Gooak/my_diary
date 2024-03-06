@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_diary/components/design.dart';
 
 void dialogFunc(
     {required BuildContext context,
@@ -15,6 +16,55 @@ void dialogFunc(
       return AlertDialog(
         title: Text(title),
         content: Text(text),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: enterAction,
+            child: Text(enter),
+          ),
+          ElevatedButton(
+            onPressed: cancelAction,
+            child: Text(cancel),
+          ),
+        ],
+      );
+    }),
+  );
+}
+
+void textDialogFunc(
+    {required BuildContext context,
+    required String title,
+    required String text,
+    required String cancel,
+    required String enter,
+    required TextEditingController feedbackController,
+    required String hintText,
+    required Icon? icon,
+    required String? hintCount,
+    required double circualr,
+    required GestureTapCallback cancelAction,
+    required GestureTapCallback enterAction}) {
+  showDialog(
+    context: context,
+    barrierDismissible: true, //바깥 영역 터치시 닫을지 여부 결정
+    builder: ((context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(text),
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              controller: feedbackController,
+              maxLength: 20,
+              decoration: DesignInputDecoration(hintText: hintText, icon: icon, circular: circualr, hintCount: hintCount).inputDecoration,
+            ),
+          ],
+        ),
         actions: <Widget>[
           ElevatedButton(
             onPressed: enterAction,

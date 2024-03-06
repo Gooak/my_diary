@@ -21,20 +21,36 @@ class CalendarViewModel extends ChangeNotifier {
   List<TodoModel> _todoList = [];
   List<TodoModel> get todoList => _todoList;
 
-  Future<void> getEventList(String email, DateTime date) async {
+  //실천한 투두
+  int _calendarCount = 0;
+  int get calendarCount => _calendarCount;
+
+  //실천한 투두
+  int _activeTodoCount = 0;
+  int get activeTodoCount => _activeTodoCount;
+
+  //총 투두
+  int _todoCount = 0;
+  int get todoCount => _todoCount;
+
+  Future<void> getEventList(String email, DateTime date, {bool countCheck = false}) async {
     String nowDateString = DateFormat('yyyy-MM').format(date);
     var eventGet = await calendarRepository.getEvents(email, nowDateString);
-    for (int i = 0; i < eventGet.docs.length; i++) {
+    int i = 0;
+    for (i; i < eventGet.docs.length; i++) {
       List date = eventGet.docs[i]['date'].toString().split('-');
       List<CalendarModel> text = [];
 
       text.add(CalendarModel(
-        date: eventGet.docs[i]['date'],
-        weather: eventGet.docs[i]['weather'],
-        mood: eventGet.docs[i]['mood'],
-        timestamp: eventGet.docs[i]['timestamp']!,
-      ));
+          date: eventGet.docs[i]['date'],
+          weather: eventGet.docs[i]['weather'],
+          mood: eventGet.docs[i]['mood'],
+          timestamp: eventGet.docs[i]['timestamp']!,
+          calendarCount: eventGet.docs[i]['calendarCount']!));
       events[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = text;
+    }
+    if (countCheck == true) {
+      _calendarCount = eventGet.docs[eventGet.docs.length - 1]['calendarCount'];
     }
     notifyListeners();
   }
@@ -48,6 +64,18 @@ class CalendarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //투두리스트 모든 투두 리스트
+  Future<void> myTodoAllGet() async {
+    _todoCount = await hiveRepository.myTodoAllGet();
+    notifyListeners();
+  }
+
+  //투두리스트 모든 투두 리스트
+  Future<void> myTodoAllActiveGet() async {
+    _activeTodoCount = await hiveRepository.myTodoAllActiveGet();
+    notifyListeners();
+  }
+
   //투두리스트
   Future<void> myTodoGet(DateTime selectedDay) async {
     String selectedDayString = DateFormat('yyyy-MM-dd').format(selectedDay);
@@ -58,6 +86,7 @@ class CalendarViewModel extends ChangeNotifier {
   //투두적는거
   Future<void> myTodoSet(List<TodoModel> addTodoList) async {
     await hiveRepository.myTodoSet(addTodoList);
+    await myTodoAllGet();
     notifyListeners();
   }
 

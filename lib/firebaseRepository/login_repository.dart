@@ -55,7 +55,6 @@ class LoginRepository {
     final userToken = await FirebaseMessaging.instance.getToken();
 
     //여기
-    await FirebaseAuth.instance.signInWithCredential(credential);
 
     var data = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: googleUser?.email).get();
     if (data.size == 0) {
@@ -67,6 +66,7 @@ class LoginRepository {
       final userToken = await FirebaseMessaging.instance.getToken();
       await FirebaseFirestore.instance.collection('UserInfo').doc(googleUser?.email).update({'device': userToken});
     }
+    await FirebaseAuth.instance.signInWithCredential(credential);
     dismissLoading();
   }
 

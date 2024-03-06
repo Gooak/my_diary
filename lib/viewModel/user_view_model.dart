@@ -22,7 +22,8 @@ class UserProvider extends ChangeNotifier {
     } else {
       _user = await UserRepository.loginUser(email);
       if (_user != null) {
-        joinDate = _user!.joinDate!.toDate();
+        DateTime myDate = _user!.joinDate!.toDate();
+        joinDate = DateTime(myDate.year, myDate.month, myDate.day);
       }
       notifyListeners();
     }

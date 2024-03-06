@@ -85,8 +85,15 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
             await GoogleFrontAd.initialize();
             final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
             await calendarProvider.setEvent(
-                userProvider.user!.email!, date, CalendarModel(date: date, weather: weather, mood: textController.text, timestamp: Timestamp.now()));
-            await calendarProvider.getEventList(userProvider.user!.email!, nowDate);
+                userProvider.user!.email!,
+                date,
+                CalendarModel(
+                    date: date,
+                    weather: weather,
+                    mood: textController.text,
+                    timestamp: Timestamp.now(),
+                    calendarCount: widget.event == null ? calendarProvider.calendarCount + 1 : widget.event!.calendarCount!));
+            await calendarProvider.getEventList(userProvider.user!.email!, nowDate, countCheck: true);
             if (context.mounted) {
               Navigator.pop(context);
               GoogleFrontAd.loadInterstitialAd();

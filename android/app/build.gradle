@@ -76,4 +76,5 @@ dependencies {
     // implementation 'com.google.mlkit:text-recognition-korean:16.0.0-beta6'
 }
 
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics' //파이어베이스 크래시 추가
