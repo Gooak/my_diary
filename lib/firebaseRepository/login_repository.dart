@@ -9,6 +9,7 @@ import 'package:my_diary/model/user_model.dart';
 
 class LoginRepository {
   //로그인 함수
+
   static Future<void> submit(BuildContext context, String email, String passwd) async {
     showLoading();
     final singUp = FirebaseAuth.instance;
@@ -87,15 +88,28 @@ class LoginRepository {
   }
 
   //일반 회원가입
-  static Future<void> signUp(String? name, String? email, String? passwd) async {
+  static Future<void> signUp(BuildContext context, String? name, String? email, String? passwd) async {
     showLoading();
 
     final userToken = await FirebaseMessaging.instance.getToken();
 
     UserInformation user = UserInformation(userName: name, email: email, device: userToken.toString(), joinDate: Timestamp.now());
-    await FirebaseFirestore.instance.collection('UserInfo').doc(user.email).set(user.toJson());
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email!, password: passwd!);
-    FirebaseAuth.instance.currentUser!.sendEmailVerification();
+    try {
+      var joinUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email!, password: passwd!);
+
+      await FirebaseFirestore.instance.collection('UserInfo').doc(user.email).set(user.toJson());
+      joinUser.user!.sendEmailVerification();
+    } on FirebaseAuthException catch (e) {
+      // 예외 처리: 이미 다른 계정에서 사용 중인 이메일인 경우
+      if (e.code == 'email-already-in-use') {
+        if (context.mounted) {
+          showCustomSnackBar(context, '이미 존재하는 계정입니다.');
+        }
+        dismissLoading();
+        return;
+      }
+    }
+
     dismissLoading();
   }
 }

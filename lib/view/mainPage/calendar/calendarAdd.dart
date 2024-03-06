@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_diary/common/googleAd.dart';
@@ -148,7 +149,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                                 weather = weatherList[index]["weatherId"].toString();
                                 setState(() {});
                               },
-                              child: Image.asset(
+                              child: ExtendedImage.asset(
                                 weatherList[index]["weather"].toString(),
                                 width: size.width / 5,
                               ),

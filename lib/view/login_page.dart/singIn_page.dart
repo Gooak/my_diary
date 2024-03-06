@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_diary/components/design.dart';
@@ -35,6 +36,13 @@ class _SigninPageState extends State<SigninPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              ExtendedImage.asset(
+                'images/app_logo.png',
+                width: size.width / 3,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               SizedBox(
                 width: size.width - 50,
                 child: TextField(

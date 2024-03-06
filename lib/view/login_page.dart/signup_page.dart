@@ -122,7 +122,7 @@ class _SignupPageState extends State<SignupPage> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
-                          await LoginRepository.signUp(textName.text.trim(), textEmail.text.trim(), textPasswd.text.trim());
+                          await LoginRepository.signUp(context, textName.text.trim(), textEmail.text.trim(), textPasswd.text.trim());
                           if (context.mounted) {
                             Navigator.pop(context);
                           }

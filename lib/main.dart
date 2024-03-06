@@ -103,6 +103,7 @@ class MyApp extends StatelessWidget {
                 home: userSnapshot.hasData
                     ? Consumer<UserProvider>(
                         builder: (context, provider, child) {
+                          print(userSnapshot.hasData);
                           if (provider.user == null || provider.user!.email == null) {
                             return const Scaffold(
                               body: Center(

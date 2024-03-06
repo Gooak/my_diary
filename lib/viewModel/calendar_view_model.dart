@@ -49,7 +49,7 @@ class CalendarViewModel extends ChangeNotifier {
           calendarCount: eventGet.docs[i]['calendarCount']!));
       events[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = text;
     }
-    if (countCheck == true) {
+    if (countCheck == true && eventGet.docs.isNotEmpty) {
       _calendarCount = eventGet.docs[eventGet.docs.length - 1]['calendarCount'];
     }
     notifyListeners();
