@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBKkMnFX2Vc2XvGnixswsaMPlaUdn5nkME',
-    appId: '1:125557249109:android:15a047483ac0b967eb70dc',
+    appId: '1:125557249109:android:cd1859cbf81d35baeb70dc',
     messagingSenderId: '125557249109',
     projectId: 'mydiary-ddcf6',
     storageBucket: 'mydiary-ddcf6.appspot.com',
@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '125557249109',
     projectId: 'mydiary-ddcf6',
     storageBucket: 'mydiary-ddcf6.appspot.com',
+    androidClientId: '125557249109-4th55d9pqljv66gs6ao90t3argps2ar5.apps.googleusercontent.com',
     iosClientId: '125557249109-6sl9tjaqboi95j5r3p01ou1om3b1ufj6.apps.googleusercontent.com',
     iosBundleId: 'com.myDiary',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '125557249109',
     projectId: 'mydiary-ddcf6',
     storageBucket: 'mydiary-ddcf6.appspot.com',
+    androidClientId: '125557249109-4th55d9pqljv66gs6ao90t3argps2ar5.apps.googleusercontent.com',
     iosClientId: '125557249109-bd52ui0r5kc9292umnlq4b95a0tkaem2.apps.googleusercontent.com',
     iosBundleId: 'com.myDiary.RunnerTests',
   );

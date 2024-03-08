@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:my_diary/model/diary_model.dart';
+import 'package:my_little_memory_diary/model/diary_model.dart';
 
 class DiaryRepository {
   Future<List<DiaryModel>> getDiary(String email) async {

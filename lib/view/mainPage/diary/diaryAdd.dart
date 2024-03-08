@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_diary/common/googleAd.dart';
-import 'package:my_diary/common/googleFrontAd.dart';
-import 'package:my_diary/components/design.dart';
-import 'package:my_diary/components/snackBar.dart';
-import 'package:my_diary/model/diary_model.dart';
-import 'package:my_diary/viewModel/diary_view_model.dart';
-import 'package:my_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/common/googleAd.dart';
+import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/design.dart';
+import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/model/diary_model.dart';
+import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
+import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +90,7 @@ class _DiaryAddState extends State<DiaryAdd> {
                 showCustomSnackBar(context, '이미지를 선택해주세요');
               } else {
                 FocusScope.of(context).unfocus();
-                await GoogleFrontAd.initialize();
+                // await GoogleFrontAd.initialize();
                 if (widget.diary == null) {
                   await diaryProvider.setDiary(
                     DateFormat('yyyy-MM-dd HH:mm').format(date),
@@ -113,7 +113,7 @@ class _DiaryAddState extends State<DiaryAdd> {
                 }
                 if (context.mounted) {
                   Navigator.pop(context);
-                  GoogleFrontAd.loadInterstitialAd();
+                  // GoogleFrontAd.loadInterstitialAd();
                 }
               }
             }
@@ -213,7 +213,7 @@ class _DiaryAddState extends State<DiaryAdd> {
               const SizedBox(
                 height: 10,
               ),
-              const GoogleAd(),
+              // const GoogleAd(),
             ],
           ),
         ),

@@ -1,13 +1,13 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:my_diary/components/design.dart';
-import 'package:my_diary/components/dialog.dart';
-import 'package:my_diary/model/diary_model.dart';
-import 'package:my_diary/view/mainPage/diary/diaryAdd.dart';
-import 'package:my_diary/view/mainPage/diary/diaryPhotoView.dart';
-import 'package:my_diary/viewModel/diary_view_model.dart';
-import 'package:my_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/components/design.dart';
+import 'package:my_little_memory_diary/components/dialog.dart';
+import 'package:my_little_memory_diary/model/diary_model.dart';
+import 'package:my_little_memory_diary/view/mainPage/diary/diaryAdd.dart';
+import 'package:my_little_memory_diary/view/mainPage/diary/diaryPhotoView.dart';
+import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
+import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 

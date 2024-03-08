@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:my_diary/common/googleAd.dart';
-import 'package:my_diary/common/googleFrontAd.dart';
-import 'package:my_diary/components/design.dart';
-import 'package:my_diary/components/snackBar.dart';
-import 'package:my_diary/model/todo_model.dart';
-import 'package:my_diary/viewModel/calendar_view_model.dart';
+import 'package:my_little_memory_diary/common/googleAd.dart';
+import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/design.dart';
+import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/model/todo_model.dart';
+import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -49,7 +49,7 @@ class _TodoListAddState extends State<TodoListAdd> {
           if (addTodoList.isEmpty && deleteTodoList.isEmpty) {
             showCustomSnackBar(context, '투두리스트를 작성해주세요!');
           } else {
-            await GoogleFrontAd.initialize();
+            // await GoogleFrontAd.initialize();
             if (addTodoList.isNotEmpty) {
               await calendarProvider.myTodoSet(addTodoList);
               calendarProvider.todoList.clear();
@@ -63,7 +63,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                 date = null;
               }
               Navigator.of(context).pop(date);
-              GoogleFrontAd.loadInterstitialAd();
+              // GoogleFrontAd.loadInterstitialAd();
             }
           }
         },
@@ -243,7 +243,7 @@ class _TodoListAddState extends State<TodoListAdd> {
               const SizedBox(
                 height: 10,
               ),
-              const GoogleAd(),
+              // const GoogleAd(),
             ],
           ),
         ),

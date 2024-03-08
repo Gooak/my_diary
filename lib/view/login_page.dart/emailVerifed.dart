@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_diary/components/loading.dart';
+import 'package:my_little_memory_diary/components/loading.dart';
 
 class EmailVerified extends StatelessWidget {
   const EmailVerified({super.key});

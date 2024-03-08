@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_diary/localRepository/hiveRepository.dart';
-import 'package:my_diary/model/calendar_model.dart';
-import 'package:my_diary/firebaseRepository/calendar_repository.dart';
-import 'package:my_diary/model/todo_model.dart';
+import 'package:my_little_memory_diary/localRepository/hiveRepository.dart';
+import 'package:my_little_memory_diary/model/calendar_model.dart';
+import 'package:my_little_memory_diary/firebaseRepository/calendar_repository.dart';
+import 'package:my_little_memory_diary/model/todo_model.dart';
 
 class CalendarViewModel extends ChangeNotifier {
   final calendarRepository = CalendarRepository();
@@ -14,6 +14,7 @@ class CalendarViewModel extends ChangeNotifier {
   Map<DateTime, List<CalendarModel>> get events => _events;
 
   //모아보기 리스트
+
   List<CalendarModel> _eventList = [];
   List<CalendarModel> get eventList => _eventList;
 

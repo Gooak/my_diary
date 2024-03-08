@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:my_diary/common/googleAd.dart';
-import 'package:my_diary/common/googleFrontAd.dart';
-import 'package:my_diary/components/snackBar.dart';
-import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
-import 'package:my_diary/view/mainPage/diary/my_diary.dart';
-import 'package:my_diary/view/mainPage/mypage/my_page.dart';
+import 'package:my_little_memory_diary/common/googleAd.dart';
+import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/view/mainPage/calendar/my_calendar.dart';
+import 'package:my_little_memory_diary/view/mainPage/diary/my_diary.dart';
+import 'package:my_little_memory_diary/view/mainPage/mypage/my_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_diary/components/design.dart';
+import 'package:my_little_memory_diary/components/design.dart';
 
 void dialogFunc(
     {required BuildContext context,

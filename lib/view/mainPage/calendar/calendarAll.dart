@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_diary/model/calendar_model.dart';
-import 'package:my_diary/viewModel/calendar_view_model.dart';
-import 'package:my_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/model/calendar_model.dart';
+import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
+import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 
 class CalendarAll extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_diary/model/calendar_model.dart';
+import 'package:my_little_memory_diary/model/calendar_model.dart';
 
 class CalendarRepository {
   Future<QuerySnapshot> getEvents(String email, String date) async {

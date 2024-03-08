@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:my_diary/common/googleAd.dart';
-import 'package:my_diary/common/googleFrontAd.dart';
-import 'package:my_diary/components/design.dart';
-import 'package:my_diary/components/snackBar.dart';
-import 'package:my_diary/model/calendar_model.dart';
-import 'package:my_diary/viewModel/calendar_view_model.dart';
-import 'package:my_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/common/googleAd.dart';
+import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/design.dart';
+import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/model/calendar_model.dart';
+import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
+import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -83,7 +83,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
             showCustomSnackBar(context, '날씨를 선택해주세요');
             return;
           } else if (_formKey.currentState!.validate()) {
-            await GoogleFrontAd.initialize();
+            // await GoogleFrontAd.initialize();
             final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
             await calendarProvider.setEvent(
                 userProvider.user!.email!,
@@ -97,7 +97,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
             await calendarProvider.getEventList(userProvider.user!.email!, nowDate, countCheck: true);
             if (context.mounted) {
               Navigator.pop(context);
-              GoogleFrontAd.loadInterstitialAd();
+              // GoogleFrontAd.loadInterstitialAd();
             }
           } else {
             showCustomSnackBar(context, '오늘 기분을 적어주세요');
@@ -198,7 +198,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                 const SizedBox(
                   height: 10,
                 ),
-                const GoogleAd(),
+                // const GoogleAd(),
               ],
             ),
           ),

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:125557249109:android:15a047483ac0b967eb70dc",
+        "mobilesdk_app_id": "1:125557249109:android:cd1859cbf81d35baeb70dc",
         "android_client_info": {
-          "package_name": "com.my_diary"
+          "package_name": "com.my_little_memory_diary"
         }
       },
       "oauth_client": [
@@ -29,6 +29,13 @@
             {
               "client_id": "125557249109-dd6q8aetpt961oettsad4lbmun4fmq8s.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "125557249109-6sl9tjaqboi95j5r3p01ou1om3b1ufj6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myDiary"
+              }
             }
           ]
         }

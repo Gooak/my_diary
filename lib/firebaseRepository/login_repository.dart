@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:my_diary/components/loading.dart';
-import 'package:my_diary/components/snackBar.dart';
-import 'package:my_diary/model/user_model.dart';
+import 'package:my_little_memory_diary/components/loading.dart';
+import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/model/user_model.dart';
 
 class LoginRepository {
   //로그인 함수
