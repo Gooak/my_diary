@@ -9,7 +9,6 @@ import 'package:my_diary/model/user_model.dart';
 
 class LoginRepository {
   //로그인 함수
-
   static Future<void> submit(BuildContext context, String email, String passwd) async {
     showLoading();
     final singUp = FirebaseAuth.instance;
@@ -18,7 +17,14 @@ class LoginRepository {
       showCustomSnackBar(context, '이메일 주소, 비밀번호를 입력해주세요');
     } else {
       try {
-        await singUp.signInWithEmailAndPassword(email: email, password: passwd);
+        final user = await singUp.signInWithEmailAndPassword(email: email, password: passwd);
+        if (user.user!.emailVerified == false) {
+          if (context.mounted) {
+            showCustomSnackBar(context, '이메일을 인증해주세요.');
+          }
+          dismissLoading();
+          return;
+        }
         final userToken = await FirebaseMessaging.instance.getToken();
         await FirebaseFirestore.instance.collection('UserInfo').doc(email).update({'device': userToken});
       } on FirebaseAuthException catch (e) {
@@ -34,6 +40,10 @@ class LoginRepository {
         } else if (e.code == 'invalid-email') {
           if (context.mounted) {
             showCustomSnackBar(context, '잘못된 이메일 형식입니다!');
+          }
+        } else {
+          if (context.mounted) {
+            showCustomSnackBar(context, '이메일 및 비밀번호를 다시 확인해주세요.');
           }
         }
       }
@@ -96,11 +106,12 @@ class LoginRepository {
     UserInformation user = UserInformation(userName: name, email: email, device: userToken.toString(), joinDate: Timestamp.now());
     try {
       var joinUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email!, password: passwd!);
-
       await FirebaseFirestore.instance.collection('UserInfo').doc(user.email).set(user.toJson());
       joinUser.user!.sendEmailVerification();
+      if (context.mounted) {
+        showCustomSnackBar(context, '이메일 인증 후 로그인 가능합니다.');
+      }
     } on FirebaseAuthException catch (e) {
-      // 예외 처리: 이미 다른 계정에서 사용 중인 이메일인 경우
       if (e.code == 'email-already-in-use') {
         if (context.mounted) {
           showCustomSnackBar(context, '이미 존재하는 계정입니다.');

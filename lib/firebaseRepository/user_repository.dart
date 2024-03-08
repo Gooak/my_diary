@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:my_diary/data/localDataSource.dart';
 import 'package:my_diary/model/user_model.dart';
 
 //로그인시 유저 정보가져오는 Repository
@@ -21,11 +22,28 @@ class UserRepository {
     });
   }
 
+  static Future<void> deleteAccountReason(String email, String name, String text) async {
+    await _firebase.collection('DeleteAccount').doc(DateTime.now().toString()).set({
+      'email': email,
+      'name': name,
+      'deleteAccount': text,
+      'timestamp': Timestamp.now(),
+    });
+  }
+
   static Future<void> deleteUser(String email) async {
     await _firebase.collection('UserInfo').doc(email).delete();
+    var calendar = await _firebase.collection('Calendar').doc(email).collection(email).get();
+    for (var calendar in calendar.docs) {
+      calendar.reference.delete();
+    }
+    var memory = await _firebase.collection('Memory').doc(email).collection(email).get();
+    for (var memory in memory.docs) {
+      memory.reference.delete();
+    }
     await _firebase.collection('Calendar').doc(email).delete();
     await _firebase.collection('Memory').doc(email).delete();
-    await FirebaseAuth.instance.currentUser?.delete();
+    await HiveLocalDataSource().myTodoAllDelete();
     try {
       final storage = FirebaseStorage.instance;
       final ref = storage.ref().child(email);
@@ -34,5 +52,10 @@ class UserRepository {
         await item.delete();
       }
     } catch (e) {}
+    try {
+      await FirebaseAuth.instance.currentUser?.delete();
+    } catch (e) {
+      await FirebaseAuth.instance.signOut();
+    }
   }
 }

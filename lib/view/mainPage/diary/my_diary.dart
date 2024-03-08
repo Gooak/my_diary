@@ -28,10 +28,6 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final diaryProvider = Provider.of<DiaryViewModel>(context, listen: false);
-    diaryProvider.getDiary(userProvider.user!.email!);
   }
 
   @override
@@ -41,6 +37,14 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final diaryProvider = Provider.of<DiaryViewModel>(context, listen: false);
+    diaryProvider.getDiary(userProvider.user!.email!);
   }
 
   @override

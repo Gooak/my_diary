@@ -10,7 +10,7 @@ class CalendarViewModel extends ChangeNotifier {
   MyTodoForHive hiveRepository = MyTodoForHive();
 
   //캘린더 메인 화면 맵리스트
-  final Map<DateTime, List<CalendarModel>> _events = {};
+  Map<DateTime, List<CalendarModel>> _events = {};
   Map<DateTime, List<CalendarModel>> get events => _events;
 
   //모아보기 리스트
@@ -33,7 +33,11 @@ class CalendarViewModel extends ChangeNotifier {
   int _todoCount = 0;
   int get todoCount => _todoCount;
 
-  Future<void> getEventList(String email, DateTime date, {bool countCheck = false}) async {
+  Future<void> getEventList(String email, DateTime date, {bool countCheck = false, bool firstFun = false}) async {
+    if (firstFun == true) {
+      _events.clear();
+      _calendarCount = 0;
+    }
     String nowDateString = DateFormat('yyyy-MM').format(date);
     var eventGet = await calendarRepository.getEvents(email, nowDateString);
     int i = 0;
@@ -47,7 +51,7 @@ class CalendarViewModel extends ChangeNotifier {
           mood: eventGet.docs[i]['mood'],
           timestamp: eventGet.docs[i]['timestamp']!,
           calendarCount: eventGet.docs[i]['calendarCount']!));
-      events[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = text;
+      _events[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = text;
     }
     if (countCheck == true && eventGet.docs.isNotEmpty) {
       _calendarCount = eventGet.docs[eventGet.docs.length - 1]['calendarCount'];

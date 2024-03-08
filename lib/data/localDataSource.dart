@@ -49,4 +49,12 @@ class HiveLocalDataSource {
       box.delete(todo.id);
     }
   }
+
+  Future<void> myTodoAllDelete() async {
+    var myTodo = Hive.box<TodoModel>('myTodo').values.toList();
+    final box = await Hive.openBox<TodoModel>('myTodo');
+    for (var todo in myTodo) {
+      box.delete(todo.id);
+    }
+  }
 }

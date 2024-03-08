@@ -239,7 +239,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                     }
                   },
                 ),
-              const Text('※ 개인 핸드폰에 저장이 됩니다.'),
+              const Text('※ 개인 핸드폰에 저장이 되며 앱 데이터 삭제시 같이 지워집니다.'),
               const SizedBox(
                 height: 10,
               ),

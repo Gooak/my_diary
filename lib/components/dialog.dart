@@ -21,10 +21,11 @@ void dialogFunc(
             onPressed: enterAction,
             child: Text(enter),
           ),
-          ElevatedButton(
-            onPressed: cancelAction,
-            child: Text(cancel),
-          ),
+          if (cancel != '')
+            ElevatedButton(
+              onPressed: cancelAction,
+              child: Text(cancel),
+            ),
         ],
       );
     }),
@@ -42,6 +43,7 @@ void textDialogFunc(
     required Icon? icon,
     required String? hintCount,
     required double circualr,
+    required int maxLength,
     required GestureTapCallback cancelAction,
     required GestureTapCallback enterAction}) {
   showDialog(
@@ -60,7 +62,7 @@ void textDialogFunc(
             ),
             TextField(
               controller: feedbackController,
-              maxLength: 20,
+              maxLength: maxLength,
               decoration: DesignInputDecoration(hintText: hintText, icon: icon, circular: circualr, hintCount: hintCount).inputDecoration,
             ),
           ],

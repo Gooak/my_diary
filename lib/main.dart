@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_diary/Home.dart';
 import 'package:my_diary/color_schemes.g.dart';
-import 'package:my_diary/common/googleFrontAd.dart';
 import 'package:my_diary/common/openHive.dart';
 import 'package:my_diary/common/packageInfo.dart';
 import 'package:my_diary/common/upgraderMessage.dart';
 import 'package:my_diary/firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:my_diary/view/login_page.dart/emailVerifed.dart';
 import 'package:my_diary/view/login_page.dart/singIn_page.dart';
 import 'package:my_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_diary/view/mainPage/diary/my_diary.dart';
@@ -73,16 +73,13 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, AsyncSnapshot<User?> userSnapshot) {
           if (userSnapshot.connectionState == ConnectionState.waiting) {
-            // 인증 상태 변경을 기다립니다.
             return const CircularProgressIndicator();
           } else {
             final email = userSnapshot.data?.email;
             return MultiProvider(
               providers: [
                 // ChangeNotifierProvider<UserProvider>(create: (context) => UserProvider(email.toString())),
-                ChangeNotifierProvider.value(
-                  value: UserProvider(email.toString()),
-                ),
+                ChangeNotifierProvider.value(value: UserProvider(email.toString())),
                 ChangeNotifierProvider<CalendarViewModel>(create: (context) => CalendarViewModel()),
                 ChangeNotifierProvider<DiaryViewModel>(create: (context) => DiaryViewModel()),
               ],
@@ -103,7 +100,6 @@ class MyApp extends StatelessWidget {
                 home: userSnapshot.hasData
                     ? Consumer<UserProvider>(
                         builder: (context, provider, child) {
-                          print(userSnapshot.hasData);
                           if (provider.user == null || provider.user!.email == null) {
                             return const Scaffold(
                               body: Center(
@@ -111,7 +107,7 @@ class MyApp extends StatelessWidget {
                               ),
                             );
                           } else {
-                            return const Home();
+                            return userSnapshot.data!.emailVerified == false ? const EmailVerified() : const Home();
                           }
                         },
                       )

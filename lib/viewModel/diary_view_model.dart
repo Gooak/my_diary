@@ -23,6 +23,8 @@ class DiaryViewModel extends ChangeNotifier {
   Future<void> getDiary(String email) async {
     _diaryList = await diaryRepository.getDiary(email);
     if (_diaryList.isEmpty) {
+      _diaryCount = 0;
+      notifyListeners();
       return;
     }
     checkDate = DateFormat('yyyy-MM-dd').format(_diaryList.last.timestamp!.toDate());

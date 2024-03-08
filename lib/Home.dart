@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
             Expanded(
               child: IndexedStack(index: selectedItem, children: pages),
             ),
-            const GoogleAd(),
+            // const GoogleAd(),
           ],
         ),
         bottomNavigationBar: NavigationBar(

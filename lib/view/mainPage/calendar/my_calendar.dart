@@ -60,18 +60,23 @@ class _MyCalendarState extends State<MyCalendar> {
   @override
   void initState() {
     super.initState();
-    checkDate = DateTime.utc(nowDate.year, nowDate.month, nowDate.day);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
-    firstDate = userProvider.joinDate;
-    _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
-    calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true);
-    calendarProvider.myTodoGet(nowDate);
+    Provider.of<CalendarViewModel>(context, listen: false).myTodoGet(nowDate);
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    checkDate = DateTime.utc(nowDate.year, nowDate.month, nowDate.day);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
+    firstDate = userProvider.joinDate;
+    _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
+    calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true, firstFun: true);
   }
 
   @override
@@ -287,53 +292,63 @@ class _MyCalendarState extends State<MyCalendar> {
                   );
                 },
               ),
-              ListView.builder(
-                itemCount: todoList.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 4.0,
+              if (todoList.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
+                      child: Text('투두리스트'),
                     ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: Theme.of(context).colorScheme.primaryContainer,
-                      ),
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                          value: todoList[index].checkTodo,
-                          onChanged: (value) {
-                            provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
-                            setState(() {});
-                          },
-                        ),
-                        Expanded(
-                          child: AnimatedDefaultTextStyle(
-                            duration: const Duration(milliseconds: 500),
-                            style: TextStyle(
-                                decoration: todoList[index].checkTodo == true ? TextDecoration.lineThrough : null,
-                                color: todoList[index].checkTodo == true
-                                    ? Colors.grey
-                                    : Theme.of(context).brightness == Brightness.dark
-                                        ? Colors.white
-                                        : Colors.black87),
-                            child: Text(
-                              todoList[index].todoText.toString(),
-                            ),
+                    ListView.builder(
+                      itemCount: todoList.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12.0,
+                            vertical: 4.0,
                           ),
-                        ),
-                      ],
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                value: todoList[index].checkTodo,
+                                onChanged: (value) {
+                                  provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
+                                  setState(() {});
+                                },
+                              ),
+                              Expanded(
+                                child: AnimatedDefaultTextStyle(
+                                  duration: const Duration(milliseconds: 500),
+                                  style: TextStyle(
+                                      decoration: todoList[index].checkTodo == true ? TextDecoration.lineThrough : null,
+                                      color: todoList[index].checkTodo == true
+                                          ? Colors.grey
+                                          : Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.white
+                                              : Colors.black87),
+                                  child: Text(
+                                    todoList[index].todoText.toString(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
+                  ],
+                ),
               const SizedBox(
                 height: 80,
               ),

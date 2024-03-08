@@ -27,18 +27,21 @@ class _MyPageState extends State<MyPage> {
 
   DateTime? currentBackPressTime;
 
-  TextEditingController feedbackConrtoller = TextEditingController();
+  late int day;
+
+  TextEditingController textController = TextEditingController();
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     final diaryProvider = Provider.of<DiaryViewModel>(context, listen: true);
     final calendarProvider = Provider.of<CalendarViewModel>(context, listen: true);
-    final day = DateTime.now().difference(userProvider.joinDate.subtract(const Duration(days: 1))).inDays;
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    day = DateTime.now().difference(userProvider.joinDate.subtract(const Duration(days: 1))).inDays;
 
     calendarProvider.myTodoAllGet();
     calendarProvider.myTodoAllActiveGet();
@@ -47,7 +50,11 @@ class _MyPageState extends State<MyPage> {
     calendarCount = calendarProvider.calendarCount;
     todoCount = calendarProvider.todoCount;
     activeTodoCount = calendarProvider.activeTodoCount;
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     Size scrrenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(title: const Text('나')),
@@ -269,19 +276,20 @@ class _MyPageState extends State<MyPage> {
                 text: '여러분들의 의견을 보내주세요',
                 cancel: '취소',
                 enter: '보내기',
-                feedbackController: feedbackConrtoller,
+                feedbackController: textController,
                 hintText: '촤대 30글자',
                 icon: null,
                 hintCount: null,
+                maxLength: 30,
                 circualr: 5,
                 cancelAction: () {
                   if (mounted) {
                     Navigator.pop(context);
                   }
-                  feedbackConrtoller.text = '';
+                  textController.text = '';
                 },
                 enterAction: () async {
-                  if (feedbackConrtoller.text.trim() == '') {
+                  if (textController.text.trim() == '') {
                     showCustomSnackBar(context, '의견을 적어주세요!');
                     return;
                   }
@@ -289,9 +297,91 @@ class _MyPageState extends State<MyPage> {
                     Navigator.pop(context);
                     showCustomSnackBar(context, '보내주셔서 감사합니다.');
                   }
-                  await UserRepository.setFeedback(userProvider.user!.email!, userProvider.user!.userName!, feedbackConrtoller.text);
-                  feedbackConrtoller.text = '';
+                  await UserRepository.setFeedback(userProvider.user!.email!, userProvider.user!.userName!, textController.text);
+                  textController.text = '';
                 },
+              );
+            },
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(15),
+            child: Text('도움말'),
+          ),
+          InkWell(
+            child: Container(
+              height: 60,
+              width: scrrenSize.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Theme.of(context).colorScheme.secondaryContainer,
+              ),
+              padding: const EdgeInsets.all(15),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '개인정보처리방침',
+                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '>',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            onTap: () async {
+              await launchUrl(
+                Uri.parse('https://sites.google.com/view/gooakcompany--privacy-policy/%ED%99%88'),
+                mode: LaunchMode.externalNonBrowserApplication,
+              );
+            },
+          ),
+          const SizedBox(
+            height: 1,
+          ),
+          InkWell(
+            child: Container(
+              height: 60,
+              width: scrrenSize.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Theme.of(context).colorScheme.secondaryContainer,
+              ),
+              padding: const EdgeInsets.all(15),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '이용약관',
+                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '>',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+            ),
+            onTap: () async {
+              await launchUrl(
+                Uri.parse('https://sites.google.com/view/gooak-company-terms-of-service/%ED%99%88'),
+                mode: LaunchMode.externalNonBrowserApplication,
               );
             },
           ),
@@ -338,16 +428,60 @@ class _MyPageState extends State<MyPage> {
                 showCustomSnackBar(context, '한번 더 누르면 로그아웃 됩니다.');
                 return;
               }
-              userProvider.logOut();
-              FirebaseAuth.instance.signOut();
+              await userProvider.logOut();
+              await FirebaseAuth.instance.signOut();
             },
           ),
           const SizedBox(
             height: 30,
           ),
-          Text(
-            'ver ${PackageInformation.packageVesion}',
-            textAlign: TextAlign.end,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                  onPressed: () async {
+                    textDialogFunc(
+                      context: context,
+                      title: '회원탈퇴',
+                      text: '탈퇴 사유를 적어주세요',
+                      cancel: '취소',
+                      enter: '탈퇴하기',
+                      feedbackController: textController,
+                      hintText: '촤대 30글자',
+                      icon: null,
+                      hintCount: null,
+                      maxLength: 30,
+                      circualr: 5,
+                      cancelAction: () {
+                        if (mounted) {
+                          Navigator.pop(context);
+                        }
+                        textController.text = '';
+                      },
+                      enterAction: () async {
+                        if (textController.text.trim() == '') {
+                          showCustomSnackBar(context, '의견을 적어주세요!');
+                          return;
+                        }
+                        if (mounted) {
+                          Navigator.pop(context);
+                          showCustomSnackBar(context, '그동안 나의 작은 추억 일기를 이용해주셔서 감사합니다.');
+                        }
+                        await UserRepository.deleteAccountReason(userProvider.user!.email!, userProvider.user!.userName!, textController.text);
+                        await UserRepository.deleteUser(userProvider.user!.email!);
+                        textController.text = '';
+                      },
+                    );
+                  },
+                  child: const Text('회원탈퇴')),
+              Text(
+                'ver ${PackageInformation.packageVesion}',
+                textAlign: TextAlign.end,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
           ),
           // const SizedBox(
           //   height: 1,
