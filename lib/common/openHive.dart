@@ -7,5 +7,6 @@ class OpenHive {
     await Hive.initFlutter();
     Hive.registerAdapter(TodoModelAdapter());
     await Hive.openBox<TodoModel>('myTodo');
+    await Hive.openBox<int>('AppTheme');
   }
 }

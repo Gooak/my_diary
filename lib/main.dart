@@ -5,11 +5,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hive/hive.dart';
 import 'package:my_little_memory_diary/Home.dart';
 import 'package:my_little_memory_diary/color_schemes.g.dart';
 import 'package:my_little_memory_diary/common/openHive.dart';
 import 'package:my_little_memory_diary/common/packageInfo.dart';
 import 'package:my_little_memory_diary/common/upgraderMessage.dart';
+import 'package:my_little_memory_diary/components/colorScheme.dart';
 import 'package:my_little_memory_diary/firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_little_memory_diary/view/login_page.dart/emailVerifed.dart';
@@ -65,6 +67,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final box = Hive.box<int>('AppTheme');
     return UpgradeAlert(
       upgrader: Upgrader(
         messages: AppUpgradeMessages(),
@@ -82,52 +85,57 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider.value(value: UserProvider(email.toString())),
                 ChangeNotifierProvider<CalendarViewModel>(create: (context) => CalendarViewModel()),
                 ChangeNotifierProvider<DiaryViewModel>(create: (context) => DiaryViewModel()),
+                ChangeNotifierProvider<SelectColor>(create: (context) => SelectColor()),
               ],
-              child: MaterialApp(
-                builder: EasyLoading.init(),
-                theme: ThemeData(
-                  fontFamily: 'Nanum',
-                  useMaterial3: true,
-                  colorSchemeSeed: const Color.fromRGBO(188, 0, 74, 1.0),
-                ),
-                darkTheme: ThemeData(
-                  fontFamily: 'Nanum',
-                  useMaterial3: true,
-                  colorScheme: darkColorScheme,
-                ),
-                themeMode: ThemeMode.system,
-                debugShowCheckedModeBanner: false,
-                home: userSnapshot.hasData
-                    ? Consumer<UserProvider>(
-                        builder: (context, provider, child) {
-                          if (provider.user == null || provider.user!.email == null) {
-                            return const Scaffold(
-                              body: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          } else {
-                            return userSnapshot.data!.emailVerified == false ? const EmailVerified() : const Home();
-                          }
-                        },
-                      )
-                    : const SigninPage(),
-                initialRoute: '/',
-                routes: {
-                  '/MyDiary': (context) => const MyDiary(),
-                  '/MyCalendar': (context) => const MyCalendar(),
-                  '/MyPage': (context) => const MyPage(),
-                },
-                localizationsDelegates: const [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en', ''),
-                  Locale('ko', ''),
-                ],
-              ),
+              child: Consumer<SelectColor>(builder: (context, provider, child) {
+                provider.selectNumb = box.get('AppTheme') ?? 0;
+                return MaterialApp(
+                  builder: EasyLoading.init(),
+                  theme: ThemeData(
+                    fontFamily: 'Nanum',
+                    useMaterial3: true,
+                    colorSchemeSeed: provider.colors(provider.selectNumb!),
+                  ),
+                  darkTheme: ThemeData(
+                    fontFamily: 'Nanum',
+                    useMaterial3: true,
+                    colorSchemeSeed: provider.colors(provider.selectNumb!),
+                    brightness: Brightness.dark,
+                  ),
+                  themeMode: ThemeMode.system,
+                  debugShowCheckedModeBanner: false,
+                  home: userSnapshot.hasData
+                      ? Consumer<UserProvider>(
+                          builder: (context, provider, child) {
+                            if (provider.user == null || provider.user!.email == null) {
+                              return const Scaffold(
+                                body: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              return userSnapshot.data!.emailVerified == false ? const EmailVerified() : const Home();
+                            }
+                          },
+                        )
+                      : const SigninPage(),
+                  initialRoute: '/',
+                  routes: {
+                    '/MyDiary': (context) => const MyDiary(),
+                    '/MyCalendar': (context) => const MyCalendar(),
+                    '/MyPage': (context) => const MyPage(),
+                  },
+                  localizationsDelegates: const [
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [
+                    Locale('en', ''),
+                    Locale('ko', ''),
+                  ],
+                );
+              }),
             );
           }
         },

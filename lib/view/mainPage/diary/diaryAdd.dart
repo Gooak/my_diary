@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:my_little_memory_diary/common/googleAd.dart';
 import 'package:my_little_memory_diary/common/googleFrontAd.dart';
@@ -34,7 +32,7 @@ class _DiaryAddState extends State<DiaryAdd> {
 
   Future getImage(ImageSource imageSource) async {
     try {
-      final image = await picker.pickImage(source: imageSource);
+      final image = await picker.pickImage(source: imageSource, imageQuality: 25);
 
       setState(() {
         imageSelect = true;
@@ -42,6 +40,9 @@ class _DiaryAddState extends State<DiaryAdd> {
       });
     } catch (e) {
       if (widget.diary == null) {
+        if (_image != null) {
+          return;
+        }
         imageSelect = false;
       }
     }
@@ -50,6 +51,7 @@ class _DiaryAddState extends State<DiaryAdd> {
   @override
   void initState() {
     super.initState();
+    GoogleFrontAd.initialize();
     if (widget.diary != null) {
       postText.text = widget.diary!.text;
       date = widget.diary!.timestamp!.toDate();
@@ -90,7 +92,6 @@ class _DiaryAddState extends State<DiaryAdd> {
                 showCustomSnackBar(context, '이미지를 선택해주세요');
               } else {
                 FocusScope.of(context).unfocus();
-                // await GoogleFrontAd.initialize();
                 if (widget.diary == null) {
                   await diaryProvider.setDiary(
                     DateFormat('yyyy-MM-dd HH:mm').format(date),
@@ -113,7 +114,7 @@ class _DiaryAddState extends State<DiaryAdd> {
                 }
                 if (context.mounted) {
                   Navigator.pop(context);
-                  // GoogleFrontAd.loadInterstitialAd();
+                  GoogleFrontAd.loadInterstitialAd();
                 }
               }
             }
@@ -133,11 +134,15 @@ class _DiaryAddState extends State<DiaryAdd> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Theme.of(context).colorScheme.onSecondary
+                      : Theme.of(context).colorScheme.onPrimary,
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
                     width: 1,
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Theme.of(context).colorScheme.scrim
+                        : Theme.of(context).colorScheme.primaryContainer,
                   ),
                 ),
                 margin: const EdgeInsets.all(10),
@@ -163,36 +168,47 @@ class _DiaryAddState extends State<DiaryAdd> {
                         getImage(ImageSource.gallery);
                       },
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).colorScheme.background
+                                : Theme.of(context).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(10.0)),
                         height: 400,
                         width: double.infinity,
                         margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        child: _image == null
-                            ? widget.diary != null
-                                ? ClipRRect(
-                                    child: ExtendedImage.network(
-                                      widget.diary!.imageUrl,
-                                      fit: BoxFit.contain,
-                                    ),
-                                  )
-                                : const Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '이미지 선택',
-                                        style: TextStyle(color: Colors.white),
+                        padding: const EdgeInsets.fromLTRB(7, 15, 7, 40),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                              borderRadius: BorderRadius.circular(10.0)),
+                          width: double.infinity,
+                          child: _image == null
+                              ? widget.diary != null
+                                  ? ClipRRect(
+                                      child: ExtendedImage.network(
+                                        widget.diary!.imageUrl,
+                                        fit: BoxFit.contain,
                                       ),
-                                      Icon(Icons.check, color: Colors.white),
-                                    ],
-                                  )
-                            : ClipRRect(
-                                child: ExtendedImage.file(
-                                  File(_image!.path),
-                                  fit: BoxFit.contain,
+                                    )
+                                  : Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '이미지 선택',
+                                          style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+                                        ),
+                                        Icon(Icons.check, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+                                      ],
+                                    )
+                              : ClipRRect(
+                                  child: ExtendedImage.file(
+                                    File(_image!.path),
+                                    fit: BoxFit.contain,
+                                  ),
                                 ),
-                              ),
+                        ),
                       ),
                     ),
                     Container(
@@ -213,7 +229,7 @@ class _DiaryAddState extends State<DiaryAdd> {
               const SizedBox(
                 height: 10,
               ),
-              // const GoogleAd(),
+              const GoogleAd(),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:my_little_memory_diary/components/colorScheme.dart';
 import 'package:my_little_memory_diary/components/design.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
 import 'package:my_little_memory_diary/model/diary_model.dart';
@@ -28,6 +29,12 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    Provider.of<SelectColor>(context, listen: false).streamController.stream.listen((event) async {
+      await Future.delayed(const Duration(milliseconds: 1000));
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -124,11 +131,15 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                       } else {
                         return Container(
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Theme.of(context).colorScheme.onSecondary
+                                : Theme.of(context).colorScheme.onPrimary,
                             borderRadius: BorderRadius.circular(10.0),
                             border: Border.all(
                               width: 1,
-                              color: Theme.of(context).colorScheme.primaryContainer,
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.scrim
+                                  : Theme.of(context).colorScheme.primaryContainer,
                             ),
                           ),
                           margin: const EdgeInsets.all(10),
@@ -221,48 +232,61 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                                       ));
                                 },
                                 child: Container(
-                                    decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(10.0)),
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context).brightness == Brightness.dark
+                                            ? Theme.of(context).colorScheme.background
+                                            : Theme.of(context).colorScheme.primaryContainer,
+                                        borderRadius: BorderRadius.circular(10.0)),
                                     height: 400,
                                     width: double.infinity,
                                     margin: const EdgeInsets.all(10),
-                                    padding: const EdgeInsets.all(10),
-                                    child: diaryList[index].imageUrl != ""
-                                        ? ExtendedImage.network(
-                                            diaryList[index].imageUrl,
-                                            fit: BoxFit.contain,
-                                            cache: true,
-                                            cacheMaxAge: const Duration(days: 3),
-                                            loadStateChanged: (ExtendedImageState state) {
-                                              switch (state.extendedImageLoadState) {
-                                                case LoadState.loading:
-                                                  return const SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child: Center(
-                                                      child: CircularProgressIndicator(),
-                                                    ),
-                                                  );
-                                                case LoadState.completed:
-                                                  return null;
-                                                case LoadState.failed:
-                                                  return const SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child: Center(
-                                                      child: Icon(Icons.close),
-                                                    ),
-                                                  );
-                                                default:
-                                                  return null;
-                                              }
-                                            },
-                                          )
-                                        : const SizedBox.shrink()),
+                                    padding: const EdgeInsets.fromLTRB(7, 15, 7, 40),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                                          borderRadius: BorderRadius.circular(10.0)),
+                                      width: double.infinity,
+                                      child: diaryList[index].imageUrl != ""
+                                          ? ExtendedImage.network(
+                                              diaryList[index].imageUrl,
+                                              fit: BoxFit.contain,
+                                              cache: true,
+                                              cacheMaxAge: const Duration(days: 3),
+                                              loadStateChanged: (ExtendedImageState state) {
+                                                switch (state.extendedImageLoadState) {
+                                                  case LoadState.loading:
+                                                    return const SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child: Center(
+                                                        child: CircularProgressIndicator(),
+                                                      ),
+                                                    );
+                                                  case LoadState.completed:
+                                                    return null;
+                                                  case LoadState.failed:
+                                                    return const SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child: Center(
+                                                        child: Icon(Icons.close),
+                                                      ),
+                                                    );
+                                                  default:
+                                                    return null;
+                                                }
+                                              },
+                                            )
+                                          : const SizedBox.shrink(),
+                                    )),
                               ),
                               Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Theme.of(context).colorScheme.primaryContainer,
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Theme.of(context).colorScheme.background
+                                      : Theme.of(context).colorScheme.primaryContainer,
                                 ),
                                 height: 80,
                                 margin: const EdgeInsets.all(10),

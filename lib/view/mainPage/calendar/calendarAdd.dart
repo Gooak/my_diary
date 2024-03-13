@@ -37,6 +37,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    GoogleFrontAd.initialize();
     WidgetsBinding.instance.addObserver(this);
     if (widget.event != null) {
       weather = widget.event!.weather;
@@ -83,7 +84,6 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
             showCustomSnackBar(context, '날씨를 선택해주세요');
             return;
           } else if (_formKey.currentState!.validate()) {
-            // await GoogleFrontAd.initialize();
             final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
             await calendarProvider.setEvent(
                 userProvider.user!.email!,
@@ -97,7 +97,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
             await calendarProvider.getEventList(userProvider.user!.email!, nowDate, countCheck: true);
             if (context.mounted) {
               Navigator.pop(context);
-              // GoogleFrontAd.loadInterstitialAd();
+              GoogleFrontAd.loadInterstitialAd();
             }
           } else {
             showCustomSnackBar(context, '오늘 기분을 적어주세요');
@@ -198,7 +198,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                 const SizedBox(
                   height: 10,
                 ),
-                // const GoogleAd(),
+                const GoogleAd(),
               ],
             ),
           ),

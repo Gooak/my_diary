@@ -16,6 +16,8 @@ class TodoListAdd extends StatefulWidget {
 }
 
 class _TodoListAddState extends State<TodoListAdd> {
+  TextEditingController textController = TextEditingController();
+
   String? date = '날짜를 선택해주세요.';
   DateTime nowDate = DateTime.now();
   List<TodoModel> todoList = [];
@@ -23,8 +25,15 @@ class _TodoListAddState extends State<TodoListAdd> {
   List<TodoModel> addTodoList = [];
 
   @override
+  void initState() {
+    super.initState();
+    GoogleFrontAd.initialize();
+  }
+
+  @override
   void dispose() {
     super.dispose();
+    textController.dispose();
   }
 
   @override
@@ -49,7 +58,6 @@ class _TodoListAddState extends State<TodoListAdd> {
           if (addTodoList.isEmpty && deleteTodoList.isEmpty) {
             showCustomSnackBar(context, '투두리스트를 작성해주세요!');
           } else {
-            // await GoogleFrontAd.initialize();
             if (addTodoList.isNotEmpty) {
               await calendarProvider.myTodoSet(addTodoList);
               calendarProvider.todoList.clear();
@@ -63,7 +71,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                 date = null;
               }
               Navigator.of(context).pop(date);
-              // GoogleFrontAd.loadInterstitialAd();
+              GoogleFrontAd.loadInterstitialAd();
             }
           }
         },
@@ -243,7 +251,7 @@ class _TodoListAddState extends State<TodoListAdd> {
               const SizedBox(
                 height: 10,
               ),
-              // const GoogleAd(),
+              const GoogleAd(),
             ],
           ),
         ),
@@ -272,8 +280,6 @@ class _TodoListAddState extends State<TodoListAdd> {
   }
 
   void bottomSheet(BuildContext context) {
-    TextEditingController textController = TextEditingController();
-
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -303,6 +309,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                     setState(() {});
                     FocusScope.of(context).unfocus();
                     Navigator.pop(context);
+                    textController.clear();
                   },
                   child: const Text('추가하기'),
                 ),

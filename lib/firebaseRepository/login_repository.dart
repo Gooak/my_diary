@@ -97,15 +97,32 @@ class LoginRepository {
     }
   }
 
+  static List emailCheckList = ['naver.com', 'gmail.com', 'daum.net', 'kakao.com', 'nate.com', 'hanmail.net'];
   //일반 회원가입
   static Future<void> signUp(BuildContext context, String? name, String? email, String? passwd) async {
     showLoading();
-
+    var emailCheck = email!.split('@');
+    var emailCheck2 = emailCheck[1].split('.');
+    String emailVerification = '${emailCheck2[0]}.${emailCheck2[1]}';
+    bool emailBoolen = false;
+    for (int i = 0; i < emailCheckList.length; i++) {
+      if (emailVerification == emailCheckList[i]) {
+        emailBoolen = true;
+        break;
+      }
+    }
+    if (emailBoolen == false) {
+      if (context.mounted) {
+        dismissLoading();
+        showCustomSnackBar(context, '유효한 이메일이 아닙니다.');
+        return;
+      }
+    }
     final userToken = await FirebaseMessaging.instance.getToken();
 
     UserInformation user = UserInformation(userName: name, email: email, device: userToken.toString(), joinDate: Timestamp.now());
     try {
-      var joinUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email!, password: passwd!);
+      var joinUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: passwd!);
       await FirebaseFirestore.instance.collection('UserInfo').doc(user.email).set(user.toJson());
       joinUser.user!.sendEmailVerification();
       if (context.mounted) {

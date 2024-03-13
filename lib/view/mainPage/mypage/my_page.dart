@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:my_little_memory_diary/common/packageInfo.dart';
+import 'package:my_little_memory_diary/components/colorScheme.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/firebaseRepository/user_repository.dart';
@@ -30,6 +31,7 @@ class _MyPageState extends State<MyPage> {
   late int day;
 
   TextEditingController textController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +57,7 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final selectColor = Provider.of<SelectColor>(context, listen: false);
     Size scrrenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(title: const Text('나')),
@@ -192,6 +195,57 @@ class _MyPageState extends State<MyPage> {
                   ),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(15),
+            child: Text('테마 색상'),
+          ),
+          SizedBox(
+            height: 50,
+            child: ListView.separated(
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  width: 5,
+                );
+              },
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: selectColor.colorsName.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () {
+                    selectColor.selectNumb = selectColor.colorsName[index]['number'];
+                    selectColor.changedColor(selectColor.colorsName[index]['number']);
+                  },
+                  child: AnimatedPhysicalModel(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.fastOutSlowIn,
+                    elevation: selectColor.colorsName[index]['number'] == selectColor.selectNumb ? 6.0 : 0,
+                    shape: BoxShape.rectangle,
+                    shadowColor: Colors.black,
+                    color: selectColor.colorsName[index]['color'],
+                    borderRadius: selectColor.colorsName[index]['number'] == selectColor.selectNumb
+                        ? const BorderRadius.all(Radius.circular(5))
+                        : const BorderRadius.all(Radius.circular(25)),
+                    child: SizedBox(
+                      width: 50,
+                      child: selectColor.colorsName[index]['number'] == selectColor.selectNumb
+                          ? const Center(
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                              ),
+                            )
+                          : null,
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(
