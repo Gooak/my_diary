@@ -8,5 +8,6 @@ class OpenHive {
     Hive.registerAdapter(TodoModelAdapter());
     await Hive.openBox<TodoModel>('myTodo');
     await Hive.openBox<int>('AppTheme');
+    await Hive.openBox<int>('todoDayCount');
   }
 }

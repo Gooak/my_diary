@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:my_little_memory_diary/common/packageInfo.dart';
 import 'package:my_little_memory_diary/components/colorScheme.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
@@ -12,6 +10,7 @@ import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
@@ -44,7 +43,6 @@ class _MyPageState extends State<MyPage> {
     final calendarProvider = Provider.of<CalendarViewModel>(context, listen: true);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     day = DateTime.now().difference(userProvider.joinDate.subtract(const Duration(days: 1))).inDays;
-
     calendarProvider.myTodoAllGet();
     calendarProvider.myTodoAllActiveGet();
 
@@ -146,52 +144,95 @@ class _MyPageState extends State<MyPage> {
                 width: 1,
               ),
             ),
-            child: Row(
+            child: Column(
               children: [
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  children: [
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                        child: Row(
                           children: [
-                            const Text(
-                              '총 작성한 투두',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            Text(
-                              todoCount.toString(),
-                              style: const TextStyle(fontSize: 16),
-                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  '총 작성한 투두',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  todoCount.toString(),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
-                  ),
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  '실천한 투두',
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  activeTodoCount.toString(),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Flexible(
-                  fit: FlexFit.tight,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                    child: Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '실천한 투두',
-                              style: TextStyle(fontSize: 18),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            '투두 달성률',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            width: scrrenSize.width - 60,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(5),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Theme.of(context).colorScheme.primaryContainer,
+                                  Colors.grey,
+                                ],
+                                stops: [
+                                  (activeTodoCount / todoCount).toDouble(),
+                                  (activeTodoCount / todoCount).toDouble(),
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
                             ),
-                            Text(
-                              activeTodoCount.toString(),
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -225,7 +266,7 @@ class _MyPageState extends State<MyPage> {
                   child: AnimatedPhysicalModel(
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.fastOutSlowIn,
-                    elevation: selectColor.colorsName[index]['number'] == selectColor.selectNumb ? 6.0 : 0,
+                    elevation: 0.0,
                     shape: BoxShape.rectangle,
                     shadowColor: Colors.black,
                     color: selectColor.colorsName[index]['color'],

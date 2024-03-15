@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:my_little_memory_diary/common/googleAd.dart';
 import 'package:my_little_memory_diary/common/googleFrontAd.dart';
 import 'package:my_little_memory_diary/components/design.dart';
@@ -58,6 +59,7 @@ class _TodoListAddState extends State<TodoListAdd> {
           if (addTodoList.isEmpty && deleteTodoList.isEmpty) {
             showCustomSnackBar(context, '투두리스트를 작성해주세요!');
           } else {
+            int count = todoList.length + addTodoList.length;
             if (addTodoList.isNotEmpty) {
               await calendarProvider.myTodoSet(addTodoList);
               calendarProvider.todoList.clear();
@@ -69,6 +71,10 @@ class _TodoListAddState extends State<TodoListAdd> {
             if (context.mounted) {
               if (date == '날짜를 선택해주세요.') {
                 date = null;
+              } else {
+                final box = Hive.box<int>('todoDayCount');
+                // box.put(date, TodoDayCountModel(date: date!, count: count));
+                box.put(date, count);
               }
               Navigator.of(context).pop(date);
               GoogleFrontAd.loadInterstitialAd();
@@ -263,7 +269,7 @@ class _TodoListAddState extends State<TodoListAdd> {
     Future<DateTime?> selectedDate = showDatePicker(
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
-      firstDate: nowDate,
+      firstDate: nowDate.subtract(const Duration(days: 30)),
       lastDate: nowDate.add(const Duration(days: 30)),
       locale: const Locale('ko', 'KO'),
     );

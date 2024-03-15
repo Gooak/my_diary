@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:my_little_memory_diary/localRepository/hiveTodoRepository.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
@@ -13,8 +14,11 @@ class CalendarViewModel extends ChangeNotifier {
   Map<DateTime, List<CalendarModel>> _events = {};
   Map<DateTime, List<CalendarModel>> get events => _events;
 
-  //모아보기 리스트
+  //캘린더 투두 카운트
+  Map<DateTime, int> _todos = {};
+  Map<DateTime, int> get todos => _todos;
 
+  //모아보기 리스트
   List<CalendarModel> _eventList = [];
   List<CalendarModel> get eventList => _eventList;
 
@@ -67,6 +71,17 @@ class CalendarViewModel extends ChangeNotifier {
   Future<void> getEventAllList(String email, bool sort) async {
     _eventList = await calendarRepository.getEventsAll(email, sort);
     notifyListeners();
+  }
+
+  //투두리스트 모든 투두 리스트
+  Future<void> myTodoDayCountGet(DateTime date) async {
+    String nowDateString = DateFormat('yyyy-MM').format(date);
+    var box = Hive.box<int>('todoDayCount').toMap().entries.where((entry) => entry.key.toString().contains(nowDateString));
+    for (var item in box) {
+      List date = item.key.toString().split('-');
+      _todos[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = item.value;
+    }
+    // notifyListeners();
   }
 
   //투두리스트 모든 투두 리스트

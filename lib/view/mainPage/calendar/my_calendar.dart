@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:hive/hive.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/calendarAdd.dart';
+import 'package:my_little_memory_diary/view/mainPage/calendar/calendarChart.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/todoListAdd.dart';
 import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
@@ -29,6 +30,7 @@ class _MyCalendarState extends State<MyCalendar> {
   late DateTime checkDate;
 
   Map<DateTime, List<CalendarModel>> events = {};
+  Map<DateTime, int> todos = {};
 
   List<TodoModel> todoList = [];
 
@@ -57,6 +59,16 @@ class _MyCalendarState extends State<MyCalendar> {
     }
   }
 
+  List<int> getTodoCountForDay(DateTime day) {
+    final todoCount = todos[day] ?? 0;
+
+    if (todoCount > 0) {
+      return [todoCount];
+    } else {
+      return []; // 이벤트가 없는 경우 null 반환
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,6 +89,7 @@ class _MyCalendarState extends State<MyCalendar> {
     firstDate = userProvider.joinDate;
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
     calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true, firstFun: true);
+    calendarProvider.myTodoDayCountGet(nowDate);
   }
 
   @override
@@ -86,6 +99,7 @@ class _MyCalendarState extends State<MyCalendar> {
       _selectedEvents = _getEventsForDay(_selectedDay!);
       events = provider.events;
       todoList = provider.todoList;
+      todos = provider.todos;
       return Scaffold(
         floatingActionButton: SpeedDial(
           heroTag: 'CalendarAdd',
@@ -117,7 +131,14 @@ class _MyCalendarState extends State<MyCalendar> {
                   if (DateFormat('yyyy-MM-dd').format(_selectedDay!) == date) {
                     provider.myTodoGet(_selectedDay!);
                   }
+                  provider.myTodoDayCountGet(_selectedDay!);
                 }
+              },
+            ),
+            SpeedDialChild(
+              child: const Text('통계'),
+              onTap: () async {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CalendarChart()));
               },
             ),
           ],
@@ -138,7 +159,7 @@ class _MyCalendarState extends State<MyCalendar> {
                   firstDay: firstDate,
                   lastDay: nowDate.add(const Duration(days: 30)),
                   focusedDay: _selectedDay!,
-                  eventLoader: getEventsForDay,
+                  // eventLoader: getEventsForDay,
                   selectedDayPredicate: (day) {
                     return isSameDay(_selectedDay, day);
                   },
@@ -173,62 +194,216 @@ class _MyCalendarState extends State<MyCalendar> {
                       userProvider.user!.email!,
                       focusedDay,
                     );
+                    await provider.myTodoDayCountGet(
+                      focusedDay,
+                    );
                     _selectedEvents = _getEventsForDay(_selectedDay!);
                     provider.myTodoGet(_selectedDay!);
                   },
                   calendarBuilders: CalendarBuilders(
-                    markerBuilder: (context, day, events) {
+                    markerBuilder: (context, day, _) {
+                      final todoList = getTodoCountForDay(day);
                       final eventList = getEventsForDay(day);
                       if (eventList.contains('sunny')) {
-                        return Positioned(
-                          top: -14,
-                          right: -6,
-                          child: Image.asset(
-                            'images/sunny.png',
-                            width: 50,
-                            height: 50,
-                          ),
+                        return Stack(
+                          children: [
+                            Positioned(
+                              top: -6,
+                              right: -5,
+                              child: Image.asset(
+                                'images/sunny.png',
+                                width: 40,
+                                height: 40,
+                              ),
+                            ),
+                            if (todoList.isNotEmpty)
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.3, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Theme.of(context).colorScheme.onSecondary
+                                        : Theme.of(context).colorScheme.primaryContainer,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      todoList.first.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         );
                       } else if (eventList.contains('cloud')) {
-                        return Positioned(
-                          top: -14,
-                          right: -6,
-                          child: Image.asset(
-                            'images/cloud.png',
-                            width: 40,
-                            height: 40,
-                          ),
+                        return Stack(
+                          children: [
+                            Positioned(
+                              top: -11,
+                              right: -3,
+                              child: Image.asset(
+                                'images/cloud.png',
+                                width: 40,
+                                height: 40,
+                              ),
+                            ),
+                            if (todoList.isNotEmpty)
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.3, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Theme.of(context).colorScheme.onSecondary
+                                        : Theme.of(context).colorScheme.primaryContainer,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      todoList.first.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         );
                       } else if (eventList.contains('rain')) {
-                        return Positioned(
-                          top: -12,
-                          right: -6,
-                          child: Image.asset(
-                            'images/rain.png',
-                            width: 40,
-                            height: 40,
-                          ),
+                        return Stack(
+                          children: [
+                            Positioned(
+                              top: -11,
+                              right: -3,
+                              child: Image.asset(
+                                'images/rain.png',
+                                width: 40,
+                                height: 40,
+                              ),
+                            ),
+                            if (todoList.isNotEmpty)
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.3, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Theme.of(context).colorScheme.onSecondary
+                                        : Theme.of(context).colorScheme.primaryContainer,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      todoList.first.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         );
                       } else if (eventList.contains('snowy')) {
-                        return Positioned(
-                          top: -7,
-                          right: -6,
-                          // bottom: -10,
-                          child: Image.asset(
-                            'images/snowy.png',
-                            width: 43,
-                            height: 43,
-                          ),
+                        return Stack(
+                          children: [
+                            Positioned(
+                              top: -11,
+                              right: -3,
+                              child: Image.asset(
+                                'images/snowy.png',
+                                width: 43,
+                                height: 43,
+                              ),
+                            ),
+                            if (todoList.isNotEmpty)
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.3, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Theme.of(context).colorScheme.onSecondary
+                                        : Theme.of(context).colorScheme.primaryContainer,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      todoList.first.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         );
                       } else if (eventList.contains('rainning')) {
+                        return Stack(
+                          children: [
+                            Positioned(
+                              top: -8,
+                              right: -3,
+                              child: Image.asset(
+                                'images/rainning.png',
+                                width: 43,
+                                height: 43,
+                              ),
+                            ),
+                            if (todoList.isNotEmpty)
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 15,
+                                  height: 15,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(width: 0.3, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? Theme.of(context).colorScheme.onSecondary
+                                        : Theme.of(context).colorScheme.primaryContainer,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      todoList.first.toString(),
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        );
+                      } else if (todoList.isNotEmpty) {
                         return Positioned(
-                          top: -7,
-                          right: -3,
-                          // bottom: -10,
-                          child: Image.asset(
-                            'images/rainning.png',
-                            width: 43,
-                            height: 43,
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 0.3, color: Colors.black),
+                              borderRadius: BorderRadius.circular(5),
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Theme.of(context).colorScheme.onSecondary
+                                  : Theme.of(context).colorScheme.primaryContainer,
+                            ),
+                            child: Center(
+                              child: Text(
+                                todoList.first.toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ),
                           ),
                         );
                       }
