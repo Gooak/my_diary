@@ -4,7 +4,7 @@ import 'package:my_little_memory_diary/model/todo_model.dart';
 
 class OpenHive {
   static Future<void> openHive() async {
-    await Hive.initFlutter();
+    await Hive.initFlutter('my_diary_files');
     Hive.registerAdapter(TodoModelAdapter());
     await Hive.openBox<TodoModel>('myTodo');
     await Hive.openBox<int>('AppTheme');

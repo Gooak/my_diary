@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:my_little_memory_diary/localRepository/hiveTodoRepository.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
-import 'package:my_little_memory_diary/firebaseRepository/calendar_repository.dart';
+import 'package:my_little_memory_diary/serverRepository/calendar_repository.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 
 class CalendarViewModel extends ChangeNotifier {

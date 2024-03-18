@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:my_little_memory_diary/common/packageInfo.dart';
 import 'package:my_little_memory_diary/components/colorScheme.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
+import 'package:my_little_memory_diary/components/myPageDesignContainer.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
-import 'package:my_little_memory_diary/firebaseRepository/user_repository.dart';
+import 'package:my_little_memory_diary/serverRepository/user_repository.dart';
+import 'package:my_little_memory_diary/state/backUpState.dart';
 import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
@@ -30,6 +33,8 @@ class _MyPageState extends State<MyPage> {
   late int day;
 
   TextEditingController textController = TextEditingController();
+
+  GoogleBackUpState googleBackUpState = GoogleBackUpState();
 
   @override
   void initState() {
@@ -296,38 +301,14 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.all(15),
             child: Text('피드백'),
           ),
-          InkWell(
-            child: Container(
-              height: 60,
-              width: scrrenSize.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              padding: const EdgeInsets.all(15),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '리뷰하기',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '>',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '리뷰하기',
+            rightTest: '>',
             onTap: () async {
               await launchUrl(
-                Uri.parse('https://play.google.com/store/apps/details?id=com.mydiary'),
+                Uri.parse('https://play.google.com/store/apps/details?id=com.my_little_memory_diary'),
                 mode: LaunchMode.externalNonBrowserApplication,
               );
             },
@@ -335,35 +316,11 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 1,
           ),
-          InkWell(
-            child: Container(
-              height: 60,
-              width: scrrenSize.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              padding: const EdgeInsets.all(15),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '의견 보내기',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '>',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '의견보내기',
+            rightTest: '>',
             onTap: () async {
               textDialogFunc(
                 context: context,
@@ -405,35 +362,11 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.all(15),
             child: Text('도움말'),
           ),
-          InkWell(
-            child: Container(
-              height: 60,
-              width: scrrenSize.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              padding: const EdgeInsets.all(15),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '개인정보처리방침',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '>',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '개인정보처리방침',
+            rightTest: '>',
             onTap: () async {
               await launchUrl(
                 Uri.parse('https://sites.google.com/view/gooakcompany--privacy-policy/%ED%99%88'),
@@ -444,35 +377,11 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 1,
           ),
-          InkWell(
-            child: Container(
-              height: 60,
-              width: scrrenSize.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              padding: const EdgeInsets.all(15),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '이용약관',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '>',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '이용약관',
+            rightTest: '>',
             onTap: () async {
               await launchUrl(
                 Uri.parse('https://sites.google.com/view/gooak-company-terms-of-service/%ED%99%88'),
@@ -487,35 +396,70 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.all(15),
             child: Text('회원관리'),
           ),
-          InkWell(
-            child: Container(
-              height: 60,
-              width: scrrenSize.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-              padding: const EdgeInsets.all(15),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '로그아웃',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '>',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
-            ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '투두리스트 백업',
+            rightTest: '>',
+            onTap: () async {
+              dialogFunc(
+                context: context,
+                title: '투두리스트 백업',
+                text: '지금까지 작성 해오신 투두리스트를 백업 하시겠습니까?\n이미 백업 파일이 있으신 경우 백업이 덮어쓰여집니다.\n기기변경 하실 예정이시거나, 앱을 삭제하고 다시 다운받을때 이용합니다.',
+                cancel: '아니오',
+                enter: '예',
+                cancelAction: () {
+                  Navigator.pop(context);
+                },
+                enterAction: () async {
+                  await googleBackUpState.signIn();
+
+                  String message = await googleBackUpState.backUp();
+                  if (context.mounted) {
+                    showCustomSnackBar(context, message);
+                    Navigator.pop(context);
+                  }
+                },
+              );
+            },
+          ),
+          const SizedBox(
+            height: 1,
+          ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '투두리스트 복원',
+            rightTest: '>',
+            onTap: () async {
+              dialogFunc(
+                context: context,
+                title: '투두리스트 복원',
+                text: '투두 리스트를 복원 하시겠습니까?\n(주의) 이미 작성되어 있는경우 지워지고 복원된 파일로 대체됩니다!\n기기변경 하실 예정이시거나, 앱을 삭제하고 다시 다운받을때 이용합니다.\n\n복원이 완료되면 앱을 재시도 부탁드립니다.',
+                cancel: '아니오',
+                enter: '예',
+                cancelAction: () {
+                  Navigator.pop(context);
+                },
+                enterAction: () async {
+                  await googleBackUpState.signIn();
+                  String message = await googleBackUpState.restoreDB();
+                  if (context.mounted) {
+                    showCustomSnackBar(context, message);
+                    Navigator.pop(context);
+                  }
+                },
+              );
+            },
+          ),
+          const SizedBox(
+            height: 1,
+          ),
+          MyPageDesignContainer(
+            context: context,
+            scrrenSize: scrrenSize,
+            leftText: '로그아웃',
+            rightTest: '>',
             onTap: () async {
               DateTime now = DateTime.now();
               if (currentBackPressTime == null || now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
@@ -578,43 +522,6 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 30,
           ),
-          // const SizedBox(
-          //   height: 1,
-          // ),
-          // InkWell(
-          //   child: Container(
-          //     height: 60,
-          //     width: scrrenSize.width,
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(5),
-          //       color: Theme.of(context).colorScheme.secondaryContainer,
-          //     ),
-          //     padding: const EdgeInsets.all(15),
-          //     child: const Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: [
-          //         Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           mainAxisAlignment: MainAxisAlignment.center,
-          //           children: [
-          //             Text(
-          //               '회원탈퇴',
-          //               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-          //             ),
-          //           ],
-          //         ),
-          //         Text(
-          //           '>',
-          //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          //         )
-          //       ],
-          //     ),
-          //   ),
-          //   onTap: () async {},
-          // ),
-          // const SizedBox(
-          //   height: 20,
-          // ),
         ]),
       ),
     );

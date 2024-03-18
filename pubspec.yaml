@@ -63,6 +63,10 @@ dependencies:
   package_info_plus: ^5.0.1
   fl_chart: ^0.66.2
   home_widget: ^0.4.1
+  googleapis: ^13.1.0
+  googleapis_auth: ^1.5.0
+  path_provider: ^2.1.2
+  archive: ^3.4.10
 
 dev_dependencies:
   flutter_test:
