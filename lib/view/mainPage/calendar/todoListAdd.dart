@@ -155,10 +155,13 @@ class _TodoListAddState extends State<TodoListAdd> {
                           Expanded(
                             child: Row(
                               children: [
-                                Checkbox(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                  value: todoList[index].checkTodo,
-                                  onChanged: (value) {},
+                                Transform.scale(
+                                  scale: 0.8,
+                                  child: Checkbox(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                    value: todoList[index].checkTodo,
+                                    onChanged: (value) {},
+                                  ),
                                 ),
                                 Text(
                                   todoList[index].todoText.toString(),
@@ -213,10 +216,13 @@ class _TodoListAddState extends State<TodoListAdd> {
                               children: [
                                 Row(
                                   children: [
-                                    Checkbox(
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                      value: addTodoList[index].checkTodo,
-                                      onChanged: (value) {},
+                                    Transform.scale(
+                                      scale: 0.8,
+                                      child: Checkbox(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                        value: addTodoList[index].checkTodo,
+                                        onChanged: (value) {},
+                                      ),
                                     ),
                                     Text(addTodoList[index].todoText.toString()),
                                   ],

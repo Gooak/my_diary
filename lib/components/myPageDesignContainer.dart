@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-InkWell MyPageDesignContainer(
+InkWell myPageDesignContainer(
     {required BuildContext context,
     required Size scrrenSize,
     required String leftText,

@@ -12,6 +12,7 @@ import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:restart_app/restart_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -216,7 +217,7 @@ class _MyPageState extends State<MyPage> {
                             height: 10,
                           ),
                           Container(
-                            width: scrrenSize.width - 60,
+                            width: scrrenSize.width - 50,
                             height: 6,
                             decoration: BoxDecoration(
                               color: Colors.grey,
@@ -301,7 +302,7 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.all(15),
             child: Text('피드백'),
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '리뷰하기',
@@ -316,7 +317,7 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 1,
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '의견보내기',
@@ -362,7 +363,7 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.all(15),
             child: Text('도움말'),
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '개인정보처리방침',
@@ -377,7 +378,7 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 1,
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '이용약관',
@@ -396,7 +397,7 @@ class _MyPageState extends State<MyPage> {
             padding: EdgeInsets.all(15),
             child: Text('회원관리'),
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '투두리스트 백업',
@@ -426,7 +427,7 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 1,
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '투두리스트 복원',
@@ -435,7 +436,8 @@ class _MyPageState extends State<MyPage> {
               dialogFunc(
                 context: context,
                 title: '투두리스트 복원',
-                text: '투두 리스트를 복원 하시겠습니까?\n(주의) 이미 작성되어 있는경우 지워지고 복원된 파일로 대체됩니다!\n기기변경 하실 예정이시거나, 앱을 삭제하고 다시 다운받을때 이용합니다.\n\n복원이 완료되면 앱을 재시도 부탁드립니다.',
+                text:
+                    '투두 리스트를 복원 하시겠습니까?\n(주의) 이미 작성되어 있는경우 지워지고 복원된 파일로 대체됩니다!\n기기변경 하실 예정이시거나, 앱을 삭제하고 다시 다운받을때 이용합니다.\n\n복원이 완료되면 앱이 5초뒤에 재시작 됩니다.',
                 cancel: '아니오',
                 enter: '예',
                 cancelAction: () {
@@ -448,6 +450,10 @@ class _MyPageState extends State<MyPage> {
                     showCustomSnackBar(context, message);
                     Navigator.pop(context);
                   }
+                  if (message == '복원에 성공하셨습니다. 5초뒤 앱이 재시작 됩니다.') {
+                    await Future.delayed(const Duration(seconds: 5));
+                    await Restart.restartApp();
+                  }
                 },
               );
             },
@@ -455,7 +461,7 @@ class _MyPageState extends State<MyPage> {
           const SizedBox(
             height: 1,
           ),
-          MyPageDesignContainer(
+          myPageDesignContainer(
             context: context,
             scrrenSize: scrrenSize,
             leftText: '로그아웃',

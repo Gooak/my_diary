@@ -57,28 +57,31 @@ class LoginRepository {
 
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+    if (googleAuth != null) {
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    final userToken = await FirebaseMessaging.instance.getToken();
-
-    //여기
-
-    var data = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: googleUser?.email).get();
-    if (data.size == 0) {
-      //아이디 정보가 없으면 추가
-      UserInformation user =
-          UserInformation(userName: googleUser?.displayName, email: googleUser?.email, device: userToken.toString(), joinDate: Timestamp.now());
-      await FirebaseFirestore.instance.collection('UserInfo').doc(user.email).set(user.toJson());
-    } else {
       final userToken = await FirebaseMessaging.instance.getToken();
-      await FirebaseFirestore.instance.collection('UserInfo').doc(googleUser?.email).update({'device': userToken});
+
+      //여기
+
+      var data = await FirebaseFirestore.instance.collection('UserInfo').where('email', isEqualTo: googleUser?.email).get();
+      if (data.size == 0) {
+        //아이디 정보가 없으면 추가
+        UserInformation user =
+            UserInformation(userName: googleUser?.displayName, email: googleUser?.email, device: userToken.toString(), joinDate: Timestamp.now());
+        await FirebaseFirestore.instance.collection('UserInfo').doc(user.email).set(user.toJson());
+      } else {
+        final userToken = await FirebaseMessaging.instance.getToken();
+        await FirebaseFirestore.instance.collection('UserInfo').doc(googleUser?.email).update({'device': userToken});
+      }
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      dismissLoading();
+    } else {
+      dismissLoading();
     }
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    dismissLoading();
   }
 
   //비밀번호 찾기

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:archive/archive_io.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_little_memory_diary/components/loading.dart';
 import 'package:my_little_memory_diary/serverRepository/googleBackUp_repository.dart';
@@ -23,25 +22,16 @@ class GoogleBackUpState {
       showLoading();
       final hiveRoute = await getApplicationDocumentsDirectory();
       Directory hiveDir = Directory('${hiveRoute.path}/my_diary_files');
-      // File zipFile = File('${hiveRoute.path}/my_diary_files.zip');
-
-      // final zipFilePath = join(hiveRoute.path, 'my_diary_files.zip');
-
-      // final encoder = ZipFileEncoder();
-      // encoder.create(zipFilePath);
-
-      // encoder.addDirectory(hiveDir);
 
       final driveApi = await googleBackUpRepository.getDriveApi(googleUserToken!);
       final driveFile = await googleBackUpRepository.getDriveFile(driveApi: driveApi!, filename: 'my_diary_files.zip');
+
       List<FileSystemEntity> files = hiveDir.listSync(recursive: true);
       for (FileSystemEntity file in files) {
         if (file is File) {
           await googleBackUpRepository.upLoad(driveApi: driveApi, file: file, driveFileId: driveFile?.id);
         }
       }
-      // encoder.close();
-      // await zipFile.delete();
     } catch (e) {
       dismissLoading();
       return '잘못된 접근입니다. 다시시도해주세요';
@@ -76,37 +66,14 @@ class GoogleBackUpState {
 
       for (int i = 0; i < item.length; i++) {
         String pathList = join(path, item[i]);
-        File downLoadFile = await googleBackUpRepository.downLoad(driveApi: driveApi!, driveFileId: itemfile[i].id!, localPath: pathList);
-        print(downLoadFile);
-        print(downLoadFile.path);
-        print(downLoadFile.absolute);
+        await googleBackUpRepository.downLoad(driveApi: driveApi!, driveFileId: itemfile[i].id!, localPath: pathList);
       }
-
-      // final extractToDir = Directory('${hiveRoute.path}/my_diary_files');
-      // extractToDir.createSync();
-
-      // Directory hiveDir = Directory('${hiveRoute.path}/my_diary_files');
-      // Directory zipFile = Directory('${hiveRoute.path}/my_diary_files.zip');
-
-      // final bytes = downLoadFile.readAsBytesSync();
-      // final archive = ZipDecoder().decodeBytes(bytes);
-      // for (final files in archive) {
-      //   final filename = join(extractToDir.path, files.name);
-      //   if (files.isFile) {
-      //     final data = files.content as List<int>;
-      //     File(filename)
-      //       ..createSync(recursive: true)
-      //       ..writeAsBytesSync(data);
-      //   } else {
-      //     Directory(filename).create(recursive: true);
-      //   }
-      // }
     } catch (e) {
       dismissLoading();
       return '잘못된 접근입니다. 다시시도해주세요';
     }
     dismissLoading();
-    return '복원에 성공하셨습니다. 앱을 다시시작하셔야 복원된 기록이 보여집니다.';
+    return '복원에 성공하셨습니다. 5초뒤 앱이 재시작 됩니다.';
   }
 
   Future<String> paginate() async {

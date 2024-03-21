@@ -22,6 +22,7 @@ class CalendarAdd extends StatefulWidget {
 
 class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
   String weather = '';
+  String moodImage = '';
   TextEditingController textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late BannerAd banner;
@@ -32,6 +33,16 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
     {'weather': 'images/rainning.png', 'weatherName': '비', 'weatherId': 'rainning'},
     {'weather': 'images/snowy.png', 'weatherName': '눈', 'weatherId': 'snowy'},
   ];
+
+  var moodList = <Map<String, String>>[
+    {'moodImage': 'images/happy.png', 'moodName': '기쁨', 'moodId': 'happy'},
+    {'moodImage': 'images/happiness.png', 'moodName': '행복', 'moodId': 'happiness'},
+    {'moodImage': 'images/tired.png', 'moodName': '지친', 'moodId': 'tired'},
+    {'moodImage': 'images/depressed1.png', 'moodName': '우울', 'moodId': 'depressed'},
+    {'moodImage': 'images/tremble.png', 'moodName': '떨떠름', 'moodId': 'tremble'},
+    {'moodImage': 'images/angry.png', 'moodName': '화남', 'moodId': 'angry'},
+    {'moodImage': 'images/sad.png', 'moodName': '슬픔', 'moodId': 'sad'},
+  ];
   DateTime nowDate = DateTime.now();
 
   @override
@@ -41,6 +52,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     if (widget.event != null) {
       weather = widget.event!.weather;
+      moodImage = widget.event!.moodImage;
       textController.text = widget.event!.mood;
     }
   }
@@ -83,6 +95,9 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
           if (weather == '') {
             showCustomSnackBar(context, '날씨를 선택해주세요');
             return;
+          } else if (moodImage == '') {
+            showCustomSnackBar(context, '오늘 기분을 선택해주세요');
+            return;
           } else if (_formKey.currentState!.validate()) {
             final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
             await calendarProvider.setEvent(
@@ -92,6 +107,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                     date: date,
                     weather: weather,
                     mood: textController.text,
+                    moodImage: moodImage,
                     timestamp: Timestamp.now(),
                     calendarCount: widget.event == null ? calendarProvider.calendarCount + 1 : widget.event!.calendarCount!));
             await calendarProvider.getEventList(userProvider.user!.email!, nowDate, countCheck: true);
@@ -167,7 +183,51 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                 const SizedBox(
                   height: 15,
                 ),
-                const Text('오늘의 기분'),
+                const Text('기분 선택'),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 100,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: moodList.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        width: 5,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return Column(children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(size.width / 8),
+                              color: moodImage == moodList[index]["moodId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(size.width / 8),
+                            onTap: () {
+                              moodImage = moodList[index]["moodId"].toString();
+                              setState(() {});
+                            },
+                            child: ExtendedImage.asset(
+                              moodList[index]["moodImage"].toString(),
+                              width: size.width / 8,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(moodList[index]["moodName"].toString())
+                      ]);
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text('일기'),
                 const SizedBox(
                   height: 5,
                 ),
@@ -184,10 +244,10 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                       controller: textController,
                       maxLength: 50,
                       decoration:
-                          DesignInputDecoration(hintText: '오늘 하루의 기분을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
+                          DesignInputDecoration(hintText: '오늘 하루 일을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return '오늘 기분을 적어주세요';
+                          return '오늘 하루 일을 적어주세요';
                         } else {
                           return null;
                         }

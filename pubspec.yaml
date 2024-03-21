@@ -66,7 +66,7 @@ dependencies:
   googleapis: ^13.1.0
   googleapis_auth: ^1.5.0
   path_provider: ^2.1.2
-  archive: ^3.4.10
+  restart_app: ^1.2.1
 
 dev_dependencies:
   flutter_test:

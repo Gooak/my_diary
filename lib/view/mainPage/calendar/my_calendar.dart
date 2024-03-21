@@ -1,6 +1,8 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive/hive.dart';
+import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/calendarAdd.dart';
@@ -54,6 +56,16 @@ class _MyCalendarState extends State<MyCalendar> {
 
     if (eventsForDay.isNotEmpty) {
       return [eventsForDay[0].weather];
+    } else {
+      return []; // 이벤트가 없는 경우 null 반환
+    }
+  }
+
+  List<String> getMoodForDay(DateTime day) {
+    final List<CalendarModel> eventsForDay = events[day] ?? [];
+
+    if (eventsForDay.isNotEmpty) {
+      return [eventsForDay[0].moodImage];
     } else {
       return []; // 이벤트가 없는 경우 null 반환
     }
@@ -138,7 +150,11 @@ class _MyCalendarState extends State<MyCalendar> {
             SpeedDialChild(
               child: const Text('통계'),
               onTap: () async {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CalendarChart()));
+                if (provider.eventChart != null) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarChart(eventChart: provider.eventChart!)));
+                } else {
+                  showCustomSnackBar(context, '이번 달에 작성하신 일기가 없습니다.');
+                }
               },
             ),
           ],
@@ -174,6 +190,7 @@ class _MyCalendarState extends State<MyCalendar> {
                     ),
                     selectedTextStyle: const TextStyle(
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                     todayDecoration: const BoxDecoration(
                       color: null,
@@ -181,6 +198,10 @@ class _MyCalendarState extends State<MyCalendar> {
                     ),
                     todayTextStyle: TextStyle(
                       color: Theme.of(context).colorScheme.inversePrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    defaultTextStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
                     ),
                     outsideDaysVisible: false,
                   ),
@@ -204,22 +225,23 @@ class _MyCalendarState extends State<MyCalendar> {
                     markerBuilder: (context, day, _) {
                       final todoList = getTodoCountForDay(day);
                       final eventList = getEventsForDay(day);
+                      final moodList = getMoodForDay(day);
                       if (eventList.contains('sunny')) {
                         return Stack(
                           children: [
                             Positioned(
-                              top: -6,
-                              right: -5,
+                              top: -3,
+                              right: -2,
                               child: Image.asset(
                                 'images/sunny.png',
-                                width: 40,
-                                height: 40,
+                                width: 35,
+                                height: 35,
                               ),
                             ),
                             if (todoList.isNotEmpty)
                               Positioned(
-                                bottom: 0,
-                                right: 0,
+                                bottom: 6,
+                                right: 2,
                                 child: Container(
                                   width: 15,
                                   height: 15,
@@ -236,6 +258,16 @@ class _MyCalendarState extends State<MyCalendar> {
                                       style: const TextStyle(fontSize: 12),
                                     ),
                                   ),
+                                ),
+                              ),
+                            if (moodList.isNotEmpty)
+                              Positioned(
+                                bottom: 4,
+                                left: 4,
+                                child: Image.asset(
+                                  'images/${moodList[0]}.png',
+                                  width: 20,
+                                  height: 20,
                                 ),
                               ),
                           ],
@@ -248,14 +280,14 @@ class _MyCalendarState extends State<MyCalendar> {
                               right: -3,
                               child: Image.asset(
                                 'images/cloud.png',
-                                width: 40,
-                                height: 40,
+                                width: 35,
+                                height: 35,
                               ),
                             ),
                             if (todoList.isNotEmpty)
                               Positioned(
-                                bottom: 0,
-                                right: 0,
+                                bottom: 6,
+                                right: 2,
                                 child: Container(
                                   width: 15,
                                   height: 15,
@@ -272,6 +304,16 @@ class _MyCalendarState extends State<MyCalendar> {
                                       style: const TextStyle(fontSize: 12),
                                     ),
                                   ),
+                                ),
+                              ),
+                            if (moodList.isNotEmpty)
+                              Positioned(
+                                bottom: 4,
+                                left: 4,
+                                child: Image.asset(
+                                  'images/${moodList[0]}.png',
+                                  width: 20,
+                                  height: 20,
                                 ),
                               ),
                           ],
@@ -284,14 +326,14 @@ class _MyCalendarState extends State<MyCalendar> {
                               right: -3,
                               child: Image.asset(
                                 'images/rain.png',
-                                width: 40,
-                                height: 40,
+                                width: 35,
+                                height: 35,
                               ),
                             ),
                             if (todoList.isNotEmpty)
                               Positioned(
-                                bottom: 0,
-                                right: 0,
+                                bottom: 6,
+                                right: 2,
                                 child: Container(
                                   width: 15,
                                   height: 15,
@@ -310,24 +352,34 @@ class _MyCalendarState extends State<MyCalendar> {
                                   ),
                                 ),
                               ),
+                            if (moodList.isNotEmpty)
+                              Positioned(
+                                bottom: 4,
+                                left: 4,
+                                child: Image.asset(
+                                  'images/${moodList[0]}.png',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                              ),
                           ],
                         );
                       } else if (eventList.contains('snowy')) {
                         return Stack(
                           children: [
                             Positioned(
-                              top: -11,
+                              top: -3,
                               right: -3,
                               child: Image.asset(
                                 'images/snowy.png',
-                                width: 43,
-                                height: 43,
+                                width: 35,
+                                height: 35,
                               ),
                             ),
                             if (todoList.isNotEmpty)
                               Positioned(
-                                bottom: 0,
-                                right: 0,
+                                bottom: 6,
+                                right: 2,
                                 child: Container(
                                   width: 15,
                                   height: 15,
@@ -344,6 +396,16 @@ class _MyCalendarState extends State<MyCalendar> {
                                       style: const TextStyle(fontSize: 12),
                                     ),
                                   ),
+                                ),
+                              ),
+                            if (moodList.isNotEmpty)
+                              Positioned(
+                                bottom: 4,
+                                left: 4,
+                                child: Image.asset(
+                                  'images/${moodList[0]}.png',
+                                  width: 20,
+                                  height: 20,
                                 ),
                               ),
                           ],
@@ -356,14 +418,14 @@ class _MyCalendarState extends State<MyCalendar> {
                               right: -3,
                               child: Image.asset(
                                 'images/rainning.png',
-                                width: 43,
-                                height: 43,
+                                width: 35,
+                                height: 35,
                               ),
                             ),
                             if (todoList.isNotEmpty)
                               Positioned(
-                                bottom: 0,
-                                right: 0,
+                                bottom: 6,
+                                right: 2,
                                 child: Container(
                                   width: 15,
                                   height: 15,
@@ -382,12 +444,22 @@ class _MyCalendarState extends State<MyCalendar> {
                                   ),
                                 ),
                               ),
+                            if (moodList.isNotEmpty)
+                              Positioned(
+                                bottom: 4,
+                                left: 4,
+                                child: Image.asset(
+                                  'images/${moodList[0]}.png',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                              ),
                           ],
                         );
                       } else if (todoList.isNotEmpty) {
                         return Positioned(
-                          bottom: 0,
-                          right: 0,
+                          bottom: 6,
+                          right: 2,
                           child: Container(
                             width: 15,
                             height: 15,
@@ -445,7 +517,7 @@ class _MyCalendarState extends State<MyCalendar> {
                                   ),
                                 ),
                                 _selectedEvents[index].weather != ''
-                                    ? Image.asset(
+                                    ? ExtendedImage.asset(
                                         'images/${_selectedEvents[index].weather}.png',
                                         width: 43,
                                         height: 43,
@@ -453,6 +525,12 @@ class _MyCalendarState extends State<MyCalendar> {
                                     : const SizedBox.shrink()
                               ],
                             ),
+                            if (_selectedEvents[index].moodImage != '')
+                              ExtendedImage.asset(
+                                'images/${_selectedEvents[index].moodImage}.png',
+                                width: 43,
+                                height: 43,
+                              )
                           ],
                         ), // 아이콘으로 대체
                         const SizedBox(
@@ -494,13 +572,16 @@ class _MyCalendarState extends State<MyCalendar> {
                           ),
                           child: Row(
                             children: [
-                              Checkbox(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                value: todoList[index].checkTodo,
-                                onChanged: (value) {
-                                  provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
-                                  setState(() {});
-                                },
+                              Transform.scale(
+                                scale: 0.8,
+                                child: Checkbox(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                  value: todoList[index].checkTodo,
+                                  onChanged: (value) {
+                                    provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
+                                    setState(() {});
+                                  },
+                                ),
                               ),
                               Expanded(
                                 child: AnimatedDefaultTextStyle(

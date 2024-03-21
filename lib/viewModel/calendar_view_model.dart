@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -38,6 +39,10 @@ class CalendarViewModel extends ChangeNotifier {
   int _todoCount = 0;
   int get todoCount => _todoCount;
 
+  //이번달 기분 통계 차트
+  late QuerySnapshot? _eventChart;
+  QuerySnapshot? get eventChart => _eventChart;
+
   Future<void> getEventList(String email, DateTime date, {bool countCheck = false, bool firstFun = false}) async {
     if (firstFun == true) {
       _events.clear();
@@ -54,12 +59,14 @@ class CalendarViewModel extends ChangeNotifier {
           date: eventGet.docs[i]['date'],
           weather: eventGet.docs[i]['weather'],
           mood: eventGet.docs[i]['mood'],
+          moodImage: eventGet.docs[i]['moodImage'],
           timestamp: eventGet.docs[i]['timestamp']!,
           calendarCount: eventGet.docs[i]['calendarCount']!));
       _events[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = text;
     }
     if (countCheck == true && eventGet.docs.isNotEmpty) {
       _calendarCount = eventGet.docs[eventGet.docs.length - 1]['calendarCount'];
+      _eventChart = eventGet;
     }
     notifyListeners();
   }

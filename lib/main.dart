@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import 'package:my_little_memory_diary/Home.dart';
-import 'package:my_little_memory_diary/color_schemes.g.dart';
 import 'package:my_little_memory_diary/common/openHive.dart';
 import 'package:my_little_memory_diary/common/packageInfo.dart';
 import 'package:my_little_memory_diary/common/upgraderMessage.dart';
