@@ -141,43 +141,40 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                 const SizedBox(
                   height: 5,
                 ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: weatherList.length,
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        width: 5,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(
+                      weatherList.length,
+                      (index) {
+                        return Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(size.width / 5),
+                                  color:
+                                      weather == weatherList[index]["weatherId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
+                              child: InkWell(
                                 borderRadius: BorderRadius.circular(size.width / 5),
-                                color: weather == weatherList[index]["weatherId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(size.width / 5),
-                              onTap: () {
-                                weather = weatherList[index]["weatherId"].toString();
-                                setState(() {});
-                              },
-                              child: ExtendedImage.asset(
-                                weatherList[index]["weather"].toString(),
-                                width: size.width / 5,
+                                onTap: () {
+                                  weather = weatherList[index]["weatherId"].toString();
+                                  setState(() {});
+                                },
+                                child: ExtendedImage.asset(
+                                  weatherList[index]["weather"].toString(),
+                                  width: size.width / 5,
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(weatherList[index]["weatherName"].toString())
-                        ],
-                      );
-                    },
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(weatherList[index]["weatherName"].toString())
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -187,20 +184,13 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                 const SizedBox(
                   height: 5,
                 ),
-                SizedBox(
-                  height: 100,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: moodList.length,
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        width: 5,
-                      );
-                    },
-                    itemBuilder: (context, index) {
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(moodList.length, (index) {
                       return Column(children: [
                         Container(
+                          margin: const EdgeInsets.only(right: 5),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(size.width / 8),
                               color: moodImage == moodList[index]["moodId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
@@ -221,7 +211,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                         ),
                         Text(moodList[index]["moodName"].toString())
                       ]);
-                    },
+                    }),
                   ),
                 ),
                 const SizedBox(

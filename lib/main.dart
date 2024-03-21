@@ -23,6 +23,7 @@ import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void configLoading() {
   EasyLoading.instance
@@ -103,21 +104,36 @@ class MyApp extends StatelessWidget {
                   ),
                   themeMode: ThemeMode.system,
                   debugShowCheckedModeBanner: false,
-                  home: userSnapshot.hasData
-                      ? Consumer<UserProvider>(
-                          builder: (context, provider, child) {
-                            if (provider.user == null || provider.user!.email == null) {
-                              return const Scaffold(
-                                body: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            } else {
-                              return userSnapshot.data!.emailVerified == false ? const EmailVerified() : const Home();
-                            }
-                          },
-                        )
-                      : const SigninPage(),
+                  home: UpgradeAlert(
+                    showLater: false,
+                    showReleaseNotes: false,
+                    showIgnore: false,
+                    onUpdate: () {
+                      launchUrl(
+                        Uri.parse('https://play.google.com/store/apps/details?id=com.my_little_memory_diary'),
+                        mode: LaunchMode.externalNonBrowserApplication,
+                      );
+                      return true;
+                    },
+                    upgrader: Upgrader(
+                      messages: AppUpgradeMessages(),
+                    ),
+                    child: userSnapshot.hasData
+                        ? Consumer<UserProvider>(
+                            builder: (context, provider, child) {
+                              if (provider.user == null || provider.user!.email == null) {
+                                return const Scaffold(
+                                  body: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              } else {
+                                return userSnapshot.data!.emailVerified == false ? const EmailVerified() : const Home();
+                              }
+                            },
+                          )
+                        : const SigninPage(),
+                  ),
                   initialRoute: '/',
                   routes: {
                     '/MyDiary': (context) => const MyDiary(),

@@ -6,6 +6,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_little_memory_diary/common/googleAd.dart';
 import 'package:my_little_memory_diary/common/googleFrontAd.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/pageHome.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_little_memory_diary/view/mainPage/diary/my_diary.dart';
 import 'package:my_little_memory_diary/view/mainPage/mypage/my_page.dart';
@@ -51,7 +52,11 @@ class _HomeState extends State<Home> {
         body: Column(
           children: [
             Expanded(
-              child: IndexedStack(index: selectedItem, children: pages),
+              child: FadeIndexedStack(
+                index: selectedItem,
+                duration: const Duration(milliseconds: 300),
+                children: pages,
+              ),
             ),
             const GoogleAd(),
           ],

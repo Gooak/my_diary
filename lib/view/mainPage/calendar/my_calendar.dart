@@ -262,12 +262,12 @@ class _MyCalendarState extends State<MyCalendar> {
                               ),
                             if (moodList.isNotEmpty)
                               Positioned(
-                                bottom: 4,
-                                left: 4,
+                                bottom: 0,
+                                left: 0,
                                 child: Image.asset(
                                   'images/${moodList[0]}.png',
-                                  width: 20,
-                                  height: 20,
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
                           ],
@@ -308,12 +308,12 @@ class _MyCalendarState extends State<MyCalendar> {
                               ),
                             if (moodList.isNotEmpty)
                               Positioned(
-                                bottom: 4,
-                                left: 4,
+                                bottom: 0,
+                                left: 0,
                                 child: Image.asset(
                                   'images/${moodList[0]}.png',
-                                  width: 20,
-                                  height: 20,
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
                           ],
@@ -354,12 +354,12 @@ class _MyCalendarState extends State<MyCalendar> {
                               ),
                             if (moodList.isNotEmpty)
                               Positioned(
-                                bottom: 4,
-                                left: 4,
+                                bottom: 0,
+                                left: 0,
                                 child: Image.asset(
                                   'images/${moodList[0]}.png',
-                                  width: 20,
-                                  height: 20,
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
                           ],
@@ -400,12 +400,12 @@ class _MyCalendarState extends State<MyCalendar> {
                               ),
                             if (moodList.isNotEmpty)
                               Positioned(
-                                bottom: 4,
-                                left: 4,
+                                bottom: 0,
+                                left: 0,
                                 child: Image.asset(
                                   'images/${moodList[0]}.png',
-                                  width: 20,
-                                  height: 20,
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
                           ],
@@ -446,12 +446,12 @@ class _MyCalendarState extends State<MyCalendar> {
                               ),
                             if (moodList.isNotEmpty)
                               Positioned(
-                                bottom: 4,
-                                left: 4,
+                                bottom: 0,
+                                left: 0,
                                 child: Image.asset(
                                   'images/${moodList[0]}.png',
-                                  width: 20,
-                                  height: 20,
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
                           ],
