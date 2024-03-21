@@ -259,7 +259,7 @@ class _TodoListAddState extends State<TodoListAdd> {
                     }
                   },
                 ),
-              const Text('※ 개인 핸드폰에 저장이 되며 앱 데이터 삭제시 같이 지워집니다.'),
+              const Text('※ 개인 핸드폰에 저장이 되며 앱 데이터 삭제시 같이 지워집니다. 앱 삭제하기전, 회원 관리에 투두리스트 백업을 해두시길 바랍니다.'),
               const SizedBox(
                 height: 10,
               ),
