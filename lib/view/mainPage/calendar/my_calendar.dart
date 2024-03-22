@@ -102,6 +102,7 @@ class _MyCalendarState extends State<MyCalendar> {
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
     calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true, firstFun: true);
     calendarProvider.myTodoDayCountGet(nowDate);
+    calendarProvider.myTodoHomeWidget();
   }
 
   @override
@@ -142,6 +143,7 @@ class _MyCalendarState extends State<MyCalendar> {
                 if (date != null) {
                   if (DateFormat('yyyy-MM-dd').format(_selectedDay!) == date) {
                     provider.myTodoGet(_selectedDay!);
+                    provider.myTodoHomeWidget();
                   }
                   provider.myTodoDayCountGet(_selectedDay!);
                 }
@@ -579,6 +581,7 @@ class _MyCalendarState extends State<MyCalendar> {
                                   value: todoList[index].checkTodo,
                                   onChanged: (value) {
                                     provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
+                                    provider.myTodoHomeWidget(currentPageDate: DateFormat('yyyy-MM-dd').format(_selectedDay!));
                                     setState(() {});
                                   },
                                 ),

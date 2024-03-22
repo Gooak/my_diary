@@ -10,11 +10,9 @@ import 'package:my_little_memory_diary/state/backUpState.dart';
 import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});

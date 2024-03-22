@@ -1,11 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_little_memory_diary/common/googleAd.dart';
-import 'package:my_little_memory_diary/common/googleFrontAd.dart';
-import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/pageHome.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/my_calendar.dart';
 import 'package:my_little_memory_diary/view/mainPage/diary/my_diary.dart';
@@ -31,6 +26,14 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  @pragma('vm:entry-point')
+  Future<void> interactiveCallback(Uri? uri) async {
+    // We check the host of the uri to determine which action should be triggered.
+    if (uri?.host == 'todoOnClick') {
+      _onDestinationSelected(1);
+    }
+  }
+
   void _onDestinationSelected(int index) {
     setState(() {
       selectedItem = index;
@@ -54,7 +57,7 @@ class _HomeState extends State<Home> {
             Expanded(
               child: FadeIndexedStack(
                 index: selectedItem,
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 150),
                 children: pages,
               ),
             ),

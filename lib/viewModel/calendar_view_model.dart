@@ -6,6 +6,7 @@ import 'package:my_little_memory_diary/localRepository/hiveTodoRepository.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/serverRepository/calendar_repository.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
+import 'package:home_widget/home_widget.dart';
 
 class CalendarViewModel extends ChangeNotifier {
   final calendarRepository = CalendarRepository();
@@ -128,5 +129,23 @@ class CalendarViewModel extends ChangeNotifier {
   Future<void> myTodoDelete(List<TodoModel> deleteTodoList) async {
     await hiveRepository.myTodoDelete(deleteTodoList);
     notifyListeners();
+  }
+
+  Future<void> myTodoHomeWidget({String currentPageDate = ''}) async {
+    String selectedDayString = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    if (currentPageDate != '' && selectedDayString != currentPageDate) {
+      return;
+    }
+    final todoHomeWidget = await hiveRepository.myTodoGet(selectedDayString);
+
+    String todoText = '';
+    if (todoHomeWidget.isNotEmpty) {
+      todoText = '${todoHomeWidget[0].date} 투두리스트\n';
+      for (var todoItem in todoHomeWidget) {
+        todoText += '${todoItem.todoText} ${todoItem.checkTodo == true ? "✔️" : "❌"}\n';
+      }
+    }
+    await HomeWidget.saveWidgetData<String>('todoList', todoText);
+    await HomeWidget.updateWidget(name: 'HomeWidgetProvider', iOSName: 'HomeWidgetProvider');
   }
 }
