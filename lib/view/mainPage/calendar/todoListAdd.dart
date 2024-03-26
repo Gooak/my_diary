@@ -10,7 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class TodoListAdd extends StatefulWidget {
-  const TodoListAdd({super.key});
+  const TodoListAdd({
+    super.key,
+    this.date,
+  });
+  final DateTime? date;
 
   @override
   State<TodoListAdd> createState() => _TodoListAddState();
@@ -29,6 +33,12 @@ class _TodoListAddState extends State<TodoListAdd> {
   void initState() {
     super.initState();
     GoogleFrontAd.initialize();
+    if (widget.date != null && !widget.date!.isBefore(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
+      final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
+      calendarProvider.myTodoGet(widget.date!);
+      todoList = calendarProvider.todoList;
+      date = DateFormat('yyyy-MM-dd').format(widget.date!);
+    }
   }
 
   @override
@@ -275,7 +285,7 @@ class _TodoListAddState extends State<TodoListAdd> {
     Future<DateTime?> selectedDate = showDatePicker(
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
-      firstDate: nowDate.subtract(const Duration(days: 30)),
+      firstDate: nowDate,
       lastDate: nowDate.add(const Duration(days: 30)),
       locale: const Locale('ko', 'KO'),
     );

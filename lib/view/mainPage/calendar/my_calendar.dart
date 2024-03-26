@@ -137,7 +137,7 @@ class _MyCalendarState extends State<MyCalendar> {
                 final String? date = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const TodoListAdd(),
+                    builder: (context) => TodoListAdd(date: _selectedDay!),
                   ),
                 );
                 if (date != null) {
@@ -149,16 +149,16 @@ class _MyCalendarState extends State<MyCalendar> {
                 }
               },
             ),
-            SpeedDialChild(
-              child: const Text('통계'),
-              onTap: () async {
-                if (provider.eventChart != null) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarChart(eventChart: provider.eventChart!)));
-                } else {
-                  showCustomSnackBar(context, '이번 달에 작성하신 일기가 없습니다.');
-                }
-              },
-            ),
+            // SpeedDialChild(
+            //   child: const Text('통계'),
+            //   onTap: () async {
+            //     if (provider.eventChart != null) {
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarChart(eventChart: provider.eventChart!)));
+            //     } else {
+            //       showCustomSnackBar(context, '이번 달에 작성하신 일기가 없습니다.');
+            //     }
+            //   },
+            // ),
           ],
         ),
         body: SafeArea(
