@@ -9,5 +9,6 @@ class OpenHive {
     await Hive.openBox<TodoModel>('myTodo');
     await Hive.openBox<int>('AppTheme');
     await Hive.openBox<int>('todoDayCount');
+    await Hive.openBox<String>('todoTextColor');
   }
 }

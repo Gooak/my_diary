@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hive/hive.dart';
+import 'package:my_little_memory_diary/components/dialog.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
@@ -35,6 +36,8 @@ class _MyCalendarState extends State<MyCalendar> {
   Map<DateTime, int> todos = {};
 
   List<TodoModel> todoList = [];
+
+  String todoTextColor = '';
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
     if (!isSameDay(_selectedDay, selectedDay)) {
@@ -103,6 +106,7 @@ class _MyCalendarState extends State<MyCalendar> {
     calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true, firstFun: true);
     calendarProvider.myTodoDayCountGet(nowDate);
     calendarProvider.myTodoHomeWidget();
+    calendarProvider.myTodoTextColorGet();
   }
 
   @override
@@ -113,6 +117,7 @@ class _MyCalendarState extends State<MyCalendar> {
       events = provider.events;
       todoList = provider.todoList;
       todos = provider.todos;
+      todoTextColor = provider.todoTextColor;
       return Scaffold(
         floatingActionButton: SpeedDial(
           heroTag: 'CalendarAdd',
@@ -551,9 +556,57 @@ class _MyCalendarState extends State<MyCalendar> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
-                      child: Text('투두리스트'),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+                      child: Row(
+                        children: [
+                          const Text('투두리스트'),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await provider.myTodoTextColorSet();
+                            },
+                            child: AnimatedDefaultTextStyle(
+                              duration: const Duration(milliseconds: 300),
+                              style: TextStyle(
+                                color: todoTextColor == '0' ? Colors.grey : Colors.black,
+                              ),
+                              child: Text(todoTextColor == '0' ? 'White' : 'Black'),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              dialogFunc(
+                                  context: context,
+                                  title: '도움말',
+                                  text: '홈 위젯의 글자 색상을 바꿉니다.\n(흰색, 검은색)',
+                                  cancel: '',
+                                  enter: '확인',
+                                  cancelAction: () {},
+                                  enterAction: () {
+                                    Navigator.pop(context);
+                                  });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.question_mark_rounded,
+                                  size: 13,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     ListView.builder(
                       itemCount: todoList.length,
@@ -605,6 +658,10 @@ class _MyCalendarState extends State<MyCalendar> {
                           ),
                         );
                       },
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
+                      child: Text('홈 위젯 글자 색상 변경'),
                     ),
                   ],
                 ),

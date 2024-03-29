@@ -28,4 +28,12 @@ class MyTodoForHive {
   Future<void> myTodoDelete(List<TodoModel> deleteTodoList) async {
     await _dataSource.myTodoDelete(deleteTodoList);
   }
+
+  Future<String> myTodoTextColorGet() async {
+    return _dataSource.myTodoTextColorGet();
+  }
+
+  Future<String> myTodoTextColorSet() async {
+    return _dataSource.myTodoTextColorSet();
+  }
 }

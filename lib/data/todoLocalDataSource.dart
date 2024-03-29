@@ -56,4 +56,23 @@ class HiveLocalDataSource {
       box.delete(todo.id);
     }
   }
+
+  Future<String> myTodoTextColorGet() async {
+    var myTodo = Hive.box<String>('todoTextColor');
+    String todoTextColor = myTodo.get('todoTextColor') ?? '1';
+    return todoTextColor;
+  }
+
+  Future<String> myTodoTextColorSet() async {
+    var myTodo = Hive.box<String>('todoTextColor');
+    String todoTextColor;
+    if (myTodo.get('todoTextColor') == '0' || myTodo.get('todoTextColor') == null) {
+      myTodo.put('todoTextColor', '1');
+      todoTextColor = '1';
+    } else {
+      myTodo.put('todoTextColor', '0');
+      todoTextColor = '0';
+    }
+    return todoTextColor;
+  }
 }
