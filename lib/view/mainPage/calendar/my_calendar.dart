@@ -1,13 +1,10 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:hive/hive.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
-import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/calendarAdd.dart';
-import 'package:my_little_memory_diary/view/mainPage/calendar/calendarChart.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/todoListAdd.dart';
 import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
@@ -96,7 +93,7 @@ class _MyCalendarState extends State<MyCalendar> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     checkDate = DateTime.utc(nowDate.year, nowDate.month, nowDate.day);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -105,8 +102,8 @@ class _MyCalendarState extends State<MyCalendar> {
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
     calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true, firstFun: true);
     calendarProvider.myTodoDayCountGet(nowDate);
-    calendarProvider.myTodoHomeWidget();
-    calendarProvider.myTodoTextColorGet();
+    await calendarProvider.myTodoTextColorGet();
+    await calendarProvider.myTodoHomeWidget();
   }
 
   @override
