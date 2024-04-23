@@ -230,6 +230,9 @@ class _DiaryAddState extends State<DiaryAdd> {
                 height: 10,
               ),
               const GoogleAd(),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),

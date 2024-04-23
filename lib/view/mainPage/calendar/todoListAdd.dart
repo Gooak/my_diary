@@ -271,6 +271,9 @@ class _TodoListAddState extends State<TodoListAdd> {
                 height: 10,
               ),
               const GoogleAd(),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),

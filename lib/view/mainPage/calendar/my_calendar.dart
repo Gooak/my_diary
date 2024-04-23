@@ -656,10 +656,6 @@ class _MyCalendarState extends State<MyCalendar> {
                         );
                       },
                     ),
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
-                      child: Text('홈 위젯 글자 색상 변경'),
-                    ),
                   ],
                 ),
               const SizedBox(
