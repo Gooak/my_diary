@@ -38,7 +38,7 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
     {'moodImage': 'images/happy.png', 'moodName': '기쁨', 'moodId': 'happy'},
     {'moodImage': 'images/happiness.png', 'moodName': '행복', 'moodId': 'happiness'},
     {'moodImage': 'images/tired.png', 'moodName': '지친', 'moodId': 'tired'},
-    {'moodImage': 'images/depressed1.png', 'moodName': '우울', 'moodId': 'depressed'},
+    {'moodImage': 'images/depressed1.png', 'moodName': '우울', 'moodId': 'depressed1'},
     {'moodImage': 'images/tremble.png', 'moodName': '떨떠름', 'moodId': 'tremble'},
     {'moodImage': 'images/angry.png', 'moodName': '화남', 'moodId': 'angry'},
     {'moodImage': 'images/sad.png', 'moodName': '슬픔', 'moodId': 'sad'},
