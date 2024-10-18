@@ -1,12 +1,10 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:hive/hive.dart';
-import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/components/dialog.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/calendarAdd.dart';
-import 'package:my_little_memory_diary/view/mainPage/calendar/calendarChart.dart';
 import 'package:my_little_memory_diary/view/mainPage/calendar/todoListAdd.dart';
 import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
 import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
@@ -35,6 +33,8 @@ class _MyCalendarState extends State<MyCalendar> {
   Map<DateTime, int> todos = {};
 
   List<TodoModel> todoList = [];
+
+  String todoTextColor = '';
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) async {
     if (!isSameDay(_selectedDay, selectedDay)) {
@@ -93,7 +93,7 @@ class _MyCalendarState extends State<MyCalendar> {
   }
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
     checkDate = DateTime.utc(nowDate.year, nowDate.month, nowDate.day);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -102,7 +102,8 @@ class _MyCalendarState extends State<MyCalendar> {
     _selectedDay = DateTime.utc(_focusedDay.year, _focusedDay.month, _focusedDay.day);
     calendarProvider.getEventList(userProvider.user!.email.toString(), nowDate, countCheck: true, firstFun: true);
     calendarProvider.myTodoDayCountGet(nowDate);
-    calendarProvider.myTodoHomeWidget();
+    await calendarProvider.myTodoTextColorGet();
+    await calendarProvider.myTodoHomeWidget();
   }
 
   @override
@@ -113,6 +114,7 @@ class _MyCalendarState extends State<MyCalendar> {
       events = provider.events;
       todoList = provider.todoList;
       todos = provider.todos;
+      todoTextColor = provider.todoTextColor;
       return Scaffold(
         floatingActionButton: SpeedDial(
           heroTag: 'CalendarAdd',
@@ -137,7 +139,7 @@ class _MyCalendarState extends State<MyCalendar> {
                 final String? date = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const TodoListAdd(),
+                    builder: (context) => TodoListAdd(date: _selectedDay!),
                   ),
                 );
                 if (date != null) {
@@ -149,16 +151,16 @@ class _MyCalendarState extends State<MyCalendar> {
                 }
               },
             ),
-            SpeedDialChild(
-              child: const Text('통계'),
-              onTap: () async {
-                if (provider.eventChart != null) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarChart(eventChart: provider.eventChart!)));
-                } else {
-                  showCustomSnackBar(context, '이번 달에 작성하신 일기가 없습니다.');
-                }
-              },
-            ),
+            // SpeedDialChild(
+            //   child: const Text('통계'),
+            //   onTap: () async {
+            //     if (provider.eventChart != null) {
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) => CalendarChart(eventChart: provider.eventChart!)));
+            //     } else {
+            //       showCustomSnackBar(context, '이번 달에 작성하신 일기가 없습니다.');
+            //     }
+            //   },
+            // ),
           ],
         ),
         body: SafeArea(
@@ -551,9 +553,57 @@ class _MyCalendarState extends State<MyCalendar> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(15, 15, 15, 5),
-                      child: Text('투두리스트'),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+                      child: Row(
+                        children: [
+                          const Text('투두리스트'),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              await provider.myTodoTextColorSet();
+                            },
+                            child: AnimatedDefaultTextStyle(
+                              duration: const Duration(milliseconds: 300),
+                              style: TextStyle(
+                                color: todoTextColor == '0' ? Colors.grey : Colors.black,
+                              ),
+                              child: Text(todoTextColor == '0' ? 'White' : 'Black'),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              dialogFunc(
+                                  context: context,
+                                  title: '도움말',
+                                  text: '홈 위젯의 글자 색상을 바꿉니다.\n(흰색, 검은색)',
+                                  cancel: '',
+                                  enter: '확인',
+                                  cancelAction: () {},
+                                  enterAction: () {
+                                    Navigator.pop(context);
+                                  });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1, color: Colors.black),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: const Center(
+                                child: Icon(
+                                  Icons.question_mark_rounded,
+                                  size: 13,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                     ListView.builder(
                       itemCount: todoList.length,

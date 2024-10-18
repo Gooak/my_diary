@@ -44,6 +44,10 @@ class CalendarViewModel extends ChangeNotifier {
   late QuerySnapshot? _eventChart;
   QuerySnapshot? get eventChart => _eventChart;
 
+  //바탕화면 투두리스트 컬러
+  String _todoTextColor = "1";
+  String get todoTextColor => _todoTextColor;
+
   Future<void> getEventList(String email, DateTime date, {bool countCheck = false, bool firstFun = false}) async {
     if (firstFun == true) {
       _events.clear();
@@ -131,6 +135,21 @@ class CalendarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //투두 색상 가져오기
+  Future<void> myTodoTextColorGet() async {
+    _todoTextColor = await hiveRepository.myTodoTextColorGet();
+    notifyListeners();
+  }
+
+  //투두 색상 변경
+  Future<void> myTodoTextColorSet() async {
+    _todoTextColor = await hiveRepository.myTodoTextColorSet();
+    await HomeWidget.saveWidgetData<String>('todoTextColor', _todoTextColor);
+    await HomeWidget.updateWidget(name: 'HomeWidgetProvider', iOSName: 'HomeWidgetProvider');
+    notifyListeners();
+  }
+
+  //홈위젯 투두 추가
   Future<void> myTodoHomeWidget({String currentPageDate = ''}) async {
     String selectedDayString = DateFormat('yyyy-MM-dd').format(DateTime.now());
     if (currentPageDate != '' && selectedDayString != currentPageDate) {
@@ -145,6 +164,7 @@ class CalendarViewModel extends ChangeNotifier {
         todoText += '${todoItem.todoText} ${todoItem.checkTodo == true ? "✔️" : "❌"}\n';
       }
     }
+    await HomeWidget.saveWidgetData<String>('todoTextColor', _todoTextColor);
     await HomeWidget.saveWidgetData<String>('todoList', todoText);
     await HomeWidget.updateWidget(name: 'HomeWidgetProvider', iOSName: 'HomeWidgetProvider');
   }

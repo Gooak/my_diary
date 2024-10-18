@@ -10,7 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class TodoListAdd extends StatefulWidget {
-  const TodoListAdd({super.key});
+  const TodoListAdd({
+    super.key,
+    this.date,
+  });
+  final DateTime? date;
 
   @override
   State<TodoListAdd> createState() => _TodoListAddState();
@@ -29,6 +33,12 @@ class _TodoListAddState extends State<TodoListAdd> {
   void initState() {
     super.initState();
     GoogleFrontAd.initialize();
+    if (widget.date != null && !widget.date!.isBefore(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
+      final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
+      calendarProvider.myTodoGet(widget.date!);
+      todoList = calendarProvider.todoList;
+      date = DateFormat('yyyy-MM-dd').format(widget.date!);
+    }
   }
 
   @override
@@ -241,29 +251,29 @@ class _TodoListAddState extends State<TodoListAdd> {
                         ],
                       );
                     } else {
-                      return SizedBox(
-                        width: size.width,
-                        child: Center(
-                          child: TextButton(
-                            onPressed: () {
-                              if (addTodoList.length + todoList.length == 10) {
-                                showCustomSnackBar(context, '10개까지만 등록가능합니다!');
-                              } else {
-                                bottomSheet(context);
-                              }
-                            },
-                            child: const Text('투두리스트 추가'),
-                          ),
-                        ),
-                      );
+                      return ElevatedButton(
+                          onPressed: () {
+                            if (addTodoList.length + todoList.length == 10) {
+                              showCustomSnackBar(context, '10개까지만 등록가능합니다!');
+                            } else {
+                              bottomSheet(context);
+                            }
+                          },
+                          child: const Text('투두리스트 추가'));
                     }
                   },
                 ),
+              const SizedBox(
+                height: 10,
+              ),
               const Text('※ 개인 핸드폰에 저장이 되며 앱 데이터 삭제시 같이 지워집니다. 앱 삭제하기전, 회원 관리에 투두리스트 백업을 해두시길 바랍니다.'),
               const SizedBox(
                 height: 10,
               ),
               const GoogleAd(),
+              const SizedBox(
+                height: 100,
+              ),
             ],
           ),
         ),
@@ -275,7 +285,7 @@ class _TodoListAddState extends State<TodoListAdd> {
     Future<DateTime?> selectedDate = showDatePicker(
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       context: context,
-      firstDate: nowDate.subtract(const Duration(days: 30)),
+      firstDate: nowDate,
       lastDate: nowDate.add(const Duration(days: 30)),
       locale: const Locale('ko', 'KO'),
     );

@@ -328,10 +328,10 @@ class _MyPageState extends State<MyPage> {
                 cancel: '취소',
                 enter: '보내기',
                 feedbackController: textController,
-                hintText: '촤대 30글자',
+                hintText: '촤대 100글자',
                 icon: null,
                 hintCount: null,
-                maxLength: 30,
+                maxLength: 100,
                 circualr: 5,
                 cancelAction: () {
                   if (mounted) {

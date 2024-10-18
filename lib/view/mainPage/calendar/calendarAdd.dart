@@ -249,6 +249,9 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                   height: 10,
                 ),
                 const GoogleAd(),
+                const SizedBox(
+                  height: 100,
+                ),
               ],
             ),
           ),
