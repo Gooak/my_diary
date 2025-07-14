@@ -4,10 +4,10 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
-import 'package:my_little_memory_diary/view/mainPage/calendar/calendarAdd.dart';
-import 'package:my_little_memory_diary/view/mainPage/calendar/todoListAdd.dart';
-import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
-import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/view/main_page/calendar/calendar_add.dart';
+import 'package:my_little_memory_diary/view/main_page/calendar/todo_list_add.dart';
+import 'package:my_little_memory_diary/view_model/calendar_view_model.dart';
+import 'package:my_little_memory_diary/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -631,7 +631,8 @@ class _MyCalendarState extends State<MyCalendar> {
                                   value: todoList[index].checkTodo,
                                   onChanged: (value) {
                                     provider.myTodoUpdate(todoList[index].id, value!, _selectedDay!);
-                                    provider.myTodoHomeWidget(currentPageDate: DateFormat('yyyy-MM-dd').format(_selectedDay!));
+                                    provider.myTodoHomeWidget(
+                                        currentPageDate: DateFormat('yyyy-MM-dd').format(_selectedDay!));
                                     setState(() {});
                                   },
                                 ),

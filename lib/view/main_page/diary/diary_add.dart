@@ -3,13 +3,13 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_little_memory_diary/components/googleAd.dart';
-import 'package:my_little_memory_diary/components/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/google_ad.dart';
+import 'package:my_little_memory_diary/components/google_front_ad.dart';
 import 'package:my_little_memory_diary/components/design.dart';
-import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/components/snack_bar.dart';
 import 'package:my_little_memory_diary/model/diary_model.dart';
-import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
-import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/view_model/diary_view_model.dart';
+import 'package:my_little_memory_diary/view_model/user_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

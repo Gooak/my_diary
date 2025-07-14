@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_little_memory_diary/components/loading.dart';
-import 'package:my_little_memory_diary/components/snackBar.dart';
+import 'package:my_little_memory_diary/components/snack_bar.dart';
 import 'package:my_little_memory_diary/model/user_model.dart';
 
 class LoginRepository {

@@ -1,14 +1,14 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:my_little_memory_diary/components/colorScheme.dart';
+import 'package:my_little_memory_diary/components/color_scheme.dart';
 import 'package:my_little_memory_diary/components/design.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
 import 'package:my_little_memory_diary/model/diary_model.dart';
-import 'package:my_little_memory_diary/view/mainPage/diary/diaryAdd.dart';
-import 'package:my_little_memory_diary/view/mainPage/diary/diaryPhotoView.dart';
-import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
-import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/view/main_page/diary/diary_add.dart';
+import 'package:my_little_memory_diary/view/main_page/diary/diary_photo_view.dart';
+import 'package:my_little_memory_diary/view_model/diary_view_model.dart';
+import 'package:my_little_memory_diary/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -80,8 +80,9 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                     maxLines: null,
                     expands: true,
                     controller: searchController,
-                    decoration:
-                        DesignInputDecoration(hintText: '검색 단어 입력', icon: const Icon(Icons.search), circular: 5, hintCount: '').inputDecoration,
+                    decoration: DesignInputDecoration(
+                            hintText: '검색 단어 입력', icon: const Icon(Icons.search), circular: 5, hintCount: '')
+                        .inputDecoration,
                     onChanged: (value) {
                       setState(() {
                         textCentent = searchController.text;
@@ -126,7 +127,8 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                 : ListView.builder(
                     itemCount: diaryList.length,
                     itemBuilder: (context, index) {
-                      if (searchController.text != "" && !diaryList[index].text.toLowerCase().contains(textCentent.toLowerCase())) {
+                      if (searchController.text != "" &&
+                          !diaryList[index].text.toLowerCase().contains(textCentent.toLowerCase())) {
                         return const SizedBox.shrink();
                       } else {
                         return Container(
@@ -209,7 +211,8 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                                                     enterAction: () {
                                                       final diary = diaryList[index];
                                                       Navigator.pop(context);
-                                                      provider.diaryDelete(userProvider.user!.email!, diary.id!, diary.imagePath);
+                                                      provider.diaryDelete(
+                                                          userProvider.user!.email!, diary.id!, diary.imagePath);
                                                       provider.getDiary(userProvider.user!.email!);
                                                     },
                                                   );
@@ -244,7 +247,9 @@ class _MyDiaryState extends State<MyDiary> with WidgetsBindingObserver {
                                     child: Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
+                                          color: Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.black
+                                              : Colors.white,
                                           borderRadius: BorderRadius.circular(10.0)),
                                       width: double.infinity,
                                       child: diaryList[index].imageUrl != ""

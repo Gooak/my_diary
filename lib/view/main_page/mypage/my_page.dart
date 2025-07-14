@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_little_memory_diary/common/packageInfo.dart';
-import 'package:my_little_memory_diary/components/colorScheme.dart';
+import 'package:my_little_memory_diary/components/color_scheme.dart';
 import 'package:my_little_memory_diary/components/dialog.dart';
-import 'package:my_little_memory_diary/components/myPageDesignContainer.dart';
-import 'package:my_little_memory_diary/components/snackBar.dart';
-import 'package:my_little_memory_diary/serverRepository/user_repository.dart';
-import 'package:my_little_memory_diary/state/backUpState.dart';
-import 'package:my_little_memory_diary/viewModel/calendar_view_model.dart';
-import 'package:my_little_memory_diary/viewModel/diary_view_model.dart';
-import 'package:my_little_memory_diary/viewModel/user_view_model.dart';
+import 'package:my_little_memory_diary/components/my_page_design_container.dart';
+import 'package:my_little_memory_diary/components/snack_bar.dart';
+import 'package:my_little_memory_diary/server_repository/user_repository.dart';
+import 'package:my_little_memory_diary/state/backup_state.dart';
+import 'package:my_little_memory_diary/view_model/calendar_view_model.dart';
+import 'package:my_little_memory_diary/view_model/diary_view_model.dart';
+import 'package:my_little_memory_diary/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -348,7 +348,8 @@ class _MyPageState extends State<MyPage> {
                     Navigator.pop(context);
                     showCustomSnackBar(context, '보내주셔서 감사합니다.');
                   }
-                  await UserRepository.setFeedback(userProvider.user!.email!, userProvider.user!.userName!, textController.text);
+                  await UserRepository.setFeedback(
+                      userProvider.user!.email!, userProvider.user!.userName!, textController.text);
                   textController.text = '';
                 },
               );
@@ -404,7 +405,8 @@ class _MyPageState extends State<MyPage> {
               dialogFunc(
                 context: context,
                 title: '투두리스트 백업',
-                text: '지금까지 작성 해오신 투두리스트를 백업 하시겠습니까?\n이미 백업 파일이 있으신 경우 백업이 덮어쓰여집니다.\n기기변경 하실 예정이시거나, 앱을 삭제하고 다시 다운받을때 이용합니다.',
+                text:
+                    '지금까지 작성 해오신 투두리스트를 백업 하시겠습니까?\n이미 백업 파일이 있으신 경우 백업이 덮어쓰여집니다.\n기기변경 하실 예정이시거나, 앱을 삭제하고 다시 다운받을때 이용합니다.',
                 cancel: '아니오',
                 enter: '예',
                 cancelAction: () {
@@ -510,7 +512,8 @@ class _MyPageState extends State<MyPage> {
                           Navigator.pop(context);
                           showCustomSnackBar(context, '그동안 나의 작은 추억 일기를 이용해주셔서 감사합니다.');
                         }
-                        await UserRepository.deleteAccountReason(userProvider.user!.email!, userProvider.user!.userName!, textController.text);
+                        await UserRepository.deleteAccountReason(
+                            userProvider.user!.email!, userProvider.user!.userName!, textController.text);
                         await UserRepository.deleteUser(userProvider.user!.email!);
                         textController.text = '';
                       },

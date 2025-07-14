@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:my_little_memory_diary/localRepository/hiveTodoRepository.dart';
+import 'package:my_little_memory_diary/local_repository/hive_todo_repository.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
-import 'package:my_little_memory_diary/serverRepository/calendar_repository.dart';
+import 'package:my_little_memory_diary/server_repository/calendar_repository.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 import 'package:home_widget/home_widget.dart';
 
@@ -88,7 +88,8 @@ class CalendarViewModel extends ChangeNotifier {
   //투두리스트 모든 투두 리스트
   Future<void> myTodoDayCountGet(DateTime date) async {
     String nowDateString = DateFormat('yyyy-MM').format(date);
-    var box = Hive.box<int>('todoDayCount').toMap().entries.where((entry) => entry.key.toString().contains(nowDateString));
+    var box =
+        Hive.box<int>('todoDayCount').toMap().entries.where((entry) => entry.key.toString().contains(nowDateString));
     for (var item in box) {
       List date = item.key.toString().split('-');
       _todos[DateTime.utc(int.parse(date[0]), int.parse(date[1]), int.parse(date[2]))] = item.value;

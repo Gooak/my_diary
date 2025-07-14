@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:my_little_memory_diary/components/loading.dart';
 import 'package:my_little_memory_diary/model/diary_model.dart';
-import 'package:my_little_memory_diary/serverRepository/diary_repository.dart';
+import 'package:my_little_memory_diary/server_repository/diary_repository.dart';
 import 'package:path/path.dart' as path;
 import 'package:intl/intl.dart';
 
@@ -43,7 +43,8 @@ class DiaryViewModel extends ChangeNotifier {
     final putImage = FirebaseStorage.instance.ref().child(email).child(extension);
     await putImage.putFile(image, SettableMetadata(contentType: 'image/jpg'));
     final imageUrl = await putImage.getDownloadURL();
-    var diary = DiaryModel(date: nowDate, text: text, imageUrl: imageUrl, timestamp: Timestamp.now(), imagePath: extension);
+    var diary =
+        DiaryModel(date: nowDate, text: text, imageUrl: imageUrl, timestamp: Timestamp.now(), imagePath: extension);
     await diaryRepository.setDiary(email, diary);
     notifyListeners();
     dismissLoading();

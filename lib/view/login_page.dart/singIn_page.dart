@@ -2,7 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:my_little_memory_diary/components/design.dart';
-import 'package:my_little_memory_diary/serverRepository/login_repository.dart';
+import 'package:my_little_memory_diary/server_repository/login_repository.dart';
 import 'package:my_little_memory_diary/view/login_page.dart/find_passwd.dart';
 import 'package:my_little_memory_diary/view/login_page.dart/signup_page.dart';
 import 'package:sign_in_button/sign_in_button.dart';
@@ -47,7 +47,9 @@ class _SigninPageState extends State<SigninPage> {
                 width: size.width - 50,
                 child: TextField(
                   controller: textEmail,
-                  decoration: DesignInputDecoration(hintText: '이메일', icon: const Icon(Icons.email), circular: 5, hintCount: '').inputDecoration,
+                  decoration:
+                      DesignInputDecoration(hintText: '이메일', icon: const Icon(Icons.email), circular: 5, hintCount: '')
+                          .inputDecoration,
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
@@ -59,7 +61,9 @@ class _SigninPageState extends State<SigninPage> {
                 child: TextField(
                   obscureText: true,
                   controller: textPasswd,
-                  decoration: DesignInputDecoration(hintText: '비밀번호', icon: const Icon(Icons.key), circular: 5, hintCount: '').inputDecoration,
+                  decoration:
+                      DesignInputDecoration(hintText: '비밀번호', icon: const Icon(Icons.key), circular: 5, hintCount: '')
+                          .inputDecoration,
                   keyboardType: TextInputType.visiblePassword,
                 ),
               ),

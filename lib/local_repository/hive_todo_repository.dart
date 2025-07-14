@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:my_little_memory_diary/data/todoLocalDataSource.dart';
+import 'package:my_little_memory_diary/data/todo_local_data_source.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
 
 class MyTodoForHive {

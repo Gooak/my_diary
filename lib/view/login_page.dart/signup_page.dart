@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_little_memory_diary/components/design.dart';
-import 'package:my_little_memory_diary/serverRepository/login_repository.dart';
+import 'package:my_little_memory_diary/server_repository/login_repository.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -38,7 +38,9 @@ class _SignupPageState extends State<SignupPage> {
                   height: 80,
                   child: TextFormField(
                       controller: textEmail,
-                      decoration: DesignInputDecoration(hintText: '이메일', icon: const Icon(Icons.email), circular: 5, hintCount: '').inputDecoration,
+                      decoration: DesignInputDecoration(
+                              hintText: '이메일', icon: const Icon(Icons.email), circular: 5, hintCount: '')
+                          .inputDecoration,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -60,12 +62,17 @@ class _SignupPageState extends State<SignupPage> {
                   child: TextFormField(
                     obscureText: true,
                     controller: textPasswd,
-                    decoration: DesignInputDecoration(hintText: '비밀번호 (숫자, 문자, 특수문자, 최소8자)', icon: const Icon(Icons.key), circular: 5, hintCount: '')
+                    decoration: DesignInputDecoration(
+                            hintText: '비밀번호 (숫자, 문자, 특수문자, 최소8자)',
+                            icon: const Icon(Icons.key),
+                            circular: 5,
+                            hintCount: '')
                         .inputDecoration,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '비밀번호를 입력해주세요';
-                      } else if (!RegExp(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$").hasMatch(value)) {
+                      } else if (!RegExp(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$")
+                          .hasMatch(value)) {
                         return '비밀번호 형식이 맞지않습니다!';
                       }
                       return null;
@@ -82,7 +89,9 @@ class _SignupPageState extends State<SignupPage> {
                   child: TextFormField(
                     obscureText: true,
                     controller: textPasswd2,
-                    decoration: DesignInputDecoration(hintText: '비밀번호 확인', icon: const Icon(Icons.key), circular: 5, hintCount: '').inputDecoration,
+                    decoration: DesignInputDecoration(
+                            hintText: '비밀번호 확인', icon: const Icon(Icons.key), circular: 5, hintCount: '')
+                        .inputDecoration,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '비밀번호를 입력해주세요';
@@ -102,8 +111,9 @@ class _SignupPageState extends State<SignupPage> {
                   height: 80,
                   child: TextFormField(
                     controller: textName,
-                    decoration:
-                        DesignInputDecoration(hintText: '이름 or 닉네임', icon: const Icon(Icons.person), circular: 5, hintCount: '').inputDecoration,
+                    decoration: DesignInputDecoration(
+                            hintText: '이름 or 닉네임', icon: const Icon(Icons.person), circular: 5, hintCount: '')
+                        .inputDecoration,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '이름 or 닉네임을 입력해주세요!';
@@ -122,7 +132,8 @@ class _SignupPageState extends State<SignupPage> {
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState!.validate()) {
-                          await LoginRepository.signUp(context, textName.text.trim(), textEmail.text.trim(), textPasswd.text.trim());
+                          await LoginRepository.signUp(
+                              context, textName.text.trim(), textEmail.text.trim(), textPasswd.text.trim());
                           if (context.mounted) {
                             Navigator.pop(context);
                           }
