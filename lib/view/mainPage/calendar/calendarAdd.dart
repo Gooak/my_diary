@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:my_little_memory_diary/common/googleAd.dart';
-import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/googleAd.dart';
+import 'package:my_little_memory_diary/components/googleFrontAd.dart';
 import 'package:my_little_memory_diary/components/design.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/model/calendar_model.dart';
@@ -109,7 +109,8 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                     mood: textController.text,
                     moodImage: moodImage,
                     timestamp: Timestamp.now(),
-                    calendarCount: widget.event == null ? calendarProvider.calendarCount + 1 : widget.event!.calendarCount!));
+                    calendarCount:
+                        widget.event == null ? calendarProvider.calendarCount + 1 : widget.event!.calendarCount!));
             await calendarProvider.getEventList(userProvider.user!.email!, nowDate, countCheck: true);
             if (context.mounted) {
               Navigator.pop(context);
@@ -153,8 +154,9 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                               margin: const EdgeInsets.only(right: 5),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(size.width / 5),
-                                  color:
-                                      weather == weatherList[index]["weatherId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
+                                  color: weather == weatherList[index]["weatherId"].toString()
+                                      ? Theme.of(context).colorScheme.primaryContainer
+                                      : null),
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(size.width / 5),
                                 onTap: () {
@@ -193,7 +195,9 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                           margin: const EdgeInsets.only(right: 5),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(size.width / 8),
-                              color: moodImage == moodList[index]["moodId"].toString() ? Theme.of(context).colorScheme.primaryContainer : null),
+                              color: moodImage == moodList[index]["moodId"].toString()
+                                  ? Theme.of(context).colorScheme.primaryContainer
+                                  : null),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(size.width / 8),
                             onTap: () {
@@ -233,8 +237,9 @@ class _CalendarAddState extends State<CalendarAdd> with WidgetsBindingObserver {
                       textAlignVertical: TextAlignVertical.top,
                       controller: textController,
                       maxLength: 50,
-                      decoration:
-                          DesignInputDecoration(hintText: '오늘 하루 일을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null).inputDecoration,
+                      decoration: DesignInputDecoration(
+                              hintText: '오늘 하루 일을 적어주세요 (최대 50글자)', icon: null, circular: 5, hintCount: null)
+                          .inputDecoration,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return '오늘 하루 일을 적어주세요';

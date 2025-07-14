@@ -3,8 +3,8 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_little_memory_diary/common/googleAd.dart';
-import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/googleAd.dart';
+import 'package:my_little_memory_diary/components/googleFrontAd.dart';
 import 'package:my_little_memory_diary/components/design.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/model/diary_model.dart';
@@ -197,9 +197,15 @@ class _DiaryAddState extends State<DiaryAdd> {
                                       children: [
                                         Text(
                                           '이미지 선택',
-                                          style: TextStyle(color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+                                          style: TextStyle(
+                                              color: Theme.of(context).brightness == Brightness.dark
+                                                  ? Colors.white
+                                                  : Colors.black),
                                         ),
-                                        Icon(Icons.check, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black),
+                                        Icon(Icons.check,
+                                            color: Theme.of(context).brightness == Brightness.dark
+                                                ? Colors.white
+                                                : Colors.black),
                                       ],
                                     )
                               : ClipRRect(
@@ -218,7 +224,9 @@ class _DiaryAddState extends State<DiaryAdd> {
                         maxLines: null,
                         expands: true,
                         maxLength: 50,
-                        decoration: DesignInputDecoration(hintText: '추억을 적어주세요 (최대 50글자)', icon: null, circular: 10, hintCount: '').inputDecoration,
+                        decoration: DesignInputDecoration(
+                                hintText: '추억을 적어주세요 (최대 50글자)', icon: null, circular: 10, hintCount: '')
+                            .inputDecoration,
                         textAlign: TextAlign.center,
                         controller: postText,
                       ),

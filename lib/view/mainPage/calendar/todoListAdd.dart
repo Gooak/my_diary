@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:my_little_memory_diary/common/googleAd.dart';
-import 'package:my_little_memory_diary/common/googleFrontAd.dart';
+import 'package:my_little_memory_diary/components/googleAd.dart';
+import 'package:my_little_memory_diary/components/googleFrontAd.dart';
 import 'package:my_little_memory_diary/components/design.dart';
 import 'package:my_little_memory_diary/components/snackBar.dart';
 import 'package:my_little_memory_diary/model/todo_model.dart';
@@ -33,7 +33,8 @@ class _TodoListAddState extends State<TodoListAdd> {
   void initState() {
     super.initState();
     GoogleFrontAd.initialize();
-    if (widget.date != null && !widget.date!.isBefore(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
+    if (widget.date != null &&
+        !widget.date!.isBefore(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day))) {
       final calendarProvider = Provider.of<CalendarViewModel>(context, listen: false);
       calendarProvider.myTodoGet(widget.date!);
       todoList = calendarProvider.todoList;
@@ -323,11 +324,13 @@ class _TodoListAddState extends State<TodoListAdd> {
                 TextField(
                   controller: textController,
                   maxLength: 20,
-                  decoration: DesignInputDecoration(hintText: '할일을 적어주세요!', icon: null, circular: 5, hintCount: null).inputDecoration,
+                  decoration: DesignInputDecoration(hintText: '할일을 적어주세요!', icon: null, circular: 5, hintCount: null)
+                      .inputDecoration,
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    addTodoList.add(TodoModel(id: -1, date: date!, todoText: textController.text, checkTodo: false, dateTime: nowDate));
+                    addTodoList.add(TodoModel(
+                        id: -1, date: date!, todoText: textController.text, checkTodo: false, dateTime: nowDate));
                     setState(() {});
                     FocusScope.of(context).unfocus();
                     Navigator.pop(context);
