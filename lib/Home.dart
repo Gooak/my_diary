@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:my_little_memory_diary/components/google_ad.dart';
-import 'package:my_little_memory_diary/pageHome.dart';
+import 'package:my_little_memory_diary/page_home.dart';
 import 'package:my_little_memory_diary/view/main_page/calendar/my_calendar.dart';
 import 'package:my_little_memory_diary/view/main_page/diary/my_diary.dart';
 import 'package:my_little_memory_diary/view/main_page/mypage/my_page.dart';

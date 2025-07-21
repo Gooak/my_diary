@@ -11,7 +11,7 @@ import 'package:my_little_memory_diary/view_model/calendar_view_model.dart';
 import 'package:my_little_memory_diary/view_model/diary_view_model.dart';
 import 'package:my_little_memory_diary/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:restart_app/restart_app.dart';
+// import 'package:restart_app/restart_app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyPage extends StatefulWidget {
@@ -449,10 +449,6 @@ class _MyPageState extends State<MyPage> {
                   if (context.mounted) {
                     showCustomSnackBar(context, message);
                     Navigator.pop(context);
-                  }
-                  if (message == '복원에 성공하셨습니다. 5초뒤 앱이 재시작 됩니다.') {
-                    await Future.delayed(const Duration(seconds: 5));
-                    await Restart.restartApp();
                   }
                 },
               );

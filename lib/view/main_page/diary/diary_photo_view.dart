@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:my_little_memory_diary/components/snack_bar.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FullScreenImagePage extends StatelessWidget {
   final String imageUrl;
@@ -60,8 +60,6 @@ class FullScreenImagePage extends StatelessWidget {
                           child: Icon(Icons.close),
                         ),
                       );
-                    default:
-                      return null;
                   }
                 },
               ),
@@ -95,8 +93,14 @@ class FullScreenImagePage extends StatelessWidget {
   Future<void> downloadImage(String imageURL, BuildContext context) async {
     try {
       var response = await Dio().get(imageURL, options: Options(responseType: ResponseType.bytes));
-      await ImageGallerySaver.saveImage(Uint8List.fromList(response.data),
-          quality: 50, name: 'my_little_memory_diary_${Timestamp.now()}');
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/image_${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+      Uint8List? imageData = response.data;
+      if (imageData != null) {
+        final file = await File(filePath).writeAsBytes(imageData);
+        await Gal.putImage(file.path);
+      }
       if (context.mounted) {
         showCustomSnackBar(context, '이미지를 저장하였습니다!');
       }

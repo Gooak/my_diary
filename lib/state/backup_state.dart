@@ -80,7 +80,7 @@ class GoogleBackUpState {
       return '잘못된 접근입니다. 다시시도해주세요';
     }
     dismissLoading();
-    return '복원에 성공하셨습니다. 5초뒤 앱이 재시작 됩니다.';
+    return '복원에 성공하셨습니다. 앱을 재시도 해주시길 바랍니다.';
   }
 
   Future<String> paginate() async {
