@@ -17,6 +17,10 @@
           android:name="com.google.android.gms.ads.APPLICATION_ID"
           android:value="ca-app-pub-2418397088815529~9526115542"/>
           <!-- 안드로이드 광고id 추가 -->
+        <meta-data
+        android:name="com.google.android.gms.ads.AD_SERVICES_CONFIG"
+        android:resource="@xml/gma_ad_services_config"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
