@@ -7,7 +7,8 @@
     <application
         android:label="나의 작은 추억 일기"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:memtagMode="async">
 
         <property android:name="android.adservices.AD_SERVICES_CONFIG"
         android:resource="@xml/gma_ad_services_config"
