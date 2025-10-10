@@ -1,43 +1,9 @@
-# 나의 작은 추억 일기 my_little_memory_diary
->심플한 디자인으로 추억카드를 쌓아가고<br>
-오늘 있었던 하루를 기분, 날씨, 일기로 나타내어 캘린더에 나타냅니다.<br>
-투두리스트로 해야할 일을 적어놓고 바탕화면 위젯에 나타내도록 합니다.<br>
+# 나의 작은 추억 일기 📖✨
 
+당신의 모든 순간을 소중하게, 심플한 감성 일기장  
+추억카드를 쌓아 소중한 기억을 간직하고, 매일의 기분과 날씨, 할 일을 기록하며 온전히 나에게 집중하는 시간을 선물하는 모바일 다이어리 앱입니다.
 
-
-# Flutter 사용 라이브러리
-- flutter_easyloading: ^3.0.5
-- firebase_core: ^2.25.4
-- provider: ^6.1.1
-- firebase_auth: ^4.17.4
-- firebase_storage: ^11.6.5
-- cloud_firestore: ^4.15.4
-- firebase_cached_image: ^0.5.3
-- firebase_messaging: ^14.7.15
-- google_sign_in: ^6.2.1
-- sign_in_button: ^3.2.0
-- table_calendar: ^3.0.9
-- flutter_localization: ^0.2.0
-- image_picker: ^1.0.7
-- extended_image: ^8.2.0
-- firebase_crashlytics: ^3.4.15
-- dio: ^5.4.1
-- image_gallery_saver: ^2.0.3
-- google_mobile_ads: ^4.0.0
-- upgrader: ^9.0.0
-- hive: ^2.2.3
-- hive_flutter: ^1.1.0
-- hive_generator: ^2.0.1
-- build_runner: ^2.4.8
-- flutter_speed_dial: ^7.0.0
-- url_launcher: ^6.2.5
-- package_info_plus: ^5.0.1
-- fl_chart: ^0.66.2
-- home_widget: ^0.4.1
-- googleapis: ^13.1.0
-- googleapis_auth: ^1.5.0
-- path_provider: ^2.1.2
-- restart_app: ^1.2.1
+---
 
 # 스토어 업로드 이미지
 <img src="https://github.com/Gooak/my_diary/assets/91882939/20060cdf-c51e-4738-add5-6463c6714e98" width="200" height="400"/>
@@ -50,55 +16,118 @@
 
 ---
 
-### 💡 프로젝트 개요 및 목표
+## 📌 주요 기능 (Features)
 
-- **프로젝트명:** 나의 작은 추억 일기 (my_little_memory_diary)
-- **목표:** 사용자가 자신의 추억, 일상, 기분, 해야 할 일 등을 쉽고 편리하게 기록하고 관리하며, 개인적인 데이터를 안전하게 보관하고 활용할 수 있도록 돕는 모바일 애플리케이션을 제공합니다.
+- **🗂️ 추억 카드**  
+  잊고 싶지 않은 순간들을 심플한 카드 디자인으로 기록하고 모아보세요.
 
----
+- **📅 캘린더 일기**  
+  매일의 기분, 날씨, 짧은 일기를 기록하면 캘린더에 아이콘으로 표시되어 나의 감정 흐름을 한눈에 파악할 수 있습니다.
 
-### 📌 주요 기능
+- **✅ 투두리스트 & 홈 위젯**  
+  오늘의 할 일을 관리하고, 홈 화면 위젯으로 언제든지 확인하여 생산성을 높일 수 있습니다.
 
-- **추억 카드:** 심플한 디자인으로 사용자만의 추억을 카드 형태로 기록하고 쌓을 수 있습니다.
-- **일기 작성 및 캘린더 연동:** 매일의 기분, 날씨, 일기 내용을 기록하면 캘린더에 자동으로 표시되어 한눈에 일상을 파악할 수 있습니다.
-- **투두리스트 관리:** 해야 할 일을 기록하고, 안드로이드 홈 화면 위젯을 통해 바로 확인할 수 있어 생산성 관리에 유용합니다.
-- **개인화 테마:** 사용자가 원하는 색상 테마로 앱 디자인을 변경하여 자신만의 공간으로 커스터마이징할 수 있습니다.
-- **구글 드라이브 백업:** 중요한 투두리스트 데이터를 구글 드라이브 API를 활용하여 안전하게 백업하고 복원할 수 있습니다.
-- **앱 내 광고:** Google Mobile Ads를 통한 수익 모델이 적용되어 있습니다.
+- **🎨 커스텀 테마**  
+  다양한 색상 테마로 앱의 분위기를 바꿔 나만의 공간을 꾸밀 수 있습니다.
 
----
+- **☁️ 구글 드라이브 백업/복원**  
+  Google Drive API를 통해 소중한 투두리스트 데이터를 안전하게 백업하고 새 기기에서도 복원할 수 있습니다.
 
-### 💻 기술 스택
-
-- **프레임워크:** Flutter (크로스 플랫폼 모바일 앱 개발)
-- **상태 관리:** Provider
-- **데이터 저장:**
-    - **클라우드:** Firebase (인증, 회원 정보, 추억 카드, 일기 등 주요 데이터 관리)
-    - **로컬:** Hive (투두리스트, 색상 테마 등 앱 내부 데이터 저장)
-- **인증:** Firebase Auth, Google Sign-In
-- **클라우드 서비스:** Firebase Storage, Cloud Firestore
-- **데이터 동기화/백업:** Google APIs (Google Drive 백업)
-- **광고:** Google Mobile Ads
-- **기타:** table_calendar, home_widget (안드로이드 위젯 연동), firebase_messaging, firebase_crashlytics 등 다수의 라이브러리 활용.
+- **💰 인앱 광고**  
+  Google Mobile Ads를 통한 수익 모델이 적용되어 있습니다.
 
 ---
 
-### ⚙️ 아키텍처 및 특징
+## 🛠️ 기술 스택 및 아키텍처 (Tech Stack & Architecture)
 
-- **아키텍처 패턴:** MVVM (Model-View-ViewModel) 패턴을 기반으로 하여 코드의 유지보수성과 확장성을 높였습니다.
-- **디자인 시스템:** Material3 테마를 사용하여 일관되고 현대적인 사용자 경험을 제공합니다.
-- **하이브리드 데이터 관리:** Firebase를 통한 클라우드 기반 데이터 동기화와 Hive를 통한 로컬 데이터 저장을 병행하여 안정성과 유연성을 확보했습니다.
-- **네이티브 기능 연동:** `home_widget` 라이브러리를 통해 네이티브 플랫폼(안드로이드)의 홈 위젯 기능을 활용하여 투두리스트를 실시간으로 업데이트합니다.
-- **지속적인 개선:** 앱 출시 후에도 버그 수정, 디자인 개선, 광고 위치 최적화 등 꾸준한 업데이트를 진행하여 사용자 경험을 개선하고 있습니다.
+본 프로젝트는 Flutter 앱 개발의 최신 트렌드와 안정적인 아키텍처를 적용하여 확장성과 유지보수성을 높이는 데 중점을 두었습니다.
 
-# 업데이트
-  1.0.4+5<br>
-  -> 투두리스트를 보기 위한 홈 위젯 추가<br>
-  1.0.5+6<br>
-  -> 앱 출시 및 구글 광고 추가<br>
-  1.0.6+7<br>
-  -> 투두리스트 텍스트 색상 변경 버그 수정 및 디자인 부분 수정, 피드백 전송 글자 수 100제한<br>
-  1.0.7+8<br>
-  -> 추억카드, 하루 기분, 투두리스트 광고 위치 수정<br>
-  1.0.9+10<br>
-  -> 안드로이드 SDK Version 35이상 타겟팅 수정
+### 아키텍처 (Architecture)
+
+- **Clean Architecture**  
+  Presentation - Domain - Data 3개의 계층으로 역할을 명확히 분리하여, 각 부분이 독립적으로 개발되고 테스트될 수 있도록 설계
+
+- **MVVM (Model-View-ViewModel)**  
+  Presentation Layer에서 Notifier(ViewModel)를 통해 UI와 비즈니스 로직을 분리하고, 단방향 데이터 흐름(UDF)을 구현
+
+- **Repository Pattern**  
+  데이터 소스(Firebase, Hive, Google Drive)를 추상화하여 데이터 접근 방식을 일원화하고, UseCase가 구체적인 구현에 의존하지 않도록 설계
+
+### 사용된 기술 (Tech Stack)
+
+- **Framework**: Flutter  
+- **State Management**: Riverpod (Provider 대체)  
+- **Data Storage**:
+  - Cloud: Firebase (Auth, Cloud Firestore, Storage)  
+  - Local: Hive (투두리스트, 앱 설정 등)  
+- **Authentication**: Firebase Auth, Google Sign-In  
+- **Cloud Service / Backup**: Google APIs (Google Drive)  
+- **Native Integration**: home_widget (안드로이드 홈 위젯 연동)  
+- **Asynchronous**: Future, Stream  
+
+---
+
+## 🔄 업데이트 내역 (What's New)
+### ver 1.0.10+11
+- 투두리스트를 보기 위한 홈 위젯 추가<br>
+### ver 1.0.10+11
+- 앱 출시 및 구글 광고 추가<br>
+### ver 1.0.10+11
+- 투두리스트 텍스트 색상 변경 버그 수정 및 디자인 부분 수정, 피드백 전송 글자 수 100제한<br>
+### ver 1.0.10+11
+-  추억카드, 하루 기분, 투두리스트 광고 위치 수정<br>
+### ver 1.0.10+11
+- 안드로이드 SDK Version 35이상 타겟팅 수정
+### ver 1.0.10+11
+- 아키텍처 대규모 리팩토링 및 상태 관리 시스템 교체
+- 상태 관리 마이그레이션: Provider → Riverpod  
+- 클린 아키텍처 도입: Presentation - Domain - Data 3계층 완전 적용  
+- UseCase와 Repository 분리, UI와 결합도 최소화  
+- 코드베이스 구조 개선, 기능 추가 및 유지보수 용이
+- 안드로이드 앱 16KB 메모리 페이지 크기를 지원
+
+---
+
+## 📁 파일 구조 (Directory Structure)
+
+```
+lib/
+├── main.dart                 # 앱의 시작점 (Entry Point)
+├── app_route.dart            # 앱 내 화면 네비게이션 및 라우팅 관리
+├── app_gate.dart             # 인증 상태에 따라 Home 또는 Signin 화면으로 분기
+│
+└── src/
+    ├── core/                 # 앱 전반에서 사용되는 공통 모듈
+    │   ├── provider/         # data_source, repository 의존성 주입 
+    │   ├── services/         # 패키지 정보 등 외부 서비스 연동
+    │   ├── utils/            # 날짜 포맷 등 유틸리티 함수
+    │   └── constants.dart    # 앱의 상수 값 (env 파일)
+    │
+    ├── data/                 # Data Layer: 데이터 소스와의 통신
+    │   ├── local/            # Hive 등 로컬 DB 관련 코드
+    │   ├── local_data_source/  # 로컬 데이터 소스 추상화 및 구현
+    │   ├── remote_data_source/ # Firebase, Google Drive 등 원격 데이터 소스
+    │   └── repository/        # Repository 구현체
+    │
+    ├── domain/               # Domain Layer: 핵심 비즈니스 로직
+    │   ├── enum/             # 앱의 비즈니스 규칙과 관련된 Enum
+    │   ├── error/            # 커스텀 에러 및 예외 클래스
+    │   ├── model/            # 순수한 데이터 모델 (Entity)
+    │   ├── repository/       # Repository 인터페이스 (규칙)
+    │   └── use_case/         # 비즈니스 로직 캡슐화 (UseCase)
+    │
+    └── presentation/         # Presentation Layer: UI 및 상태 관리
+        ├── common/           # 여러 화면에서 재사용되는 공통 UI
+        │   ├── theme/        # 앱의 디자인 테마 및 스타일
+        │   └── widgets/      # 공용 위젯 (다이얼로그, 버튼 등)
+        │
+        └── features/         # 각 기능별 UI 및 상태 관리
+            ├── main_page/    # 메인 화면 관련 폴더
+            │   ├── calendar/
+            │   ├── diary/
+            │   └── my_page/
+            ├── notifier/     # ViewModel (Riverpod Notifier)
+            └── providers/    # notifier, usecase 의존성 주입
+```
+
+
