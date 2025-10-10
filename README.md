@@ -122,6 +122,7 @@ lib/
         │   └── widgets/      # 공용 위젯 (다이얼로그, 버튼 등)
         │
         └── features/         # 각 기능별 UI 및 상태 관리
+            ├── login_page/   # 로그인, 회원가입 화면 관련 폴더
             ├── main_page/    # 메인 화면 관련 폴더
             │   ├── calendar/
             │   ├── diary/
@@ -129,5 +130,6 @@ lib/
             ├── notifier/     # ViewModel (Riverpod Notifier)
             └── providers/    # notifier, usecase 의존성 주입
 ```
+
 
 
