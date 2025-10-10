@@ -22,6 +22,11 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def googleAdNativeId = localProperties.getProperty('google.Ad.Native.Id')
+if (googleAdNativeId == null) {
+    googleAdNativeId = ''
+}
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -56,6 +61,10 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+
+        manifestPlaceholders += [
+            googleAdNativeId: googleAdNativeId
+        ]
     }
 
     signingConfigs {

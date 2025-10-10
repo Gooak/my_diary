@@ -15,7 +15,7 @@
 
         <meta-data
           android:name="com.google.android.gms.ads.APPLICATION_ID"
-          android:value="ca-app-pub-2418397088815529~9526115542"/>
+          android:value="${googleAdNativeId}" />
           <!-- 안드로이드 광고id 추가 -->
         <meta-data
         android:name="com.google.android.gms.ads.AD_SERVICES_CONFIG"
