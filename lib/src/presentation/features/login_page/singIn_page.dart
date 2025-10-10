@@ -5,8 +5,8 @@ import 'package:my_little_memory_diary/src/core/services/loading_service.dart';
 import 'package:my_little_memory_diary/src/domain/error/exceptions.dart';
 import 'package:my_little_memory_diary/src/presentation/features/providers/auth_provider.dart';
 import 'package:my_little_memory_diary/src/presentation/common/theme/design_input_decoration.dart';
-import 'package:my_little_memory_diary/src/presentation/features/login_page.dart/find_passwd.dart';
-import 'package:my_little_memory_diary/src/presentation/features/login_page.dart/signup_page.dart';
+import 'package:my_little_memory_diary/src/presentation/features/login_page/find_passwd.dart';
+import 'package:my_little_memory_diary/src/presentation/features/login_page/signup_page.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 class SigninPage extends ConsumerStatefulWidget {
