@@ -3,6 +3,7 @@
 당신의 모든 순간을 소중하게, 심플한 감성 일기장  
 추억카드를 쌓아 소중한 기억을 간직하고, 매일의 기분과 날씨, 할 일을 기록하며 온전히 나에게 집중하는 시간을 선물하는 모바일 다이어리 앱입니다.
 
+[구글 스토어 출시중](https://play.google.com/store/apps/details?id=com.my_little_memory_diary&hl=ko)
 ---
 
 # 스토어 업로드 이미지
@@ -130,6 +131,7 @@ lib/
             ├── notifier/     # ViewModel (Riverpod Notifier)
             └── providers/    # notifier, usecase 의존성 주입
 ```
+
 
 
 
