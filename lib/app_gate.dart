@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_little_memory_diary/src/presentation/features/home.dart';
-import 'package:my_little_memory_diary/src/presentation/features/login_page.dart/email_verifed.dart';
-import 'package:my_little_memory_diary/src/presentation/features/login_page.dart/singIn_page.dart';
+import 'package:my_little_memory_diary/src/presentation/features/login_page/email_verifed.dart';
+import 'package:my_little_memory_diary/src/presentation/features/login_page/singIn_page.dart';
 import 'package:my_little_memory_diary/src/presentation/features/providers/user_provider.dart';
 
 class AuthGate extends ConsumerWidget {
