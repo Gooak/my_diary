@@ -81,8 +81,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       UserCredential userCredential = await _dataSource.signUpByGoogle();
       UserModel userModel = UserModel(
-        userName: userCredential.user?.email ?? '',
-        email: userCredential.user?.displayName ?? '',
+        userName: userCredential.user?.displayName ?? '',
+        email: userCredential.user?.email ?? '',
         device: await _dataSource.getUserToken(),
         joinDate: Timestamp.now(),
       );
